@@ -1,0 +1,58 @@
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+" vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tomasr/molokai'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'chrisbra/csv.vim'
+
+" beancount
+Plugin 'nathangrigg/vim-beancount'
+
+" vimtex
+Plugin 'lervag/vimtex'
+
+" 代码补全
+Plugin 'Valloric/YouCompleteMe'
+let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+"离开插入模式后自动关闭预览窗口
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"补全后自动关机预览窗口"
+let g:ycm_autoclose_preview_window_after_completion=1
+
+" 代码缩进可视化
+Plugin 'Yggdroot/indentLine'
+" c++语法高亮增强
+Plugin 'octol/vim-cpp-enhanced-highlight'
+" 括号配对
+Plugin 'Raimondi/delimitMate'
+
+" markdown{
+    Plugin 'godlygeek/tabular'
+    Plugin 'plasticboy/vim-markdown'
+    Plugin 'iamcco/mathjax-support-for-mkdp'
+    Plugin 'iamcco/markdown-preview.vim'
+" }
+
+" python{
+
+    " 缩进
+    Plugin 'vim-scripts/indentpython.vim'
+    " PEP8代码风格检查
+    Plugin 'nvie/vim-flake8'
+
+" }
+
+" html{
+
+    " emmet
+    Plugin 'mattn/emmet-vim'
+    " 补全tag
+    Plugin 'docunext/closetag.vim'
+
+" }
+
+call vundle#end()
