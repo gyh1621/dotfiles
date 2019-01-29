@@ -60,6 +60,9 @@ set shiftwidth=4
 " 让 vim 把连续数量的空格视为一个制表符
 set softtabstop=4
 
+" set paste mode
+set pastetoggle=<F11>
+
 " 定义快捷键到行首和行尾
 nmap LB 0
 nmap LE $
