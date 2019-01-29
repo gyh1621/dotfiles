@@ -1,0 +1,35 @@
+{
+	"segments": {
+		"right": [
+			{
+				"function": "powerline.segments.common.sys.uptime",
+				"priority": 50,
+                "args": {
+                    "shorten_len": 2
+                }
+			},
+            {
+                "function": "powerlinemem.mem_usage.mem_usage_percent",
+                "priority": 50,
+                "args": {
+                        "format": "Mem: %d%%"
+                 },
+                 "comment": "Install: pip install powerline-mem-segment"
+            },
+			{
+				"function": "powerline.segments.common.sys.system_load",
+				"priority": 50
+			},
+			{
+				"function": "powerline.segments.common.time.date",
+                "args": {
+                    "format": "%y-%m-%d %H:%M",
+                    "istime": true
+                }
+			},
+			{
+				"function": "powerline.segments.common.net.hostname"
+			}
+		]
+	}
+}
