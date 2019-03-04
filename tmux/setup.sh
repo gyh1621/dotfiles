@@ -15,7 +15,9 @@ $HOME/.tmux/plugins/tpm/bin/install_plugins
 # source powerline
 powerlinePath=$(dirname $(python -c "import powerline; print(powerline.__file__)"))
 powerline=${powerlinePath}"/bindings/tmux/powerline.conf"
+echo ${powerline}
 sed -i "s!# SOURCE POWERLINE #!source ${powerline}!g" $HOME/.tmux.conf
+echo "done"
 
 # source tmux
 tmux source-file $HOME/.tmux.conf
