@@ -15,5 +15,8 @@ pip install --user powerline-mem-segment
 scriptPath=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
 echo -n "scriptPath: "${scriptPath}
 
-mkdir $HOME/.config
+if [ ! -d "$HOME/.config" ]; then
+    mkdir $HOME/.config
+fi
+
 ln -s ${scriptPath} $HOME/.config/powerline
