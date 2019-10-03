@@ -34,15 +34,15 @@ echo $OS:$VER
 # install zsh
 function install_zsh_macos {
     ######## never test ######
-    brew install zsh zsh-completions git
+    sudo brew install zsh zsh-completions git
 }
 
 function install_zsh_arch {
-    pacman -S --noconfirm zsh
+    sudo pacman -S --noconfirm zsh
 }
 
 function install_zsh_ubuntu {
-    apt update && apt install zsh git
+    sudo apt update && sudo apt install zsh git
 }
 
 function install_zsh_plugins {
@@ -65,6 +65,9 @@ if [ ! -e "$HOME/.zshrc" ]; then
         install_zsh_macos
         install_zsh_plugins
     elif [[ "$OS" == "Ubuntu"* ]]; then
+        install_zsh_ubuntu
+        install_zsh_plugins
+    elif [[ "$OS" == "Raspbian"* ]]; then
         install_zsh_ubuntu
         install_zsh_plugins
     fi
