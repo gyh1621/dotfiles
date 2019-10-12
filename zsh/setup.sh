@@ -45,6 +45,12 @@ function install_zsh_ubuntu {
     sudo apt update && sudo apt install zsh git
 }
 
+function install_zsh_gentoo {
+    sudo emerge -v app-shells/zsh
+    sudo emerge -v dev-vcs/git
+    sudo emerge -v app-shells/gentoo-zsh-completions
+}
+
 function install_zsh_plugins {
     export RUNZSH=no
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -70,8 +76,18 @@ if [ ! -e "$HOME/.zshrc" ]; then
     elif [[ "$OS" == "Raspbian"* ]]; then
         install_zsh_ubuntu
         install_zsh_plugins
+    elif [[ "$OS" == "Gentoo"* ]]; then
+        install_zsh_gentoo
+        install_zsh_plugins
+    fi
+    # copy zshrc
+    cp $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.zshrc $HOME
+    if [[ "$OS" == "Gentoo"* ]]; then
+        sed -i '2i\\n# Gentoo completions' $HOME/.zshrc
+        sed -i '4i\autoload -U compinit promptinit' $HOME/.zshrc
+        sed -i '5i\compinit' $HOME/.zshrc
+        sed -i '6i\promptinit; prompt gentoo' $HOME/.zshrc
+        sed -i "7izstyle ':completion::complete:*' use-cache 1\n" $HOME/.zshrc
     fi
 fi
 
-# copy zshrc
-cp $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.zshrc $HOME
