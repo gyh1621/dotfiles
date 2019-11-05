@@ -105,6 +105,17 @@ set background=dark
 " 设置状态栏主题风格
 let g:Powerline_colorscheme='solarized256'
 
+" vimtex
+let g:vimtex_compiler_enabled=1
+let g:vimtex_quickfix_latexlog = {'default' : 0}
+if !exists('g:ycm_semantic_triggers')
+        let g:ycm_semantic_triggers = {}
+    endif
+    au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
+
+"tex.vim
+let g:tex_conceal=""
+
 
 " 标示不必要的空白字符
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -185,3 +196,5 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
     autocmd filetype *html* map <c-_> <c-y>/
 
 " }
+
+
