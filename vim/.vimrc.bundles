@@ -8,6 +8,9 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'chrisbra/csv.vim'
+Plugin 'nickeb96/vitality.vim'
+
+Plugin 'mhinz/vim-startify'
 
 " beancount
 Plugin 'nathangrigg/vim-beancount'

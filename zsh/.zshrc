@@ -46,8 +46,5 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# pyenv settings
-[ -d "$HOME/.pyenv" ] && export PATH="/Users/gyh/.pyenv:$PATH" && eval "$(pyenv init -)"
-
 # highlight
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

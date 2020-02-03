@@ -31,6 +31,8 @@ else
 fi
 echo $OS:$VER
 
+USERNAME=$USER
+
 # install zsh
 function install_zsh_macos {
     ######## never test ######
@@ -53,9 +55,12 @@ function install_zsh_gentoo {
 
 function install_zsh_plugins {
     export RUNZSH=no
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
+    sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
+    sudo groupadd chsh
+    sudo usermod -a -G chsh $USERNAME
     chsh -s /bin/zsh
-    usermod -s /bin/zsh $USER
+    #usermod -s /bin/zsh $USERNAME
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
     git clone https://github.com/denysdovhan/spaceship-prompt.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt

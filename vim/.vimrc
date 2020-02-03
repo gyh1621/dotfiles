@@ -45,6 +45,7 @@ set ruler
 set number
 " 高亮显示搜索结果
 set hlsearch
+nnoremap <Leader>\ :noh<return>
 " 开启语法高亮功能
 syntax enable
 " 允许用指定语法高亮配色方案替换默认方案
@@ -106,6 +107,7 @@ set background=dark
 let g:Powerline_colorscheme='solarized256'
 
 " vimtex
+let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/MacOS/Skim'
 let g:vimtex_compiler_enabled=1
 let g:vimtex_quickfix_latexlog = {'default' : 0}
 if !exists('g:ycm_semantic_triggers')
@@ -197,4 +199,4 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
 
 " }
 
-
+let g:vitality_shell_cursor = 1

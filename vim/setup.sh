@@ -11,7 +11,7 @@ ln -s ${rcPath} $HOME/.vimrc
 ln -s ${bundlePath} $HOME/.vimrc.bundles
 
 # install dependencies
-sudo apt install git build-essential cmake python3-dev
+sudo apt install -y git build-essential cmake python3-dev
 
 # install plugins
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
