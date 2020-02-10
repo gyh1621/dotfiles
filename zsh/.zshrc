@@ -48,3 +48,5 @@ source $ZSH/oh-my-zsh.sh
 
 # highlight
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export PATH=~/.local/bin:$PATH
