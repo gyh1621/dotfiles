@@ -52,10 +52,13 @@ source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighti
 export PATH=~/.local/bin:$PATH
 
 # zle config
+autoload -Uz history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
 bindkey -v  # vi mode
 bindkey "^r" history-incremental-search-backward
-bindkey "^[[A" history-beginning-search-backward
-bindkey "^[[B" history-beginning-search-forward
+bindkey "^[[A" history-beginning-search-backward-end
+bindkey "^[[B" history-beginning-search-forward-end
 bindkey "^?" backward-delete-char
 
 function zle-line-init zle-keymap-select {
