@@ -67,7 +67,6 @@ function install_zsh_plugins {
     ln -s ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt/spaceship.zsh-theme ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship.zsh-theme
 }
 
-export HOME=/home/$USER
 if [ ! -e "$HOME/.zshrc" ]; then
     if [[ "$OS" == "Arch Linux" ]]; then
         install_zsh_arch
