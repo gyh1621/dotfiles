@@ -44,7 +44,7 @@ function install_zsh_arch {
 }
 
 function install_zsh_ubuntu {
-    sudo apt update && sudo apt install zsh git
+    sudo apt update && sudo apt install zsh git -y
 }
 
 function install_zsh_gentoo {

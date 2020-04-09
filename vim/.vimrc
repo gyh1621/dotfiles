@@ -1,3 +1,4 @@
+set encoding=utf-8
 set nocp
 " vundle 环境设置
 if filereadable(expand("~/.vimrc.bundles"))
