@@ -28,6 +28,7 @@ let g:ycm_autoclose_preview_window_after_completion=1
 
 " 代码缩进可视化
 Plugin 'Yggdroot/indentLine'
+autocmd Filetype json let g:indentLine_setConceal = 0
 " c++语法高亮增强
 Plugin 'octol/vim-cpp-enhanced-highlight'
 " 括号配对
