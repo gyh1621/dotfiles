@@ -20,6 +20,9 @@ Plugin 'tpope/vim-commentary'
 Plugin 'dense-analysis/ale'
 Plugin 'vim-airline/vim-airline'
 
+" language packs
+Plugin 'sheerun/vim-polyglot'
+
 " beancount
 Plugin 'nathangrigg/vim-beancount'
 
