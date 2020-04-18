@@ -212,7 +212,7 @@ let g:vitality_shell_cursor = 1
 " }
 
 " tagbar {
-    map <C-f> :TagbarToggle<CR>
+    map <C-f> :TagbarToggle<CR>:AirlineRefresh<CR>
     let g:tagbar_ctags_bin = 'ctags'
 " }
 
