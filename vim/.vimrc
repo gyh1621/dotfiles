@@ -215,3 +215,18 @@ let g:vitality_shell_cursor = 1
     map <C-f> :TagbarToggle<CR>
     let g:tagbar_ctags_bin = 'ctags'
 " }
+
+" gutentags {
+    set statusline+=%{gutentags#statusline()}
+    " https://www.reddit.com/r/vim/comments/d77t6j/guide_how_to_setup_ctags_with_gutentags_properly/
+    let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
+    command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')
+    let g:gutentags_generate_on_new = 1
+    let g:gutentags_generate_on_missing = 1
+    let g:gutentags_generate_on_write = 1
+    let g:gutentags_generate_on_empty_buffer = 0
+    let g:gutentags_ctags_extra_args = [
+          \ '--tag-relative=yes',
+          \ '--fields=+ailmnS',
+          \ ]
+" }
