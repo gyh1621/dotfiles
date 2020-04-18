@@ -15,6 +15,7 @@ Plugin 'mhinz/vim-startify'
 Plugin 'preservim/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'kien/ctrlp.vim'
 
 " beancount
 Plugin 'nathangrigg/vim-beancount'
