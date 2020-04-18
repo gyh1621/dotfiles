@@ -201,3 +201,8 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
 " }
 
 let g:vitality_shell_cursor = 1
+
+
+" tags {
+    nnoremap <leader>pT :!ctags %<ENTER><ENTER>
+" }
