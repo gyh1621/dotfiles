@@ -202,7 +202,6 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
 
 let g:vitality_shell_cursor = 1
 
-
 " tags {
     nnoremap <leader>pT :!ctags %<ENTER><ENTER>
 " }
@@ -250,4 +249,13 @@ let g:vitality_shell_cursor = 1
 " airline {
     " show buffered tabs
     let g:airline#extensions#tabline#enabled = 1
+    " hide buffer line when there is only one tab/buffer
+    fu! AirlineBufLineToggle()
+        let b_num = len(getbufinfo({'buflisted':1}))
+        if b_num == 1 | set go+=e | doautocmd user AirlineToggledOff |endif
+        if b_num > 1 | set go-=e | doautocmd user AirlineToggledOn |endif
+    endfu
+
+    au BufNewFile * :call AirlineBufLineToggle()
+    au BufWinEnter * :call AirlineBufLineToggle()
 " }
