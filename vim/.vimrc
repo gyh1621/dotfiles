@@ -206,3 +206,7 @@ let g:vitality_shell_cursor = 1
 " tags {
     nnoremap <leader>pT :!ctags %<ENTER><ENTER>
 " }
+
+" nerdtree {
+    map <C-n> :NERDTreeToggle<CR>
+" }

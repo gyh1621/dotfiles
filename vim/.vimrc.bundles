@@ -12,6 +12,8 @@ Plugin 'nickeb96/vitality.vim'
 
 Plugin 'mhinz/vim-startify'
 
+Plugin 'preservim/nerdtree'
+
 " beancount
 Plugin 'nathangrigg/vim-beancount'
 
