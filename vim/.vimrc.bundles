@@ -16,6 +16,9 @@ Plugin 'preservim/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-commentary'
+Plugin 'dense-analysis/ale'
+Plugin 'vim-airline/vim-airline'
 
 " beancount
 Plugin 'nathangrigg/vim-beancount'

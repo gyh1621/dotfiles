@@ -230,3 +230,24 @@ let g:vitality_shell_cursor = 1
           \ '--fields=+ailmnS',
           \ ]
 " }
+
+" ale {
+    " show errors or warnings in statusline
+    let g:airline#extensions#ale#enabled = 1
+    let g:ale_linter = {
+    \   'c': ['clangtidy', 'gcc'],
+    \   'python': ['flake8']
+    \}
+    let g:ale_fixers = {
+    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \   'c': ['clang-format'],
+    \   'python': ['black'],
+    \   'json': ['jq']
+    \}
+    let g:ale_fix_on_save = 1
+" }
+
+" airline {
+    " show buffered tabs
+    let g:airline#extensions#tabline#enabled = 1
+" }
