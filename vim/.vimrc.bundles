@@ -13,6 +13,7 @@ Plugin 'nickeb96/vitality.vim'
 Plugin 'mhinz/vim-startify'
 
 Plugin 'preservim/nerdtree'
+Plugin 'majutsushi/tagbar'
 
 " beancount
 Plugin 'nathangrigg/vim-beancount'

@@ -210,3 +210,8 @@ let g:vitality_shell_cursor = 1
 " nerdtree {
     map <C-n> :NERDTreeToggle<CR>
 " }
+
+" tagbar {
+    map <C-f> :TagbarToggle<CR>
+    let g:tagbar_ctags_bin = 'ctags'
+" }
