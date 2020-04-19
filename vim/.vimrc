@@ -293,3 +293,10 @@ let g:vitality_shell_cursor = 1
 " delimitMate {
     let g:delimitMate_expand_cr = 2
 " }
+
+" ctrlsf {
+    let g:ctrlsf_ackprg = 'ag'
+    nmap     <C-F>f <Plug>CtrlSFPrompt
+    nmap     <C-F>w <Plug>CtrlSFCwordPath
+    vmap     <C-F>v <Plug>CtrlSFVwordExec
+" }

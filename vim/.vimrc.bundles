@@ -19,6 +19,7 @@ Plugin 'Yggdroot/LeaderF'
 Plugin 'tpope/vim-commentary'
 Plugin 'dense-analysis/ale'
 Plugin 'vim-airline/vim-airline'
+Plugin 'dyng/ctrlsf.vim'
 
 " language packs
 Plugin 'sheerun/vim-polyglot'
