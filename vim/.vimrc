@@ -289,3 +289,7 @@ let g:vitality_shell_cursor = 1
 
     let g:Lf_ShowDevIcons = 0
 " }
+
+" delimitMate {
+    let g:delimitMate_expand_cr = 2
+" }
