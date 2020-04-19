@@ -133,7 +133,7 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
 
     let python_highlight_all=1
 
-    au BufNewFile, BufRead *.py
+    au FileType python
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -162,8 +162,14 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
     nnoremap <F5> <Esc>:w<CR>:!g++ -std=c++11 % -o /tmp/a.out && /tmp/a.out<CR>
     nnoremap <F7> <Esc>:w<CR>:!g++ -std=c++11 %<CR>
 
-    au BufNewFile, BufRead *.cpp
+    au FileType cpp
     \ set smartindent
+
+    au FileType c
+    \ setlocal shiftwidth=2 |
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set expandtab autoindent smartindent cindent
 
     " 在新cpp文件开头添加iostream头文件以及main函数
     function! AddMainToNewCpp()
