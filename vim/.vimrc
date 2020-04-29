@@ -124,6 +124,10 @@ let g:tex_conceal=""
 highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
 
+" switch bwtween buffers
+noremap <leader>bb :bn<cr>
+noremap <leader>bp :bp<cr>
+
 " beancount{
     autocmd FileType beancount nnoremap . :AlignCommodity<CR>
     autocmd FileType beancount inoremap <Tab> <c-x><c-o>
@@ -217,7 +221,7 @@ let g:vitality_shell_cursor = 1
 " }
 
 " tagbar {
-    map <C-f> :TagbarToggle<CR>:AirlineRefresh<CR>
+    map <leader>t :TagbarToggle<CR>:AirlineRefresh<CR>
     let g:tagbar_ctags_bin = 'ctags'
 " }
 
@@ -288,6 +292,9 @@ let g:vitality_shell_cursor = 1
     noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
     let g:Lf_ShowDevIcons = 0
+
+    " unbind <leader>b
+    map <leader>b <Nop>
 " }
 
 " delimitMate {
