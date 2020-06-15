@@ -81,15 +81,15 @@ nmap <Leader>WQ :wa<CR>:q<CR>
 " 不做任何保存，直接退出 vim
 nmap <Leader>Q :qa!<CR>
 " 依次遍历子窗口
-nnoremap NW <C-W><C-W>
+"nnoremap NW <C-W><C-W>
 " 跳转至右方的窗口
-nnoremap <Leader>LW <C-W>l
+nnoremap <Leader>wl <C-W>l
 " 跳转至左方的窗口
-nnoremap <Leader>HW <C-W>h
+nnoremap <Leader>wh <C-W>h
 " 跳转至上方的子窗口
-nnoremap <Leader>KW <C-W>k
+nnoremap <Leader>wk <C-W>k
 " 跳转至下方的子窗口
-nnoremap <Leader>JW <C-W>j
+nnoremap <Leader>wj <C-W>j
 " 定义快捷键在结对符之间跳转
 nmap <Leader>M %
 " 调整水平分割窗口大小
@@ -141,15 +141,15 @@ noremap <leader>bp :bp<cr>
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
-    \ set textwidth=79 |
+    \ set textwidth=120 |
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix |
 
     " 在新py文件开头添加执行路径，编码方式
     function! SetPyHeader()
-        call setline(1, "#!/usr/bin/python3")
-        call append(1, "#coding: utf-8")
+        "call setline(1, "#!/usr/bin/python3")
+        call setline(1, "# coding: utf-8")
         normal G
         normal o
     endfunc
@@ -217,7 +217,7 @@ let g:vitality_shell_cursor = 1
 " }
 
 " nerdtree {
-    map <C-n> :NERDTreeToggle<CR>
+    map <leader>n :NERDTreeToggle<CR>
 " }
 
 " tagbar {
@@ -245,7 +245,7 @@ let g:vitality_shell_cursor = 1
     let g:airline#extensions#ale#enabled = 1
     let g:ale_linter = {
     \   'c': ['clangtidy', 'gcc'],
-    \   'python': ['flake8']
+    \   'python': ['flake8', 'pylint']
     \}
     let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -254,6 +254,9 @@ let g:vitality_shell_cursor = 1
     \   'json': ['jq']
     \}
     let g:ale_fix_on_save = 1
+
+    nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+    nmap <silent> <C-j> <Plug>(ale_next_wrap)
 " }
 
 " airline {
