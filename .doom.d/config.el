@@ -140,7 +140,7 @@
 (setq org-roam-capture-templates
       '(("d" "Default" plain (function org-roam--capture-get-point)
              :file-name "%<%Y%m%d%H%M%S>-${slug}"
-             :head "#+TITLE: ${title}\n#+CREATED_AT: %U\nTime-stamp: []\n"
+             :head "#+TITLE: ${title}\n#+CREATED_AT: %U\nTime-stamp: <>\n"
              :immediate-finish t)
         ("i" "Default-Intern" plain (function org-roam--capture-get-point)
              :file-name "intern/%<%Y%m%d%H%M%S>-${slug}"
