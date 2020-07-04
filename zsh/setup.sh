@@ -95,3 +95,6 @@ if [ ! -e "$HOME/.zshrc" ]; then
     fi
 fi
 
+# iterm2 mark
+curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+
