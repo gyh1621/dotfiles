@@ -19,6 +19,10 @@ spaceship_iterm2_mark() {
    spaceship::section white "$(iterm2_prompt_mark) "
 }
 
+spaceship_nonbreak_space() {
+    spaceship::section white " "
+}
+
 SPACESHIP_PROMPT_ORDER=(
   iterm2_mark
   user          # Username section
@@ -36,6 +40,7 @@ SPACESHIP_PROMPT_ORDER=(
   exec_time     # Execution time
   time
   exit_code
+  nonbreak_space
   line_sep      # Line break
   battery       # Battery level and status
   vi_mode       # Vi-mode indicator
