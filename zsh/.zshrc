@@ -85,8 +85,8 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
-
 export PATH="$GOBIN:$PATH"
+export PATH="/usr/local/go/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
