@@ -275,6 +275,8 @@ let g:vitality_shell_cursor = 1
 " }
 
 " LeaderF {
+    " search hidden files
+    let g:Lf_ShowHidden = 1
     " don't show the help in normal mode
     let g:Lf_HideHelp = 1
     let g:Lf_UseCache = 0
