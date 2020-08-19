@@ -9,6 +9,10 @@
 (setq user-full-name "John Doe"
       user-mail-address "john@doe.com")
 
+;; set org link shortcuts
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c C-l") 'org-insert-link)
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -142,13 +146,34 @@
              :file-name "%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+CREATED_AT: %U\nTime-stamp: <>\n"
              :immediate-finish t)
-        ("i" "Default-Intern" plain (function org-roam--capture-get-point)
+        ("i" "Intern" plain (function org-roam--capture-get-point)
              :file-name "intern/%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+ROAM_TAGS:amz\n#+CREATED_AT: %U\nTime-stamp: <>\n"
              :immediate-finish t)
+        ("a" "Algorithm" plain (function org-roam--capture-get-point)
+             :file-name "algorithm/%<%Y%m%d%H%M%S>-${slug}"
+             :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm\n#+CREATED_AT: %U\nTime-stamp: <>\n"
+             :unnarrowed t)
+        ("l" "Leetcode" plain (function org-roam--capture-get-point)
+             "%[~/org/roam/templates/leetcode]"
+             :file-name "algorithm/leetcode/%<%Y%m%d%H%M%S>-${slug}"
+             :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm leetcode\n#+CREATED_AT: %U\nTime-stamp: <>\n"
+             :unnarrowed t)
         ("j" "Daily Note" plain (function org-roam--capture-get-point)
              "%[~/org/roam/templates/daily]"
              :file-name "%<%Y-%m-%d>"
              :head "#+TITLE: %<%Y-%m-%d>\n#+CREATED_AT: %U\nTime-stamp: <>\n\n"
              :unnarrowed t)
         ))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (org-roam))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-roam-link ((t (:foreground "yellow2")))))

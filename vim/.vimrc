@@ -245,13 +245,15 @@ let g:vitality_shell_cursor = 1
     let g:airline#extensions#ale#enabled = 1
     let g:ale_linter = {
     \   'c': ['clangtidy', 'gcc'],
-    \   'python': ['flake8', 'pylint']
+    \   'python': ['flake8', 'pylint'],
+    \   'go': ['golint'],
     \}
     let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
     \   'c': ['clang-format'],
     \   'python': ['black'],
-    \   'json': ['jq']
+    \   'json': ['jq'],
+    \   'go': ['gofmt'],
     \}
     let g:ale_fix_on_save = 1
 

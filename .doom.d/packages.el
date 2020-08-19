@@ -52,3 +52,4 @@
 (package! org-download)
 (package! go-mode)
 (package! org-sidebar)
+(package! js2-mode)
