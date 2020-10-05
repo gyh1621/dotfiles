@@ -177,3 +177,45 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-roam-link ((t (:foreground "yellow2")))))
+
+;; org-roam-graph
+(setq org-roam-graph-viewer
+    (lambda (file)
+      (let ((org-roam-graph-viewer "open"))
+        (org-roam-graph--open (concat "-a Safari " file)))))
+(use-package org-roam-server
+  :ensure t
+  :config
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8080
+        org-roam-server-authenticate nil
+        org-roam-server-export-inline-images t
+        org-roam-server-serve-files nil
+        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+        org-roam-server-network-poll t
+        org-roam-server-network-arrows nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20))
+
+;; interleave, org-noter
+;;(use-package interleave
+;;  :defer t
+;;  :bind ("C-x i" . interleave-mode)
+;;  :config
+;;  (setq interleave-disable-narrowing t))
+;;(defun widen-interleave-org-buffer ()
+;;  (with-current-buffer interleave-org-buffer
+;;    (widen)))
+;;(add-hook 'interleave-mode-hook #'widen-interleave-org-buffer)
+(setq org-noter-property-doc-file "INTERLEAVE_PDF"
+      org-noter-property-note-location "INTERLEAVE_PAGE_NOTE")
+
+;; org-mind-map
+(require 'ox-org)
+(require 'org-mind-map)
+(setq org-mind-map-engine "dot")
+
+
+;; beancount
+(add-to-list 'auto-mode-alist '("\\.bean\\'" . beancount-mode))

@@ -53,3 +53,9 @@
 (package! go-mode)
 (package! org-sidebar)
 (package! js2-mode)
+(package! org-noter)
+(package! org-mind-map)
+(package! org-roam-server)
+(package! beancount
+  :recipe (:host github :repo "beancount/beancount"
+           :files ("editors/emacs/beancount.el")))
