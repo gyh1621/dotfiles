@@ -49,6 +49,7 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
+(package! org-roam)
 (package! org-download)
 (package! go-mode)
 (package! org-sidebar)
@@ -56,6 +57,10 @@
 (package! org-noter)
 (package! org-mind-map)
 (package! org-roam-server)
+(package! ox-hugo
+  :recipe (:host github :repo "jethrokuan/ox-hugo"))
 (package! beancount
   :recipe (:host github :repo "beancount/beancount"
            :files ("editors/emacs/beancount.el")))
+(package! geiser)
+(package! paredit)

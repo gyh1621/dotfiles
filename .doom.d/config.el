@@ -118,7 +118,11 @@
             ((eq 'html backend)
              (format "<font color=\"red\"> <a href=\"x-devonthink-item:%s\">%s </a> </font>"
                      path
-                     desc))))
+                     desc))
+            ((eq 'md backend)
+             (format "[%s](x-devonthink-item:%s)"
+                     desc
+                     path))))
  :face '(:foreground "red")
  :help-echo "Click me for devonthink link.")
 
@@ -145,7 +149,7 @@
       '(("d" "Default" plain (function org-roam--capture-get-point)
              :file-name "%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+CREATED_AT: %U\nTime-stamp: <>\n"
-             :immediate-finish t)
+             :immediate-finish f)
         ("i" "Intern" plain (function org-roam--capture-get-point)
              :file-name "intern/%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+ROAM_TAGS:amz\n#+CREATED_AT: %U\nTime-stamp: <>\n"
@@ -216,6 +220,53 @@
 (require 'org-mind-map)
 (setq org-mind-map-engine "dot")
 
+;; ox-hugo
+(use-package ox-hugo
+  :after org)
 
 ;; beancount
 (add-to-list 'auto-mode-alist '("\\.bean\\'" . beancount-mode))
+
+
+;; scheme
+(setq scheme-program-name "chez")
+(setq geiser-chez-binary "chez")
+(setq geiser-active-implementations '(chez))
+
+
+;; hide properties
+(defun org-cycle-hide-drawers (state)
+  "Re-hide all drawers after a visibility state change."
+  (when (and (derived-mode-p 'org-mode)
+             (not (memq state '(overview folded contents))))
+    (save-excursion
+      (let* ((globalp (memq state '(contents all)))
+             (beg (if globalp
+                    (point-min)
+                    (point)))
+             (end (if globalp
+                    (point-max)
+                    (if (eq state 'children)
+                      (save-excursion
+                        (outline-next-heading)
+                        (point))
+                      (org-end-of-subtree t)))))
+        (goto-char beg)
+        (while (re-search-forward org-drawer-regexp end t)
+          (save-excursion
+            (beginning-of-line 1)
+            (when (looking-at org-drawer-regexp)
+              (let* ((start (1- (match-beginning 0)))
+                     (limit
+                       (save-excursion
+                         (outline-next-heading)
+                           (point)))
+                     (msg (format
+                            (concat
+                              "org-cycle-hide-drawers:  "
+                              "`:END:`"
+                              " line missing at position %s")
+                            (1+ start))))
+                (if (re-search-forward "^[ \t]*:END:" limit t)
+                  (outline-flag-region start (point-at-eol) t)
+                  (user-error msg))))))))))
