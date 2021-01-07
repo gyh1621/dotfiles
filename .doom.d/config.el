@@ -97,7 +97,9 @@
                ("C-c n b" . org-roam-switch-to-buffer)
                ("C-c n g" . org-roam-graph))
               :map org-mode-map
-              (("C-c n i" . org-roam-insert))))
+              (("C-c n i" . org-roam-insert)))
+      :config
+      (require 'org-roam-protocol))
 
 (custom-set-faces!
   `(org-roam-link :foreground "yellow2"))
@@ -141,32 +143,37 @@
 
 ;;; org-roam save update time after modifying files
 ;;; https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks
-(require 'time-stamp)
-(add-hook 'write-file-functions 'time-stamp) ; update when saving
+;(require 'time-stamp)
+;(add-hook 'write-file-functions 'time-stamp) ; update when saving
 
 ;;; org-roam-templates
 (setq org-roam-capture-templates
       '(("d" "Default" plain (function org-roam--capture-get-point)
              :file-name "%<%Y%m%d%H%M%S>-${slug}"
-             :head "#+TITLE: ${title}\n#+CREATED_AT: %U\nTime-stamp: <>\n"
+             :head "#+TITLE: ${title}\n#+CREATED_AT: %U\n"
              :immediate-finish f)
+        ("o" "On Java 8" plain (function org-roam--capture-get-point)
+             "%[~/org/roam/templates/onjava8]"
+             :file-name "%<%Y%m%d%H%M%S>-${slug}"
+             :head "#+TITLE: ${title}\n#+CREATED_AT: %U\n"
+             :unnarrowed t)
         ("i" "Intern" plain (function org-roam--capture-get-point)
              :file-name "intern/%<%Y%m%d%H%M%S>-${slug}"
-             :head "#+TITLE: ${title}\n#+ROAM_TAGS:amz\n#+CREATED_AT: %U\nTime-stamp: <>\n"
+             :head "#+TITLE: ${title}\n#+ROAM_TAGS:amz\n#+CREATED_AT: %U\n"
              :immediate-finish t)
         ("a" "Algorithm" plain (function org-roam--capture-get-point)
              :file-name "algorithm/%<%Y%m%d%H%M%S>-${slug}"
-             :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm\n#+CREATED_AT: %U\nTime-stamp: <>\n"
+             :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm\n#+CREATED_AT: %U\n"
              :unnarrowed t)
         ("l" "Leetcode" plain (function org-roam--capture-get-point)
              "%[~/org/roam/templates/leetcode]"
              :file-name "algorithm/leetcode/%<%Y%m%d%H%M%S>-${slug}"
-             :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm leetcode\n#+CREATED_AT: %U\nTime-stamp: <>\n"
+             :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm leetcode\n#+CREATED_AT: %U\n"
              :unnarrowed t)
         ("j" "Daily Note" plain (function org-roam--capture-get-point)
              "%[~/org/roam/templates/daily]"
              :file-name "%<%Y-%m-%d>"
-             :head "#+TITLE: %<%Y-%m-%d>\n#+CREATED_AT: %U\nTime-stamp: <>\n\n"
+             :head "#+TITLE: %<%Y-%m-%d>\n#+CREATED_AT: %U\n"
              :unnarrowed t)
         ))
 (custom-set-variables
@@ -201,6 +208,20 @@
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
+
+(defun my-org-protocol-focus-advice (orig &rest args)
+  (x-focus-frame nil)
+  (apply orig args))
+
+(advice-add 'org-roam-protocol-open-ref :around
+            #'my-org-protocol-focus-advice)
+(advice-add 'org-roam-protocol-open-file :around
+            #'my-org-protocol-focus-advice)
+
+; https://github.com/org-roam/org-roam-server/issues/75
+;(unless (server-running-p)
+;  (org-roam-server-mode))
+(org-roam-server-mode)
 
 ;; interleave, org-noter
 ;;(use-package interleave
