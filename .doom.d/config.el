@@ -293,6 +293,12 @@ Uses `current-date-time-format' for the formatting the date/time."
 (use-package ox-hugo
   :after org)
 
+;; org-fc
+(use-package org-fc
+  :custom (org-fc-directories '("~/org/roam"))
+  :config
+  (require 'org-fc-hydra))
+
 ;; beancount
 (add-to-list 'auto-mode-alist '("\\.bean\\'" . beancount-mode))
 
