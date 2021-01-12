@@ -36,7 +36,7 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-tomorrow-night t)
+  (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -51,9 +51,21 @@
   (doom-themes-org-config))
 
 
+;; disable writegood minor mood
+(after! writegood-mode
+  (writegood-mode -1))
+
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
+(use-package org-bullets
+  :ensure t
+  :init
+  (setq org-ellipsis "⚡⚡⚡")
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.

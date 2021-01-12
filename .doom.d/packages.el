@@ -57,6 +57,7 @@
 (package! org-noter)
 (package! org-mind-map)
 (package! org-roam-server)
+(package! org-bullets)
 (package! ox-hugo
   :recipe (:host github :repo "jethrokuan/ox-hugo"))
 (package! beancount
