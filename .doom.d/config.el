@@ -50,10 +50,46 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+;; workspace configuration
+;;   - do not create new workspace for each session
+;;   https://github.com/hlissner/doom-emacs/issues/2202
+(after! persp-mode
+  (setq persp-emacsclient-init-frame-behaviour-override "main"))
 
 ;; disable writegood minor mood
 (after! writegood-mode
   (writegood-mode -1))
+
+;; ====================
+;; insert date and time
+
+(defvar current-date-time-format "%a %b %d %H:%M:%S %Z %Y"
+  "Format of date to insert with `insert-current-date-time' func
+See help of `format-time-string' for possible replacements")
+
+(defvar current-time-format "%a %H:%M:%S"
+  "Format of date to insert with `insert-current-time' func.
+Note the weekly scope of the command's precision.")
+
+(defun insert-current-date-time ()
+  "insert the current date and time into current buffer.
+Uses `current-date-time-format' for the formatting the date/time."
+       (interactive)
+       (insert "==========\n")
+;       (insert (let () (comment-start)))
+       (insert (format-time-string current-date-time-format (current-time)))
+       (insert "\n")
+       )
+
+(defun insert-current-time ()
+  "insert the current time (1-week scope) into the current buffer."
+       (interactive)
+       (insert (format-time-string current-time-format (current-time)))
+       (insert "\n")
+       )
+
+(global-set-key "\C-c\C-d" 'insert-current-date-time)
+(global-set-key "\C-c\C-t" 'insert-current-time)
 
 
 ;; If you use `org' and don't want your org files in the default location below,
@@ -210,7 +246,7 @@
   :ensure t
   :config
   (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8080
+        org-roam-server-port 7779
         org-roam-server-authenticate nil
         org-roam-server-export-inline-images t
         org-roam-server-serve-files nil
@@ -231,8 +267,8 @@
             #'my-org-protocol-focus-advice)
 
 ; https://github.com/org-roam/org-roam-server/issues/75
-;(unless (server-running-p)
-;  (org-roam-server-mode))
+(unless (server-running-p)
+  (org-roam-server-mode))
 ;(org-roam-server-mode)
 
 ;; interleave, org-noter
