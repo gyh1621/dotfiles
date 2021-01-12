@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "Yuhang Guo"
+      user-mail-address "guoyh01@gmail.com")
 
 ;; set org link shortcuts
 (global-set-key (kbd "C-c l") 'org-store-link)
@@ -221,7 +221,7 @@
 ; https://github.com/org-roam/org-roam-server/issues/75
 ;(unless (server-running-p)
 ;  (org-roam-server-mode))
-(org-roam-server-mode)
+;(org-roam-server-mode)
 
 ;; interleave, org-noter
 ;;(use-package interleave
@@ -291,3 +291,4 @@
                 (if (re-search-forward "^[ \t]*:END:" limit t)
                   (outline-flag-region start (point-at-eol) t)
                   (user-error msg))))))))))
+
