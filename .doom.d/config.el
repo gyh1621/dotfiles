@@ -50,6 +50,32 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+(setq +doom-dashboard-menu-sections
+  '(("Reload last session"
+    :icon (all-the-icons-octicon "history" :face 'doom-dashboard-menu-title)
+    :when (cond ((require 'persp-mode nil t)
+                  (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir)))
+                ((require 'desktop nil t)
+                  (file-exists-p (desktop-full-file-name))))
+    :face (:inherit (doom-dashboard-menu-title bold))
+    :action doom/quickload-session)
+    ("Open org-roam Daily"
+     :icon (all-the-icons-octicon "squirrel" :face 'doom-dashboard-menu-title)
+     :when (fboundp 'org-roam-dailies-find-today)
+     :action org-roam-dailies-today)
+    ("Recently opened files"
+    :icon (all-the-icons-octicon "file-text" :face 'doom-dashboard-menu-title)
+    :action recentf-open-files)
+    ("Open project"
+    :icon (all-the-icons-octicon "briefcase" :face 'doom-dashboard-menu-title)
+    :action projectile-switch-project)
+    ("Jump to bookmark"
+    :icon (all-the-icons-octicon "bookmark" :face 'doom-dashboard-menu-title)
+    :action bookmark-jump)
+    ("Open documentation"
+    :icon (all-the-icons-octicon "book" :face 'doom-dashboard-menu-title)
+    :action doom/help)))
+
 ;; workspace configuration
 ;;   - do not create new workspace for each session
 ;;   https://github.com/hlissner/doom-emacs/issues/2202
@@ -75,17 +101,14 @@ Note the weekly scope of the command's precision.")
   "insert the current date and time into current buffer.
 Uses `current-date-time-format' for the formatting the date/time."
        (interactive)
-       (insert "==========\n")
 ;       (insert (let () (comment-start)))
        (insert (format-time-string current-date-time-format (current-time)))
-       (insert "\n")
        )
 
 (defun insert-current-time ()
   "insert the current time (1-week scope) into the current buffer."
        (interactive)
        (insert (format-time-string current-time-format (current-time)))
-       (insert "\n")
        )
 
 (global-set-key "\C-c\C-d" 'insert-current-date-time)
@@ -152,6 +175,8 @@ Uses `current-date-time-format' for the formatting the date/time."
 (custom-set-faces!
   `(org-roam-link :foreground "yellow2"))
 
+(map! :leader "d d d" #'org-roam-dailies-find-today)
+
 ;;; DEVONthink link in Org
 ;;; from https://discourse.devontechnologies.com/t/org-mode-emacs-support/22396/6
 (require 'org)
@@ -217,11 +242,6 @@ Uses `current-date-time-format' for the formatting the date/time."
              "%[~/org/roam/templates/leetcode]"
              :file-name "algorithm/leetcode/%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm leetcode\n#+CREATED_AT: %U\n"
-             :unnarrowed t)
-        ("j" "Daily Note" plain (function org-roam--capture-get-point)
-             "%[~/org/roam/templates/daily]"
-             :file-name "%<%Y-%m-%d>"
-             :head "#+TITLE: %<%Y-%m-%d>\n#+CREATED_AT: %U\n"
              :unnarrowed t)
         ))
 (custom-set-variables
@@ -298,6 +318,15 @@ Uses `current-date-time-format' for the formatting the date/time."
   :custom (org-fc-directories '("~/org/roam"))
   :config
   (require 'org-fc-hydra))
+
+(map! :leader :desc "flip card" "l l" #'org-fc-review-flip)
+(map! :leader :desc "quit review" "l q" #'org-fc-review-quit)
+(map! :leader :desc "edit review" "l e" #'org-fc-review-edit)
+
+(map! :leader :desc "rate good" "l g" #'org-fc-review-rate-good)
+(map! :leader :desc "rate again" "l a" #'org-fc-review-rate-again)
+(map! :leader :desc "rate hard" "l h" #'org-fc-review-rate-hard)
+(map! :leader :desc "rate easy" "l e" #'org-fc-review-rate-easy)
 
 ;; beancount
 (add-to-list 'auto-mode-alist '("\\.bean\\'" . beancount-mode))
