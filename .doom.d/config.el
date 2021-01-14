@@ -161,16 +161,18 @@ Uses `current-date-time-format' for the formatting the date/time."
       :custom
       (org-roam-directory "~/org/roam")
       (org-roam-link-title-format "%s")
-      :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-               ("C-c n f" . org-roam-find-file)
-               ("C-c n j" . org-roam-jump-to-index)
-               ("C-c n b" . org-roam-switch-to-buffer)
-               ("C-c n g" . org-roam-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert)))
       :config
       (require 'org-roam-protocol))
+
+(map! :map org-roam-mode-map
+      :leader "r l" #'org-roam
+      :leader "r f" #'org-roam-find-file
+      :leader "r j" #'org-roam-jump-to-index
+      :leader "r b" #'org-roam-switch-to-buffer
+      :leader "r t a" #'org-transclusion-activate
+      :leader "r t d" #'org-transclusion-deactivate
+      :leader "r t e" #'org-transclusion-open-edit-src-buffer-at-point
+      :leader "r t E" #'org-transclusion-open-src-buffer-at-point)
 
 (custom-set-faces!
   `(org-roam-link :foreground "yellow2"))
@@ -215,10 +217,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 
 ;;; org-roam save update time after modifying files
-;;; https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks
-;(require 'time-stamp)
-;(add-hook 'write-file-functions 'time-stamp) ; update when saving
-
 ;;; org-roam-templates
 (setq org-roam-capture-templates
       '(("d" "Default" plain (function org-roam--capture-get-point)
@@ -256,6 +254,14 @@ Uses `current-date-time-format' for the formatting the date/time."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-roam-link ((t (:foreground "yellow2")))))
+
+;; org-transclusion
+(use-package org-transclusion
+  :after org-roam
+  :load-path "site-lisp/org-transclusion"
+  :hook ((org-mode . org-transclusion-mode))
+  :custom
+  (org-transclusion-activate-persistent-message nil))
 
 ;; org-roam-graph
 (setq org-roam-graph-viewer
@@ -374,4 +380,8 @@ Uses `current-date-time-format' for the formatting the date/time."
                 (if (re-search-forward "^[ \t]*:END:" limit t)
                   (outline-flag-region start (point-at-eol) t)
                   (user-error msg))))))))))
+
+;;; https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks
+;(require 'time-stamp)
+;(add-hook 'write-file-functions 'time-stamp) ; update when saving
 

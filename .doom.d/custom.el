@@ -12,4 +12,6 @@
  ;; If there is more than one, they won't work right.
  '(hl-line ((t (:extend t :background "black"))))
  '(org-roam-link ((t (:foreground "yellow2"))))
+ '(org-transclusion-block ((t (:extend t :background "black" :foreground "color-246"))))
+ '(org-transclusion-source-block ((t (:extend t :background "color-240"))))
  '(writegood-passive-voice-face ((t nil))))
