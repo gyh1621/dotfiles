@@ -68,3 +68,4 @@
            :no-byte-compile t))
 (package! geiser)
 (package! paredit)
+(package! rime)

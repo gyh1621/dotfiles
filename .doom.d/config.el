@@ -392,3 +392,91 @@ Uses `current-date-time-format' for the formatting the date/time."
 ;(require 'time-stamp)
 ;(add-hook 'write-file-functions 'time-stamp) ; update when saving
 
+
+(set-input-method nil)
+(use-package! rime
+  :bind
+  (:map rime-active-mode-map
+   ("<tab>" . #'rime-inline-ascii))
+  (:map rime-mode-map
+   ("M-j" . #'rime-force-enable))
+  :hook
+  ((after-init kill-emacs) . (lambda ()
+                               (when (fboundp 'rime-lib-sync-user-data)
+                                 (ignore-errors (rime-sync)))))
+  :config
+  ;(setq default-input-method "rime"
+  (setq rime-user-data-dir (expand-file-name "~/.local/emacs-rime")
+        rime-show-candidate 'message
+        rime-inline-ascii-trigger 'shift-l)
+
+  ;(add-hook! (org-mode)
+  ;  (activate-input-method default-input-method))
+
+  (defun +rime-force-enable ()
+    "[ENHANCED] Force into Chinese input state.
+If current input method is not `rime', active it first. If it is
+currently in the `evil' non-editable state, then switch to
+`evil-insert-state'."
+    (interactive)
+    (let ((input-method "rime"))
+      (unless (string= current-input-method input-method)
+        (activate-input-method input-method))
+      (when (rime-predicate-evil-mode-p)
+        (if (= (1+ (point)) (line-end-position))
+            (evil-append 1)
+          (evil-insert 1)))
+      (rime-force-enable)))
+
+  (unless (fboundp 'rime--posframe-display-content)
+    (error "Function `rime--posframe-display-content' is not available."))
+  (defadvice! +rime--posframe-display-content-a (args)
+    "给 `rime--posframe-display-content' 传入的字符串加一个全角空
+格，以解决 `posframe' 偶尔吃字的问题。"
+    :filter-args #'rime--posframe-display-content
+    (cl-destructuring-bind (content) args
+      (let ((newresult (if (string-blank-p content)
+                           content
+                         (concat content "　"))))
+        (list newresult)))))
+
+(setq rime-disable-predicates
+      '(
+        ; 在 evil-mode 的非编辑状态下
+        rime-predicate-evil-mode-p
+        ; 在英文字符串之后（必须为以字母开头的英文字符串）
+        rime-predicate-after-alphabet-char-p
+        ; 在 prog-mode 和 conf-mode 中除了注释和引号内字符串之外的区域
+        rime-predicate-prog-in-code-p
+        ; 在代码的字符串中，不含注释的字符串
+        rime-predicate-in-code-string-p
+        ; 当要在中文字符且有空格之后输入符号时
+        rime-predicate-punctuation-after-space-cc-p
+        ; 当要在任意英文字符之后输入符号时
+        rime-predicate-punctuation-after-ascii-p
+        ; 在行首要输入符号时
+        rime-predicate-punctuation-line-begin-p
+        ; 在中文字符且有空格之后
+        rime-predicate-space-after-cc-p
+        ; 将要输入的为大写字母时
+        rime-predicate-current-uppercase-letter-p
+        ))
+(setq rime-inline-predicates
+      '(
+        ; 在英文字符串之后（必须为以字母开头的英文字符串）
+        rime-predicate-after-alphabet-char-p
+        ; 在 prog-mode 和 conf-mode 中除了注释和引号内字符串之外的区域
+        rime-predicate-prog-in-code-p
+        ; 在代码的字符串中，不含注释的字符串
+        rime-predicate-in-code-string-p
+        ; 当要在中文字符且有空格之后输入符号时
+        rime-predicate-punctuation-after-space-cc-p
+        ; 当要在任意英文字符之后输入符号时
+        rime-predicate-punctuation-after-ascii-p
+        ; 在行首要输入符号时
+        rime-predicate-punctuation-line-begin-p
+        ; 在中文字符且有空格之后
+        rime-predicate-space-after-cc-p
+        ; 将要输入的为大写字母时
+        rime-predicate-current-uppercase-letter-p
+        ))
