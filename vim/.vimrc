@@ -1,12 +1,18 @@
 set encoding=utf-8
 set nocp
-" vundle 环境设置
+
+" 定义快捷键的前缀，即<Leader>
+let mapleader="\<Space>"
+
+" vim-plug
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
-" 定义快捷键的前缀，即<Leader>
-let mapleader="\<Space>"
+" coc
+if filereadable(expand("~/.vimrc.coc"))
+  source ~/.vimrc.coc
+endif
 
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 " 让配置变更立即生效
@@ -108,6 +114,7 @@ set background=dark
 let g:Powerline_colorscheme='solarized256'
 
 " vimtex
+let g:tex_flavor = 'latex'
 let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/MacOS/Skim'
 let g:vimtex_compiler_enabled=1
 let g:vimtex_quickfix_latexlog = {'default' : 0}
@@ -127,6 +134,7 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
 " switch bwtween buffers
 noremap <leader>bb :bn<cr>
 noremap <leader>bp :bp<cr>
+noremap <leader>bd :bd<cr>
 
 " beancount{
     autocmd FileType beancount nnoremap . :AlignCommodity<CR>
@@ -245,18 +253,20 @@ let g:vitality_shell_cursor = 1
     let g:airline#extensions#ale#enabled = 1
     let g:ale_linter = {
     \   'c': ['clangtidy', 'gcc'],
-    \   'python': ['flake8', 'pylint'],
-    \   'go': ['golint'],
+    \   'python': ['flake8', 'pylint']
     \}
     let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
     \   'c': ['clang-format'],
     \   'python': ['black'],
-    \   'json': ['jq'],
-    \   'go': ['gofmt'],
+    \   'json': ['jq']
     \}
     let g:ale_fix_on_save = 1
 
+    let g:ale_python_flake8_options = "--max-line-length=120"
+
+    nmap <silent> <leader>aa :lopen<CR>
+    nmap <silent> <leader>ad :lclose<CR>
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
 " }
@@ -277,8 +287,6 @@ let g:vitality_shell_cursor = 1
 " }
 
 " LeaderF {
-    " search hidden files
-    let g:Lf_ShowHidden = 1
     " don't show the help in normal mode
     let g:Lf_HideHelp = 1
     let g:Lf_UseCache = 0

@@ -1,73 +1,70 @@
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-" vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
-call vundle#begin()
 
-Plugin 'fatih/vim-go'
+call plug#begin('~/.vim/plugged')
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'tomasr/molokai'
-Plugin 'Lokaltog/vim-powerline'
-Plugin 'chrisbra/csv.vim'
-Plugin 'nickeb96/vitality.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'tomasr/molokai'
+Plug 'Lokaltog/vim-powerline'
+Plug 'chrisbra/csv.vim'
+Plug 'nickeb96/vitality.vim'
+Plug 'fatih/vim-go'
 
-Plugin 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
 
-Plugin 'preservim/nerdtree'
-Plugin 'majutsushi/tagbar'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'Yggdroot/LeaderF'
-Plugin 'tpope/vim-commentary'
-Plugin 'dense-analysis/ale'
-Plugin 'vim-airline/vim-airline'
-Plugin 'dyng/ctrlsf.vim'
+Plug 'preservim/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'Yggdroot/LeaderF'
+Plug 'tpope/vim-commentary'
+Plug 'dense-analysis/ale'
+Plug 'vim-airline/vim-airline'
+Plug 'dyng/ctrlsf.vim'
 
 " language packs
-Plugin 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 
 " beancount
-Plugin 'nathangrigg/vim-beancount'
+Plug 'nathangrigg/vim-beancount'
 
 " vimtex
-Plugin 'lervag/vimtex'
+Plug 'lervag/vimtex'
 
 " 代码补全
-Plugin 'Valloric/YouCompleteMe'
-let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 "离开插入模式后自动关闭预览窗口
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 "补全后自动关机预览窗口"
 let g:ycm_autoclose_preview_window_after_completion=1
 
 " c++语法高亮增强
-Plugin 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight'
 " 括号配对
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 
 " markdown{
-    Plugin 'godlygeek/tabular'
-    Plugin 'plasticboy/vim-markdown'
-    Plugin 'iamcco/mathjax-support-for-mkdp'
-    Plugin 'iamcco/markdown-preview.vim'
+    Plug 'godlygeek/tabular'
+    Plug 'plasticboy/vim-markdown'
+    Plug 'iamcco/mathjax-support-for-mkdp'
+    Plug 'iamcco/markdown-preview.vim'
 " }
 
 " python{
 
     " 缩进
-    Plugin 'vim-scripts/indentpython.vim'
+    Plug 'vim-scripts/indentpython.vim'
     " PEP8代码风格检查
-    Plugin 'nvie/vim-flake8'
+    Plug 'nvie/vim-flake8'
 
 " }
 
 " html{
 
     " emmet
-    Plugin 'mattn/emmet-vim'
+    Plug 'mattn/emmet-vim'
     " 补全tag
-    Plugin 'docunext/closetag.vim'
+    Plug 'docunext/closetag.vim'
 
 " }
 
-call vundle#end()
+call plug#end()
