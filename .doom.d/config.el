@@ -218,6 +218,13 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 ;;; org-roam save update time after modifying files
 ;;; org-roam-templates
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         #'org-roam-capture--get-point
+         "* %?"
+         :file-name "daily/%<%Y-%m-%d>"
+         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: daily-note\n\n")))
+
 (setq org-roam-capture-templates
       '(("d" "Default" plain (function org-roam--capture-get-point)
              :file-name "%<%Y%m%d%H%M%S>-${slug}"
