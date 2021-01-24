@@ -117,7 +117,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Dropbox/org/")
 
 (use-package org-bullets
   :ensure t
@@ -159,7 +159,7 @@ Uses `current-date-time-format' for the formatting the date/time."
       :hook
       (after-init . org-roam-mode)
       :custom
-      (org-roam-directory "~/org/roam")
+      (org-roam-directory "~/Dropbox/org/roam")
       (org-roam-link-title-format "%s")
       :config
       (require 'org-roam-protocol))
@@ -231,7 +231,7 @@ Uses `current-date-time-format' for the formatting the date/time."
              :head "#+TITLE: ${title}\n#+CREATED_AT: %U\n"
              :immediate-finish f)
         ("o" "On Java 8" plain (function org-roam--capture-get-point)
-             "%[~/org/roam/templates/onjava8]"
+             "%[~/Dropbox/org/roam/templates/onjava8]"
              :file-name "%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+CREATED_AT: %U\n"
              :unnarrowed t)
@@ -244,7 +244,7 @@ Uses `current-date-time-format' for the formatting the date/time."
              :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm\n#+CREATED_AT: %U\n"
              :unnarrowed t)
         ("l" "Leetcode" plain (function org-roam--capture-get-point)
-             "%[~/org/roam/templates/leetcode]"
+             "%[~/Dropbox/org/roam/templates/leetcode]"
              :file-name "algorithm/leetcode/%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+ROAM_TAGS:algorithm leetcode\n#+CREATED_AT: %U\n"
              :unnarrowed t)
@@ -342,7 +342,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 ;; org-fc
 (use-package org-fc
-  :custom (org-fc-directories '("~/org/roam"))
+  :custom (org-fc-directories '("~/Dropbox/org/roam"))
   :config
   (require 'org-fc-hydra))
 
