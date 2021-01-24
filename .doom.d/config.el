@@ -299,9 +299,23 @@ Uses `current-date-time-format' for the formatting the date/time."
 (advice-add 'org-roam-protocol-open-file :around
             #'my-org-protocol-focus-advice)
 
+; https://github.com/org-roam/org-roam-server/issues/115
+(defun org-roam-server-open ()
+    "Ensure the server is active, then open the roam graph."
+    (interactive)
+    (smartparens-global-mode -1)
+    (org-roam-server-mode 1)
+    (smartparens-global-mode 1))
+
+;; automatically enable server-mode
+(after! org-roam
+  (smartparens-global-mode -1)
+  (org-roam-server-mode)
+  (smartparens-global-mode 1))
+
 ; https://github.com/org-roam/org-roam-server/issues/75
-(unless (server-running-p)
-  (org-roam-server-mode))
+;(unless (server-running-p)
+;  (org-roam-server-open))
 ;(org-roam-server-mode)
 
 ;; interleave, org-noter
