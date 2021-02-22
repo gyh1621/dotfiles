@@ -62,10 +62,10 @@
   :recipe (:host github :repo "jethrokuan/ox-hugo"))
 (package! org-fc
   :recipe (:host github :repo "l3kn/org-fc" :files (:defaults "awk" "demo.org")))
-(package! beancount
-  :recipe (:host github :repo "beancount/beancount"
-           :files ("editors/emacs/beancount.el")
-           :no-byte-compile t))
+;;(package! beancount
+;;  :recipe (:host github :repo "beancount/beancount"
+;;           :files ("editors/emacs/beancount.el")
+;;           :no-byte-compile t))
 (package! geiser)
 (package! paredit)
 (package! rime)

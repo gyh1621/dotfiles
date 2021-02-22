@@ -356,7 +356,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 (map! :leader :desc "rate easy" "l e" #'org-fc-review-rate-easy)
 
 ;; beancount
-(add-to-list 'auto-mode-alist '("\\.bean\\'" . beancount-mode))
+;(add-to-list 'auto-mode-alist '("\\.bean\\'" . beancount-mode))
 
 
 ;; scheme
