@@ -235,8 +235,8 @@ Uses `current-date-time-format' for the formatting the date/time."
              :file-name "%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+CREATED_AT: %U\n"
              :unnarrowed t)
-        ("i" "Intern" plain (function org-roam--capture-get-point)
-             :file-name "intern/%<%Y%m%d%H%M%S>-${slug}"
+        ("i" "amazon" plain (function org-roam--capture-get-point)
+             :file-name "%<%Y%m%d%H%M%S>-${slug}"
              :head "#+TITLE: ${title}\n#+ROAM_TAGS:amz\n#+CREATED_AT: %U\n"
              :immediate-finish t)
         ("a" "Algorithm" plain (function org-roam--capture-get-point)
