@@ -24,7 +24,7 @@ spaceship_nonbreak_space() {
 }
 
 SPACESHIP_PROMPT_ORDER=(
-  iterm2_mark
+  #iterm2_mark
   user          # Username section
   host          # Hostname section
   dir           # Current directory section
@@ -53,7 +53,7 @@ SPACESHIP_PROMPT_ORDER=(
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git z fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -95,3 +95,25 @@ export PATH="/usr/local/go/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+export PATH=$HOME/.toolbox/bin:$PATH
+export PATH="/usr/local/opt/openjdk@8/bin:$PATH"
+
+
+
+# brazil alias
+alias bb=brazil-build
+
+alias bba='brazil-build apollo-pkg'
+alias bre='brazil-runtime-exec'
+alias brc='brazil-recursive-cmd'
+alias bws='brazil ws'
+alias bwsuse='bws use --gitMode -p'
+alias bwscreate='bws create -n'
+alias brc=brazil-recursive-cmd
+alias bbr='brc brazil-build'
+alias bball='brc --allPackages'
+alias bbb='brc --allPackages brazil-build'
+alias bbra='bbr apollo-pkg'
+alias bbu="bb unit-tests"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
