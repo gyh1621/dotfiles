@@ -61,6 +61,10 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# pyenv settings
+export PATH="/Users/gyh/.pyenv:$PATH"
+eval "$(pyenv init -)"
+
 # highlight
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -116,4 +120,15 @@ alias bbb='brc --allPackages brazil-build'
 alias bbra='bbr apollo-pkg'
 alias bbu="bb unit-tests"
 
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='fd --type file'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DIR_COMMAND='fd --type d'
+export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
+
+enable-fzf-tab
