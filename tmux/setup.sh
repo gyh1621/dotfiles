@@ -1,4 +1,4 @@
-scriptPath=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
+scriptPath=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))
 echo -n "scriptPath: "${scriptPath}
 
 # make link
