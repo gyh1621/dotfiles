@@ -13,6 +13,7 @@ endif
 if filereadable(expand("~/.vimrc.coc"))
   source ~/.vimrc.coc
 endif
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 " 让配置变更立即生效
@@ -136,6 +137,11 @@ noremap <leader>bb :bn<cr>
 noremap <leader>bp :bp<cr>
 noremap <leader>bd :bd<cr>
 
+" switch between tabs
+noremap <leader>tt :tabn<cr>
+noremap <leader>tp :tabp<cr>
+noremap <leader>td :tabclose<cr>
+
 " beancount{
     autocmd FileType beancount nnoremap . :AlignCommodity<CR>
     autocmd FileType beancount inoremap <Tab> <c-x><c-o>
@@ -253,8 +259,9 @@ let g:vitality_shell_cursor = 1
     let g:airline#extensions#ale#enabled = 1
     let g:ale_linter = {
     \   'c': ['clangtidy', 'gcc'],
-    \   'python': ['flake8', 'pylint']
     \}
+    "   'python': ['flake8', 'pylint']
+    "\}
     let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
     \   'c': ['clang-format'],
@@ -263,7 +270,7 @@ let g:vitality_shell_cursor = 1
     \}
     let g:ale_fix_on_save = 1
 
-    let g:ale_python_flake8_options = "--max-line-length=120"
+    "let g:ale_python_flake8_options = "--max-line-length=120"
 
     nmap <silent> <leader>aa :lopen<CR>
     nmap <silent> <leader>ad :lclose<CR>
@@ -274,6 +281,8 @@ let g:vitality_shell_cursor = 1
 " airline {
     " show buffered tabs
     let g:airline#extensions#tabline#enabled = 1
+    " enable highlght cache
+    let g:airline_highlighting_cache = 1
     " hide buffer line when there is only one tab/buffer
     fu! AirlineBufLineToggle()
         let b_num = len(getbufinfo({'buflisted':1}))
@@ -284,6 +293,7 @@ let g:vitality_shell_cursor = 1
     au BufNewFile * :call AirlineBufLineToggle()
     au BufWinEnter * :call AirlineBufLineToggle()
     au BufEnter * :call AirlineBufLineToggle()
+
 " }
 
 " LeaderF {
@@ -296,8 +306,10 @@ let g:vitality_shell_cursor = 1
     let g:Lf_WindowPosition = 'popup'
     let g:Lf_PreviewInPopup = 1
     let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2" }
-    let g:Lf_PreviewResult = {'Function': 1, 'BufTag': 1, 'Tag': 1}
+    let g:Lf_PreviewResult = {'Function': 1, 'BufTag': 1, 'Tag': 1, 'Rg': 1}
     let g:Lf_PreviewCode = 0
+
+    let g:Lf_WorkingDirectoryMode = 'a'
 
     let g:Lf_ShortcutF = "<leader>ff"
     noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
@@ -318,7 +330,13 @@ let g:vitality_shell_cursor = 1
 
 " ctrlsf {
     let g:ctrlsf_ackprg = 'ag'
+    let g:ctrlsf_default_view_mode = 'compact'
+    let g:ctrlsf_default_root = 'project'
     nmap     <C-F>f <Plug>CtrlSFPrompt
     nmap     <C-F>w <Plug>CtrlSFCwordPath
     vmap     <C-F>v <Plug>CtrlSFVwordExec
+    let g:ctrlsf_search_mode = 'async'
+    let g:ctrlsf_auto_focus = {
+    \ 'at': 'start',
+    \ }
 " }
