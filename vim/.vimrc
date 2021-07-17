@@ -317,6 +317,7 @@ let g:vitality_shell_cursor = 1
     noremap <leader>ft :<C-U><C-R>=printf("Leaderf tag %s", "")<CR><CR>
     noremap <leader>fr :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
     noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+    noremap <leader>fs :<C-U><C-R>=printf("Leaderf rg %s", "")<CR><CR>
 
     let g:Lf_ShowDevIcons = 0
 
