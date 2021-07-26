@@ -49,7 +49,6 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! org-roam)
 (package! org-download)
 (package! go-mode)
 (package! org-sidebar)

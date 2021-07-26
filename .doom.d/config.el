@@ -160,19 +160,46 @@ Uses `current-date-time-format' for the formatting the date/time."
       (after-init . org-roam-mode)
       :custom
       (org-roam-directory "~/Dropbox/org/roam")
-      (org-roam-link-title-format "%s")
+      ;; (org-roam-link-title-format "%s")
       :config
+      (org-roam-setup)
       (require 'org-roam-protocol))
 
+;; for org-roam-buffer-toggle
+;; Recommendation in the official manual
+(add-to-list 'display-buffer-alist
+               '("\\*org-roam\\*"
+                  (display-buffer-in-direction)
+                  (direction . right)
+                  (window-width . 0.33)
+                  (window-height . fit-window-to-buffer)))
+
+
+;; showing the number of backlinks for each node in org-roam-node-find
+(cl-defmethod org-roam-node-directories ((node org-roam-node))
+  (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
+      (format "(%s)" (car (f-split dirs)))
+    ""))
+
+(cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+  (let* ((count (caar (org-roam-db-query
+                       [:select (funcall count source)
+                                :from links
+                                :where (= dest $s1)
+                                :and (= type "id")]
+                       (org-roam-node-id node)))))
+    (format "[%d]" count)))
+
+(setq org-roam-node-display-template "${directories:10} ${tags:10} ${title:100} ${backlinkscount:6}")
+
+
+;; custom roam key mapping
 (map! :map org-roam-mode-map
-      :leader "r l" #'org-roam
-      :leader "r f" #'org-roam-find-file
-      :leader "r j" #'org-roam-jump-to-index
-      :leader "r b" #'org-roam-switch-to-buffer
-      :leader "r t a" #'org-transclusion-activate
-      :leader "r t d" #'org-transclusion-deactivate
-      :leader "r t e" #'org-transclusion-open-edit-src-buffer-at-point
-      :leader "r t E" #'org-transclusion-open-src-buffer-at-point)
+;;       :leader "r l" #'org-roam
+       :leader "r t a" #'org-transclusion-activate
+       :leader "r t d" #'org-transclusion-deactivate
+       :leader "r t e" #'org-transclusion-open-edit-src-buffer-at-point
+       :leader "r t E" #'org-transclusion-open-src-buffer-at-point)
 
 (custom-set-faces!
   `(org-roam-link :foreground "yellow2"))
@@ -275,20 +302,20 @@ Uses `current-date-time-format' for the formatting the date/time."
     (lambda (file)
       (let ((org-roam-graph-viewer "open"))
         (org-roam-graph--open (concat "-a Safari " file)))))
-(use-package org-roam-server
-  :ensure t
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 7779
-        org-roam-server-authenticate nil
-        org-roam-server-export-inline-images t
-        org-roam-server-serve-files nil
-        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-        org-roam-server-network-poll t
-        org-roam-server-network-arrows nil
-        org-roam-server-network-label-truncate t
-        org-roam-server-network-label-truncate-length 60
-        org-roam-server-network-label-wrap-length 20))
+;; (use-package org-roam-server
+;;   :ensure t
+;;   :config
+;;   (setq org-roam-server-host "127.0.0.1"
+;;         org-roam-server-port 7779
+;;         org-roam-server-authenticate nil
+;;         org-roam-server-export-inline-images t
+;;         org-roam-server-serve-files nil
+;;         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+;;         org-roam-server-network-poll t
+;;         org-roam-server-network-arrows nil
+;;         org-roam-server-network-label-truncate t
+;;         org-roam-server-network-label-truncate-length 60
+        ;; org-roam-server-network-label-wrap-length 20))
 
 (defun my-org-protocol-focus-advice (orig &rest args)
   (x-focus-frame nil)
@@ -300,18 +327,18 @@ Uses `current-date-time-format' for the formatting the date/time."
             #'my-org-protocol-focus-advice)
 
 ; https://github.com/org-roam/org-roam-server/issues/115
-(defun org-roam-server-open ()
-    "Ensure the server is active, then open the roam graph."
-    (interactive)
-    (smartparens-global-mode -1)
-    (org-roam-server-mode 1)
-    (smartparens-global-mode 1))
+;; (defun org-roam-server-open ()
+;;     "Ensure the server is active, then open the roam graph."
+;;     (interactive)
+;;     (smartparens-global-mode -1)
+;;     (org-roam-server-mode 1)
+;;    (smartparens-global-mode 1))
 
 ;; automatically enable server-mode
-(after! org-roam
-  (smartparens-global-mode -1)
-  (org-roam-server-mode)
-  (smartparens-global-mode 1))
+;; (after! org-roam
+;;   (smartparens-global-mode -1)
+;;   (org-roam-server-mode)
+  ;; (smartparens-global-mode 1))
 
 ; https://github.com/org-roam/org-roam-server/issues/75
 ;(unless (server-running-p)
