@@ -29,14 +29,14 @@ SPACESHIP_PROMPT_ORDER=(
   host          # Hostname section
   dir           # Current directory section
   git           # Git section (git_branch + git_status)
-  hg            # Mercurial section (hg_branch  + hg_status)
-  package       # Package version
-  node          # Node.js section
-  docker        # Docker section
-  aws           # Amazon Web Services section
-  venv          # virtualenv section
+#  hg            # Mercurial section (hg_branch  + hg_status)
+#  package       # Package version
+#  node          # Node.js section
+#  docker        # Docker section
+#  aws           # Amazon Web Services section
+#  venv          # virtualenv section
   pyenv         # Pyenv section
-  golang
+#  golang
   exec_time     # Execution time
   time
   exit_code
@@ -62,8 +62,10 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # pyenv settings
-export PATH="/Users/gyh/.pyenv:$PATH"
+export PATH="$HOME/.pyenv:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # highlight
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -90,6 +92,7 @@ zle -N zle-line-init
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
 
+export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 
 export GOPATH="$HOME/go"
@@ -126,9 +129,9 @@ timezsh() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='fd --type file'
+export FZF_DEFAULT_COMMAND='fd . ~ --type file -L -H'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DIR_COMMAND='fd --type d'
+export FZF_DIR_COMMAND="fd . ~ --type d -L"
 export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
 
 enable-fzf-tab
