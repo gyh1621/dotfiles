@@ -169,6 +169,9 @@ noremap <leader>td :tabclose<cr>
     endfunc
     au BufNewFile *.py call SetPyHeader()
 
+    " set coc
+    au FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyrightconfig.json']
+
     " 编译运行
     nnoremap py<F5> <Esc>:w<CR>:!chmod a+x %<CR>:! ./%<CR>
 
