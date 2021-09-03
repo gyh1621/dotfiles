@@ -68,6 +68,8 @@ function install_zsh_plugins {
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --key-bindings --completion --no-update-rc
     git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+    git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
+    git clone https://github.com/ergenekonyigit/lambda-gitster.git /tmp/tmp-lambda && cp /tmp/tmp-lambda/lambda-gitster.zsh-theme ~/.oh-my-zsh/custom/themes
 }
 
 if [ ! -e "$HOME/.zshrc" ]; then

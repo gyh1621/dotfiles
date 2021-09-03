@@ -1,6 +1,36 @@
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="spaceship"
+######### lambda theme #########
+#ZSH_THEME="lambda-gitster"
+
+########## Pure Theme ###########
+fpath+=$HOME/.zsh/pure
+autoload -U promptinit; promptinit
+prompt pure
+ZSH_THEME=""
+
+PURE_CMD_MAX_EXEC_TIME=5
+#PROMPT='%(?.%B%F{white}𓅭  .%B%F{red}𓅮  )%f'
+PURE_PROMPT_SYMBOL="❯"
+PURE_PROMPT_VICMD_SYMBOL="❮"
+#PURE_PROMPT_SYMBOL="👍 "
+#PROMPT='%(?.%F{magenta}👍 .%F{red}✋ )%f
+#PROMPT='%F{white}%* '$PROMPT  # add time
+PROMPT='%(1j.[%j] .)% '$PROMPT # add job number
+
+# change the path color
+zstyle :prompt:pure:path color cyan
+
+# change the color for both `prompt:success` and `prompt:error`
+zstyle ':prompt:pure:prompt:*' color cyan
+zstyle ':prompt:pure:git:branch' color yellow
+
+# turn on git stash status
+zstyle :prompt:pure:git:stash show yes
+
+########## SPACESHIP THEME SETTINGS ###########
+#
+#ZSH_THEME="spaceship"
 SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
 SPACESHIP_USER_SHOW=always
 SPACESHIP_USER_PREFIX="# "
@@ -41,6 +71,8 @@ SPACESHIP_PROMPT_ORDER=(
   jobs          # Background jobs indicator
   char          # Prompt character
 )
+
+###############################################
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
