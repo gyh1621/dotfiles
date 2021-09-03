@@ -70,6 +70,8 @@ function install_zsh_plugins {
     git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
     git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
     git clone https://github.com/ergenekonyigit/lambda-gitster.git /tmp/tmp-lambda && cp /tmp/tmp-lambda/lambda-gitster.zsh-theme ~/.oh-my-zsh/custom/themes
+    git clone https://github.com/jeffreytse/zsh-vi-mode \
+  $ZSH/custom/plugins/zsh-vi-mode
 }
 
 if [ ! -e "$HOME/.zshrc" ]; then
@@ -102,4 +104,3 @@ fi
 
 # iterm2 mark
 curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
-

@@ -1,5 +1,9 @@
 export ZSH="$HOME/.oh-my-zsh"
 
+HISTFILE=~/.zsh_history
+HISTSIZE=999999999
+SAVEHIST=$HISTSIZE
+
 ######### lambda theme #########
 #ZSH_THEME="lambda-gitster"
 
@@ -79,9 +83,23 @@ SPACESHIP_PROMPT_ORDER=(
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git z fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git z fzf-tab zsh-autosuggestions zsh-syntax-highlighting zsh-vi-mode)
 
 source $ZSH/oh-my-zsh.sh
+
+ZVM_VI_SURROUND_BINDKEY="s-prefix"
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_UNDERLINE
+# fix zvm overwrite fzf ctrl-r
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
+# fix zvm with fzf-tab
+zvm_after_init_commands+=('source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab/fzf-tab.zsh')
+function zvm_before_init() {
+  zvm_bindkey viins '^[[A' history-beginning-search-backward
+  zvm_bindkey viins '^[[B' history-beginning-search-forward
+  zvm_bindkey vicmd '^[[A' history-beginning-search-backward
+  zvm_bindkey vicmd '^[[B' history-beginning-search-forward
+}
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -119,24 +137,17 @@ source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighti
 export PATH=~/.local/bin:$PATH
 
 # zle config
-autoload -Uz history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
 bindkey -v  # vi mode
-bindkey "^r" history-incremental-search-backward
-bindkey "^[[A" history-beginning-search-backward-end
-bindkey "^[[B" history-beginning-search-forward-end
-bindkey "^?" backward-delete-char
 
-function zle-line-init zle-keymap-select {
-    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]% %{$reset_color%}"
-    #RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-    zle reset-prompt
-}
+#function zle-line-init zle-keymap-select {
+#    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]% %{$reset_color%}"
+#    #RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
+#    zle reset-prompt
+#}
 
-zle -N zle-line-init
-zle -N zle-keymap-select
-export KEYTIMEOUT=1
+#zle -N zle-line-init
+#zle -N zle-keymap-select
+#export KEYTIMEOUT=1
 
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
