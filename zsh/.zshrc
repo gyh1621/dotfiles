@@ -199,4 +199,4 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 
 enable-fzf-tab
 
-[ -f ~/.zshrc.aws ] && source ~/.zshrc.aws; echo "AWS ZSH Configuration: Activated"
+[ -f ~/.zshrc.aws ] && source ~/.zshrc.aws && echo "AWS ZSH Configuration: Activated"

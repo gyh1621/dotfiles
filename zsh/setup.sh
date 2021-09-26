@@ -1,3 +1,9 @@
+set -e
+
+[ -f ~/.zshrc ] && rm ~/.zshrc && echo "Deleted existed ~/.zshrc"
+[ -d ~/.oh-my-zsh ] && rm -rf ~/.oh-my-zsh && echo "Deleted existed ~/.oh-my-zsh"
+[ -d ~/.zsh ] && rm -rf ~/.zsh && echo "Deleted existed ~/.zsh"
+
 # detect os
 # https://unix.stackexchange.com/a/6348
 if [ -f /etc/os-release ]; then
@@ -35,8 +41,8 @@ USERNAME=$USER
 
 # install zsh
 function install_zsh_macos {
-    ######## never test ######
-    sudo brew install zsh zsh-completions git
+    brew install coreutils  # for greadlink
+    brew install zsh zsh-completions git
 }
 
 function install_zsh_arch {
@@ -56,22 +62,26 @@ function install_zsh_gentoo {
 function install_zsh_plugins {
     export RUNZSH=no
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
-    sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
-    sudo groupadd chsh
-    sudo usermod -a -G chsh $USERNAME
-    chsh -s /bin/zsh
-    #usermod -s /bin/zsh $USERNAME
+
+    if [[ "$OS" != "Darwin"* ]]; then
+        sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
+        sudo groupadd chsh
+        sudo usermod -a -G chsh $USERNAME
+        chsh -s /bin/zsh
+        #usermod -s /bin/zsh $USERNAME
+    fi
+
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
     git clone https://github.com/denysdovhan/spaceship-prompt.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt
     ln -s ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt/spaceship.zsh-theme ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship.zsh-theme
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    [ -d ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --key-bindings --completion --no-update-rc
     git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
     git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
+    [ -d /tmp/tmp-lambda ] && rm -rf /tmp/tmp-lambda
     git clone https://github.com/ergenekonyigit/lambda-gitster.git /tmp/tmp-lambda && cp /tmp/tmp-lambda/lambda-gitster.zsh-theme ~/.oh-my-zsh/custom/themes
-    git clone https://github.com/jeffreytse/zsh-vi-mode \
-  $ZSH/custom/plugins/zsh-vi-mode
+    git clone https://github.com/jeffreytse/zsh-vi-mode $ZSH/custom/plugins/zsh-vi-mode
 }
 
 if [ ! -e "$HOME/.zshrc" ]; then
@@ -91,8 +101,13 @@ if [ ! -e "$HOME/.zshrc" ]; then
         install_zsh_gentoo
         install_zsh_plugins
     fi
-    # copy zshrc
-    cp $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.zshrc $HOME
+    # link zshrc
+    [ -f ~/.zshrc ] && rm ~/.zshrc
+    if [[ "$OS" == "Darwin"* ]]; then
+        ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.zshrc $HOME/.zshrc
+    else
+        ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.zshrc $HOME/.zshrc
+    fi
     if [[ "$OS" == "Gentoo"* ]]; then
         sed -i '2i\\n# Gentoo completions' $HOME/.zshrc
         sed -i '4i\autoload -U compinit promptinit' $HOME/.zshrc
@@ -102,5 +117,9 @@ if [ ! -e "$HOME/.zshrc" ]; then
     fi
 fi
 
+exec zsh
+
 # iterm2 mark
-curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+# curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+# uninstall shell integration
+# https://gist.github.com/victor-torres/67c272be0cb0d6989729
