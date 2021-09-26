@@ -159,7 +159,8 @@ export PATH="/usr/local/go/bin:$PATH"
 
 export PATH="/usr/local/opt/openjdk@8/bin:$PATH"
 
-alias vim="/usr/local/Cellar/vim/8.2.3150/bin/vim"
+export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 
 timezsh() {
   shell=${1-$SHELL}
@@ -192,6 +193,9 @@ export FZF_DEFAULT_COMMAND='fd . ~ --type file -L -H'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DIR_COMMAND="fd . ~ --type d -L"
 export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
+
+eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 enable-fzf-tab
 
