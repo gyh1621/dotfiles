@@ -195,8 +195,10 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DIR_COMMAND="fd . ~ --type d -L"
 export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
 
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/bin:$PATH"
+if [ -x "$(command -v rbenv)" ]; then
+    eval "$(rbenv init -)"
+    export PATH="$HOME/.rbenv/bin:$PATH"
+fi
 
 enable-fzf-tab
 
