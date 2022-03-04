@@ -200,6 +200,10 @@ if [ -x "$(command -v rbenv)" ]; then
     export PATH="$HOME/.rbenv/bin:$PATH"
 fi
 
+if [ -x "$(command -v wezterm)" ]; then
+    alias nw="wezterm cli spawn --new-window"
+fi
+
 enable-fzf-tab
 
 [ -f ~/.zshrc.aws ] && source ~/.zshrc.aws && echo "AWS ZSH Configuration: Activated"

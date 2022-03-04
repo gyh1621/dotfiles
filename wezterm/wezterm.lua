@@ -35,6 +35,11 @@ end)
 
 
 return {
+
+  -- initial window size
+  initial_rows = 44,
+  initial_cols = 135,
+
   -- font
   font = wezterm.font("Fira Code", {weight="Medium"}),
   font_size = 15,
@@ -59,4 +64,13 @@ return {
   -- tab bar
   use_fancy_tab_bar=false,
   window_decorations = "RESIZE",
+
+  -- widdow padding
+  window_padding = {
+    left = 15,
+    right = 15,
+    top = 25,
+    bottom = 8,
+  }
+
 }
