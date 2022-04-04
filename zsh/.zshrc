@@ -160,6 +160,8 @@ export PATH="/usr/local/go/bin:$PATH"
 
 export PATH="/usr/local/opt/openjdk@8/bin:$PATH"
 
+export PATH="$HOME/.cargo/bin:$PATH"
+
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 
