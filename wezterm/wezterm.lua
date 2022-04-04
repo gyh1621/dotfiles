@@ -41,7 +41,9 @@ return {
   initial_cols = 135,
 
   -- font
-  font = wezterm.font("Fira Code", {weight="Medium"}),
+  font = wezterm.font_with_fallback({
+    {family="Berkeley Mono", weight="Medium"},
+  }),
   font_size = 15,
 
   -- key bindings
