@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm';
+local act = wezterm.action
 
 -- The filled in variant of the < symbol
 local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
@@ -44,12 +45,16 @@ return {
   font = wezterm.font_with_fallback({
     {family="Berkeley Mono", weight="Medium"},
   }),
-  font_size = 15,
+  font_size = 16,
 
   -- key bindings
   keys = {
     -- override QuickSelect binding
-    {key=" ", mods="SUPER|SHIFT", action="QuickSelect"}
+    {key=" ", mods="SUPER|SHIFT", action="QuickSelect"},
+    -- This will create a new split and run your default program inside it
+    {key="|", mods="SUPER|SHIFT", action=wezterm.action.SplitHorizontal{domain="CurrentPaneDomain"}},
+    -- activate pane selection mode with the default alphabet (labels are "a", "s", "d", "f" and so on)
+    {key="8", mods="SUPER", action=act.PaneSelect},
   },
 
   -- color scheme
