@@ -55,6 +55,7 @@ return {
     {key="|", mods="SUPER|SHIFT", action=wezterm.action.SplitHorizontal{domain="CurrentPaneDomain"}},
     -- activate pane selection mode with the default alphabet (labels are "a", "s", "d", "f" and so on)
     {key="8", mods="SUPER", action=act.PaneSelect},
+    {key="9", mods="SUPER", action=wezterm.action.ShowTabNavigator},
   },
 
   -- color scheme
