@@ -15,8 +15,8 @@ ZSH_THEME=""
 
 PURE_CMD_MAX_EXEC_TIME=5
 #PROMPT='%(?.%B%F{white}𓅭  .%B%F{red}𓅮  )%f'
-PURE_PROMPT_SYMBOL="❯"
-PURE_PROMPT_VICMD_SYMBOL="❮"
+PURE_PROMPT_SYMBOL="%F{yellow}%T%f ❯"
+PURE_PROMPT_VICMD_SYMBOL="%F{yellow}%T%f ❮"
 #PURE_PROMPT_SYMBOL="👍 "
 #PROMPT='%(?.%F{magenta}👍 .%F{red}✋ )%f
 #PROMPT='%F{white}%* '$PROMPT  # add time
