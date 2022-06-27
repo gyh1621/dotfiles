@@ -1,43 +1,10 @@
 set -e
 
+. ../common.sh
+
 [ -f ~/.zshrc ] && rm ~/.zshrc && echo "Deleted existed ~/.zshrc"
 [ -d ~/.oh-my-zsh ] && rm -rf ~/.oh-my-zsh && echo "Deleted existed ~/.oh-my-zsh"
 [ -d ~/.zsh ] && rm -rf ~/.zsh && echo "Deleted existed ~/.zsh"
-
-# detect os
-# https://unix.stackexchange.com/a/6348
-if [ -f /etc/os-release ]; then
-    # freedesktop.org and systemd
-    . /etc/os-release
-    OS=$NAME
-    VER=$VERSION_ID
-elif type lsb_release >/dev/null 2>&1; then
-    # linuxbase.org
-    OS=$(lsb_release -si)
-    VER=$(lsb_release -sr)
-elif [ -f /etc/lsb-release ]; then
-    # For some versions of Debian/Ubuntu without lsb_release command
-    . /etc/lsb-release
-    OS=$DISTRIB_ID
-    VER=$DISTRIB_RELEASE
-elif [ -f /etc/debian_version ]; then
-    # Older Debian/Ubuntu/etc.
-    OS=Debian
-    VER=$(cat /etc/debian_version)
-elif [ -f /etc/SuSe-release ]; then
-    # Older SuSE/etc.
-    ...
-elif [ -f /etc/redhat-release ]; then
-    # Older Red Hat, CentOS, etc.
-    ...
-else
-    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
-    OS=$(uname -s)
-    VER=$(uname -r)
-fi
-echo $OS:$VER
-
-USERNAME=$USER
 
 # install zsh
 function install_zsh_macos {
@@ -63,13 +30,13 @@ function install_zsh_gentoo {
 
 function install_zsh_plugins {
 
-    if [[ "$OS" != "Darwin"* ]]; then
-        sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
-        sudo groupadd chsh
-        sudo usermod -a -G chsh $USERNAME
-        chsh -s /bin/zsh
-        #usermod -s /bin/zsh $USERNAME
-    fi
+    #if [[ "$OS" != "Darwin"* ]]; then
+    #    sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
+    #    sudo groupadd chsh
+    #    sudo usermod -a -G chsh $USERNAME
+    #    chsh -s /bin/zsh
+    #    #usermod -s /bin/zsh $USERNAME
+    #fi
 
     [ -d ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --key-bindings --completion --no-update-rc
@@ -90,6 +57,7 @@ function install_zsh_plugins {
 
 }
 
+
 if [ ! -e "$HOME/.zshrc" ]; then
     if [[ "$OS" == "Arch Linux" ]]; then
         install_zsh_arch
@@ -105,6 +73,8 @@ if [ ! -e "$HOME/.zshrc" ]; then
         install_zsh_plugins
     elif [[ "$OS" == "Gentoo"* ]]; then
         install_zsh_gentoo
+        install_zsh_plugins
+    elif [[ "$OS" == "Amazon Linux"* ]]; then
         install_zsh_plugins
     fi
     # link zshrc
