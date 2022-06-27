@@ -1,4 +1,4 @@
-export ZSH="$HOME/.oh-my-zsh"
+#zmodload zsh/zprof
 
 HISTFILE=~/.zsh_history
 HISTSIZE=999999999
@@ -32,80 +32,38 @@ zstyle ':prompt:pure:git:branch' color yellow
 # turn on git stash status
 zstyle :prompt:pure:git:stash show yes
 
-########## SPACESHIP THEME SETTINGS ###########
-#
-#ZSH_THEME="spaceship"
-SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
-SPACESHIP_USER_SHOW=always
-SPACESHIP_USER_PREFIX="# "
-SPACESHIP_USER_COLOR="blue"
-SPACESHIP_HOST_SHOW=always
-SPACESHIP_HOST_COLOR="yellow"
-SPACESHIP_TIME_SHOW=true
-SPACESHIP_TIME_PREFIX="["
-SPACESHIP_TIME_SUFFIX="] "
-SPACESHIP_TIME_COLOR="white"
-SPACESHIP_EXIT_CODE_SHOW=true
-SPACESHIP_GIT_STATUS_SHOW=false
+############# ALIAS ##################
 
-spaceship_nonbreak_space() {
-    spaceship::section white " "
-}
 
-SPACESHIP_PROMPT_ORDER=(
-  user          # Username section
-  host          # Hostname section
-  dir           # Current directory section
-  git           # Git section (git_branch + git_status)
-#  hg            # Mercurial section (hg_branch  + hg_status)
-#  package       # Package version
-#  node          # Node.js section
-#  docker        # Docker section
-#  aws           # Amazon Web Services section
-#  venv          # virtualenv section
-  pyenv         # Pyenv section
-#  golang
-  exec_time     # Execution time
-  time
-  exit_code
-  nonbreak_space
-  line_sep      # Line break
-#  battery       # Battery level and status
-  vi_mode       # Vi-mode indicator
-  jobs          # Background jobs indicator
-  char          # Prompt character
-)
+############## PLUGINS ################
 
-###############################################
+# zsh-vi-mode
+source ~/.zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# plugins=(git z fzf-tab zsh-autosuggestions zsh-syntax-highlighting zsh-vi-mode)
-plugins=(git z fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+# zsh-defer
+source ~/.zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
 
-source $ZSH/oh-my-zsh.sh
+# FZF
+[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='fd . ~ --type file -L -H'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DIR_COMMAND="fd . ~ --type d -L"
+export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
 
-ZVM_VI_SURROUND_BINDKEY="s-prefix"
-ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_UNDERLINE
-# fix zvm overwrite fzf ctrl-r
-zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
-# fix zvm with fzf-tab
-zvm_after_init_commands+=('source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab/fzf-tab.zsh')
-function zvm_before_init() {
-  zvm_bindkey viins '^[[A' history-beginning-search-backward
-  zvm_bindkey viins '^[[B' history-beginning-search-forward
-  zvm_bindkey vicmd '^[[A' history-beginning-search-backward
-  zvm_bindkey vicmd '^[[B' history-beginning-search-forward
-}
+# zsh-z
+zsh-defer source ~/.zsh/plugins/zsh-z/zsh-z.plugin.zsh
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# zsh-autosuggestions
+zsh-defer source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 
+# zsh-syntax-highlighting
+zsh-defer source  ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# fancy-ctrl-z
+zsh-defer source ~/.zsh/plugins/fancy-ctrl-z.plugin.zsh
+
+
+############ PYENV ##############
 # pyenv settings
 export PATH="$HOME/.pyenv:$PATH"
 #eval "$(pyenv init --path)"
@@ -132,23 +90,19 @@ if type pyenv > /dev/null; then
     }
 fi
 
-# highlight
-source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+########### FUCK ############
+# lazy load fuck
+function fk() {
+    if ! type fuckme > /dev/null; then
+        eval "$(thefuck --alias fuckme)"
+    fi
+    fuckme $@
+}
+
+
+########### PATH ################
 export PATH=~/.local/bin:$PATH
-
-# zle config
-bindkey -v  # vi mode
-
-#function zle-line-init zle-keymap-select {
-#    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]% %{$reset_color%}"
-#    #RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-#    zle reset-prompt
-#}
-
-#zle -N zle-line-init
-#zle -N zle-keymap-select
-#export KEYTIMEOUT=1
 
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
@@ -165,16 +119,12 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 
+
+############# CUSTOM FUNCTIONS ############
 timezsh() {
   shell=${1-$SHELL}
   for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
-
-# edit command in the editor
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
 
 # notify <message> [title] [sound]
 # for available sound, see: ll /System/Library/Sounds
@@ -191,11 +141,14 @@ fdiff() {
   git diff $@ --name-only | fzf -m --ansi --preview $preview
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='fd . ~ --type file -L -H'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DIR_COMMAND="fd . ~ --type d -L"
-export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
+
+############# MISC ################
+# edit command in the editor
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+
 
 if [ -x "$(command -v rbenv)" ]; then
     eval "$(rbenv init -)"
@@ -206,6 +159,6 @@ if [ -x "$(command -v wezterm)" ]; then
     alias nw="wezterm cli spawn --new-window"
 fi
 
-enable-fzf-tab
-
 [ -f ~/.zshrc.aws ] && source ~/.zshrc.aws && echo "AWS ZSH Configuration: Activated"
+
+#zprof

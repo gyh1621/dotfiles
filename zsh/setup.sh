@@ -43,6 +43,8 @@ USERNAME=$USER
 function install_zsh_macos {
     brew install coreutils  # for greadlink
     brew install zsh zsh-completions git
+    brew install bat
+    brew install thefuck
 }
 
 function install_zsh_arch {
@@ -60,8 +62,6 @@ function install_zsh_gentoo {
 }
 
 function install_zsh_plugins {
-    export RUNZSH=no
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
 
     if [[ "$OS" != "Darwin"* ]]; then
         sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
@@ -71,17 +71,23 @@ function install_zsh_plugins {
         #usermod -s /bin/zsh $USERNAME
     fi
 
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    git clone https://github.com/denysdovhan/spaceship-prompt.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt
-    ln -s ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt/spaceship.zsh-theme ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship.zsh-theme
     [ -d ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --key-bindings --completion --no-update-rc
-    git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
-    git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
-    [ -d /tmp/tmp-lambda ] && rm -rf /tmp/tmp-lambda
-    git clone https://github.com/ergenekonyigit/lambda-gitster.git /tmp/tmp-lambda && cp /tmp/tmp-lambda/lambda-gitster.zsh-theme ~/.oh-my-zsh/custom/themes
-    git clone https://github.com/jeffreytse/zsh-vi-mode $ZSH/custom/plugins/zsh-vi-mode
+
+    git clone --depth 1 https://github.com/sindresorhus/pure.git ~/.zsh/pure
+
+    git clone --depth 1 https://github.com/agkozak/zsh-z.git ~/.zsh/plugins/zsh-z
+
+    git clone --depth 1 https://github.com/romkatv/zsh-defer.git ~/.zsh/plugins/zsh-defer
+
+    git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-autosuggestions
+
+    git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/plugins/zsh-syntax-highlighting
+
+    git clone --depth 1 https://github.com/jeffreytse/zsh-vi-mode.git ~/.zsh/plugins/zsh-vi-mode
+
+    curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh >> ~/.zsh/plugins/fancy-ctrl-z.plugin.zsh
+
 }
 
 if [ ! -e "$HOME/.zshrc" ]; then
