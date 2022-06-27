@@ -10,7 +10,6 @@ set -e
 function install_zsh_macos {
     brew install coreutils  # for greadlink
     brew install zsh zsh-completions git
-    brew install bat
     brew install thefuck
 }
 
