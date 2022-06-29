@@ -59,6 +59,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DIR_COMMAND="fd . ~ --type d -L"
 export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
 
+# fzf tab
+zsh-defer source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+
 # zsh-z
 zsh-defer source ~/.zsh/plugins/zsh-z/zsh-z.plugin.zsh
 
