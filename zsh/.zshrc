@@ -33,6 +33,15 @@ zstyle ':prompt:pure:git:branch' color yellow
 zstyle :prompt:pure:git:stash show yes
 
 ############# ALIAS ##################
+alias ll="ls -al"
+
+# git alias
+alias g="git"
+alias gst="git status"
+alias gl="git pull"
+alias glr="git pull -r"
+alias gp="git push"
+alias gcd="git commit --amend --no-edit"
 
 
 ############## PLUGINS ################
