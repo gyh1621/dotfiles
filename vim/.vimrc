@@ -14,9 +14,14 @@ if filereadable(expand("~/.vimrc.coc"))
   source ~/.vimrc.coc
 endif
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-hi! CocErrorSign ctermbg=Red
-" hi! CocInfoSign guibg=#353b45
-" hi! CocWarningSign guifg=#d1cd66
+" coc color
+hi! CocHintFloat ctermbg=8 ctermfg=7
+hi! CocErrorFloat ctermfg=7
+hi! CocWarnFloat ctermbg=8 ctermfg=7
+hi! CocWarningFloat ctermbg=8 ctermfg=7
+hi! CocFloating ctermbg=8 ctermfg=11
+hi! CocCodeLens ctermbg=8 ctermfg=7
+hi! Pmenu ctermbg=8 ctermfg=7
 
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 " 让配置变更立即生效
