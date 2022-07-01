@@ -33,7 +33,9 @@ zstyle ':prompt:pure:git:branch' color yellow
 zstyle :prompt:pure:git:stash show yes
 
 ############# ALIAS ##################
-alias ll="ls -al"
+export CLICOLOR=1
+export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+alias ll="ls -alG"
 
 # git alias
 alias g="git"
