@@ -5,6 +5,7 @@ set -e
 [ -f ~/.vimrc ] && rm ~/.vimrc && echo "Deleted existed ~/.vimrc"
 [ -f ~/.vimrc.bundles ] && rm ~/.vimrc.bundles && echo "Deleted existed ~/.vimrc.bundles"
 [ -d ~/.vim ] && rm -rf ~/.vim && echo "Deleted existed ~/.vim"
+[ -d ~/.config/coc ] && rm -rf ~/.config/coc && echo "Deleted existed ~/.config/coc"
 
 # link config files
 [ -f ~/.zshrc ] && rm ~/.zshrc
@@ -16,6 +17,10 @@ else
     ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.vimrc.bundles $HOME/.vimrc.bundles
 fi
 
+
+function prepare_for_macos {
+    brew install node
+}
 
 function prepare_for_ubuntu {
     sudo apt install -y git build-essential cmake python3-dev
@@ -30,7 +35,7 @@ function install_common {
 if [[ "$OS" == "Arch Linux" ]]; then
     echo "not supported"
 elif [[ "$OS" == "Darwin"* ]]; then
-    echo "not supported"
+    install_common
 elif [[ "$OS" == "Ubuntu"* ]]; then
     prepare_for_ubuntu
     install_common
@@ -43,4 +48,13 @@ elif [[ "$OS" == "Amazon Linux"* ]]; then
 fi
 
 # install plugins
-vim -E -s -u $HOME/.vimrc.bundles +PlugInstall +qall
+vim +PlugInstall +qall
+
+# install coc plugins
+mkdir -p ~/.config/coc/extensions
+cd ~/.config/coc/extensions
+if [ ! -f package.json ]
+then
+    echo '{"dependencies": {}}' > package.json
+fi
+npm install coc-json coc-rust-analyzer coc-pyright coc-python --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
