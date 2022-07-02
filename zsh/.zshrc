@@ -210,9 +210,14 @@ if [ -x "$(command -v rbenv)" ]; then
     export PATH="$HOME/.rbenv/bin:$PATH"
 fi
 
+# wezterm
 if [ -x "$(command -v wezterm)" ]; then
     alias nw="wezterm cli spawn --new-window"
 fi
+# First and only argument is the desired term title
+function rt {
+  echo "\x1b]1337;SetUserVar=panetitle=$(echo -n $1 | base64)\x07"
+}
 
 [ -f ~/.zshrc.aws ] && source ~/.zshrc.aws && echo "AWS ZSH Configuration: Activated"
 

@@ -13,7 +13,14 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   local edge_background = background
   local edge_foreground = foreground
 
-  title = " " .. (tab.tab_index + 1) .. ": " .. tab.active_pane.title .. "  "
+  local pane_title = tab.active_pane.title
+  local user_title = tab.active_pane.user_vars.panetitle
+
+  if user_title ~= nil and #user_title > 0 then
+    pane_title = user_title
+  end
+
+  local title = " " .. (tab.tab_index + 1) .. ": " .. pane_title .. "  "
 
   if tab.is_active then
     return {
