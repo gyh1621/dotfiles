@@ -54,6 +54,8 @@ function install_zsh_plugins {
 
     curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh >> ~/.zsh/plugins/fancy-ctrl-z.plugin.zsh
 
+    git clone --depth 1 https://github.com/bigH/git-fuzzy.git ~/.zsh/plugins/git-fuzzy
+
 }
 
 
