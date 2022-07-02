@@ -25,13 +25,29 @@ hi! CocFloating ctermbg=8 ctermfg=11
 hi! CocCodeLens ctermbg=8 ctermfg=7
 hi! Pmenu ctermbg=8 ctermfg=7
 
+function! s:GoToDefinition(splitType)
+  if CocAction('jumpDefinition', a:splitType)
+    return v:true
+  endif
+
+  let ret = execute("silent! normal \<C-]>")
+  if ret =~ "Error" || ret =~ "错误"
+    call searchdecl(expand('<cword>'))
+  endif
+endfunction
+
+nmap <silent> gd :call <SID>GoToDefinition('botright vsplit')<CR>
+nmap <silent> ghd :call <SID>GoToDefinition('split')<CR>
+nmap <silent> gtd :call <SID>GoToDefinition('tabe')<CR>
+
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 " 让配置变更立即生效
-autocmd BufWritePost $MYVIMRC source $MYVIMRC
+"autocmd BufWritePost $MYVIMRC source $MYVIMRC
 " 开启文件类型侦测
 filetype on
 " 根据侦测到的不同类型加载对应的插件
 filetype plugin on
+filetype plugin indent on
 " 开启实时搜索功能
 set incsearch
 " 搜索时大小写不敏感
@@ -381,3 +397,12 @@ endfunction
 com! ShowMaps call s:ShowMaps()      " Enable :ShowMaps to call the function
 
 nnoremap \m :ShowMaps<CR>            " Map keys to call the function
+
+" rust
+let g:rustfmt_autosave = 1
+
+" startify
+let g:startify_session_before_save = [
+        \ 'silent! :tabdo NERDTreeClose',
+        \ 'silent! :bufdo NERDTreeClose'
+        \ ]
