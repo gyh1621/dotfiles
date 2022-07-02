@@ -6,15 +6,18 @@ set -e
 [ -f ~/.vimrc.bundles ] && rm ~/.vimrc.bundles && echo "Deleted existed ~/.vimrc.bundles"
 [ -d ~/.vim ] && rm -rf ~/.vim && echo "Deleted existed ~/.vim"
 [ -d ~/.config/coc ] && rm -rf ~/.config/coc && echo "Deleted existed ~/.config/coc"
+#[ -d ~/.vim/coc-settings.json ]
 
 # link config files
-[ -f ~/.zshrc ] && rm ~/.zshrc
+mkdir -p $HOME/.vim
 if [[ "$OS" == "Darwin"* ]]; then
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.vimrc $HOME/.vimrc
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.vimrc.bundles $HOME/.vimrc.bundles
+    ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/coc-settings.json $HOME/.vim/coc-settings.json
 else
     ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.vimrc $HOME/.vimrc
     ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.vimrc.bundles $HOME/.vimrc.bundles
+    ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/coc-settings.json $HOME/.vim/coc-settings.json
 fi
 
 
@@ -58,3 +61,7 @@ then
     echo '{"dependencies": {}}' > package.json
 fi
 npm install coc-json coc-rust-analyzer coc-pyright coc-python --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
+
+echo -e "\n=====RUST SUPPORT===="
+echo "1. download rust-analyzer"
+echo "2. compile https://github.com/pr2502/ra-multiplex and put ra-multiplex* to ~/.local/bin"

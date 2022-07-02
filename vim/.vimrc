@@ -11,6 +11,8 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
+let g:plug_threads=4
+
 " coc
 if filereadable(expand("~/.vimrc.coc"))
   source ~/.vimrc.coc
