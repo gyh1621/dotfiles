@@ -55,14 +55,12 @@ source ~/.zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source ~/.zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
 
 # FZF
-[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='fd . ~ --type file -L -H'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DIR_COMMAND="fd . ~ --type d -L"
-export FZF_ALT_C_COMMAND="$FZF_DIR_COMMAND"
+export FZF_COMPLETION_TRIGGER='?'
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
 
-# fzf tab
-zsh-defer source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 
 # zsh-z
 zsh-defer source ~/.zsh/plugins/zsh-z/zsh-z.plugin.zsh

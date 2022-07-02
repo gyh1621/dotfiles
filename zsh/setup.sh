@@ -54,7 +54,6 @@ function install_zsh_plugins {
 
     curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh >> ~/.zsh/plugins/fancy-ctrl-z.plugin.zsh
 
-    git clone --depth 1 https://github.com/Aloxaf/fzf-tab ~/.zsh/plugins/fzf-tab
 }
 
 
