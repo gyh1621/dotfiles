@@ -23,6 +23,8 @@ fi
 
 function prepare_for_macos {
     brew install node
+    brew install vim
+    sudo ln -s /opt/homebrew/Cellar/vim/*/bin/vim /usr/local/bin/vim
 }
 
 function prepare_for_ubuntu {
