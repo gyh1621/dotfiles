@@ -21,7 +21,8 @@ Plug 'fatih/vim-go'
 
 Plug 'mhinz/vim-startify'
 
-Plug 'preservim/nerdtree'
+Plug 'preservim/nerdtree' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'Yggdroot/LeaderF'
@@ -29,6 +30,7 @@ Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'dyng/ctrlsf.vim'
 
 " language packs

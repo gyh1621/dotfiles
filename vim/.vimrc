@@ -32,6 +32,9 @@ hi! Pmenu ctermbg=8 ctermfg=7
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
+" Expand Rust macro
+nmap mm <ESC>:CocCommand rust-analyzer.expandMacro<CR>
+
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
@@ -61,6 +64,11 @@ nmap <silent> ghd :call <SID>GoToDefinition('split')<CR>
 nmap <silent> gtd :call <SID>GoToDefinition('tabe')<CR>
 
 " coc end
+
+" git gutter
+nmap ]c <Plug>(GitGutterNextHunk)
+nmap [c <Plug>(GitGutterPrevHunk)
+command! Gqf GitGutterQuickFix | copen
 
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 " 让配置变更立即生效
