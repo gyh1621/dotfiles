@@ -2,6 +2,16 @@ filetype off
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'ryanoasis/vim-devicons'
+
+" colorschemes
+Plug 'sainnhe/everforest'
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'christophermca/meta5'
+Plug 'rakr/vim-one'
+Plug 'sts10/vim-pink-moon'
+Plug 'sainnhe/edge'
+
 Plug 'altercation/vim-colors-solarized'
 Plug 'tomasr/molokai'
 Plug 'Lokaltog/vim-powerline'
@@ -18,6 +28,7 @@ Plug 'Yggdroot/LeaderF'
 Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-fugitive'
 Plug 'dyng/ctrlsf.vim'
 
 " language packs

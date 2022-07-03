@@ -27,6 +27,24 @@ hi! CocFloating ctermbg=8 ctermfg=11
 hi! CocCodeLens ctermbg=8 ctermfg=7
 hi! Pmenu ctermbg=8 ctermfg=7
 
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+nmap <silent> gr <Plug>(coc-references)
+
 function! s:GoToDefinition(splitType)
   if CocAction('jumpDefinition', a:splitType)
     return v:true
@@ -41,6 +59,8 @@ endfunction
 nmap <silent> gd :call <SID>GoToDefinition('botright vsplit')<CR>
 nmap <silent> ghd :call <SID>GoToDefinition('split')<CR>
 nmap <silent> gtd :call <SID>GoToDefinition('tabe')<CR>
+
+" coc end
 
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 " 让配置变更立即生效
@@ -134,13 +154,30 @@ nmap W- <ESC>:resize -3<CR>
 nmap W. <ESC>:vertical resize +3<CR>
 nmap W, <ESC>:vertical resize -3<CR>
 
-" 配色方案
+" colorscheme
 set background=dark
-"colorscheme solarized
-"colorscheme molokai
-"colorscheme phd
-" 设置状态栏主题风格
-let g:Powerline_colorscheme='solarized256'
+
+if has('termguicolors')
+    set termguicolors
+endif
+
+" Set contrast.
+" This configuration option should be placed before `colorscheme everforest`.
+" Available values: 'hard', 'medium'(default), 'soft'
+let g:everforest_background = 'medium'
+" For better performance
+let g:everforest_better_performance = 1
+
+let g:deepspace_italics = 1
+
+let g:one_allow_italics = 1
+
+let g:edge_style = 'neon'
+let g:edge_enable_italic = 1
+let g:edge_better_performance = 1
+
+colorscheme edge
+let g:airline_theme = 'edge'
 
 " vimtex
 let g:tex_flavor = 'latex'
@@ -310,8 +347,24 @@ let g:vitality_shell_cursor = 1
 " }
 
 " airline {
+    let g:airline#extensions#coc#enabled = 1
+
+    let g:airline_section_z = "%3p%% %l:%c"
     " show buffered tabs
+    let g:airline#extensions#tabline#buffer_idx_mode = 1
+    nmap <leader>1 <Plug>AirlineSelectTab1
+    nmap <leader>2 <Plug>AirlineSelectTab2
+    nmap <leader>3 <Plug>AirlineSelectTab3
+    nmap <leader>4 <Plug>AirlineSelectTab4
+    nmap <leader>5 <Plug>AirlineSelectTab5
+    nmap <leader>6 <Plug>AirlineSelectTab6
+    nmap <leader>7 <Plug>AirlineSelectTab7
+    nmap <leader>8 <Plug>AirlineSelectTab8
+    nmap <leader>9 <Plug>AirlineSelectTab9
+    nmap <leader>0 <Plug>AirlineSelectTab0
     let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+    let g:airline#extensions#tabline#tab_nr_type = 2
     " enable highlght cache
     let g:airline_highlighting_cache = 1
     " hide buffer line when there is only one tab/buffer
