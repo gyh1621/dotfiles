@@ -34,7 +34,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'dyng/ctrlsf.vim'
 
 " language packs
-Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot', {'not for': 'rust'}
 
 " beancount
 Plug 'nathangrigg/vim-beancount'

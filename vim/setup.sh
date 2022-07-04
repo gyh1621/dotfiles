@@ -24,6 +24,8 @@ fi
 function prepare_for_macos {
     brew install node
     brew install vim
+    # for vim
+    brew install --HEAD universal-ctags/universal-ctags/universal-ctags
     sudo ln -s /opt/homebrew/Cellar/vim/*/bin/vim /usr/local/bin/vim
 }
 
