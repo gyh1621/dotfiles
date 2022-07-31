@@ -190,8 +190,8 @@ let g:edge_style = 'neon'
 let g:edge_enable_italic = 1
 let g:edge_better_performance = 1
 
-colorscheme edge
-let g:airline_theme = 'edge'
+" colorscheme edge
+" let g:airline_theme = 'edge'
 
 " vimtex
 let g:tex_flavor = 'latex'

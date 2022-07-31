@@ -30,7 +30,7 @@ function prepare_for_macos {
 }
 
 function prepare_for_ubuntu {
-    sudo apt install -y git build-essential cmake python3-dev
+    sudo apt install -y git build-essential cmake python3-dev vim nodejs npm
 }
 
 function install_common {
