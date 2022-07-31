@@ -18,7 +18,7 @@ function install_zsh_arch {
 }
 
 function install_zsh_ubuntu {
-    sudo apt update && sudo apt install zsh git -y
+    sudo apt update && sudo apt install zsh git curl -y
     # install go for fzf
     cd /tmp && curl -OL https://golang.org/dl/go1.84.4.linux-amd64.tar.gz
     sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.4.linux-amd64.tar.gz
