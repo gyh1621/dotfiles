@@ -20,8 +20,8 @@ function install_zsh_arch {
 function install_zsh_ubuntu {
     sudo apt update && sudo apt install zsh git curl -y
     # install go for fzf
-    cd /tmp && curl -OL https://golang.org/dl/go1.18.4.linux-amd64.tar.gz
-    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.4.linux-amd64.tar.gz
+    cd /tmp && curl -OL https://golang.org/dl/go1.18.4.linux-amd64.tar.gz && cd -
+    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/go1.18.4.linux-amd64.tar.gz
     export PATH=$PATH:/usr/local/go/bin
 }
 
@@ -87,7 +87,7 @@ if [ ! -e "$HOME/.zshrc" ]; then
     if [[ "$OS" == "Darwin"* ]]; then
         ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.zshrc $HOME/.zshrc
     else
-        ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.zshrc $HOME/.zshrc
+        ln -s $(pwd)/.zshrc $HOME/.zshrc
     fi
     if [[ "$OS" == "Gentoo"* ]]; then
         sed -i '2i\\n# Gentoo completions' $HOME/.zshrc
