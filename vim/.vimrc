@@ -65,6 +65,12 @@ nmap <silent> gtd :call <SID>GoToDefinition('tabe')<CR>
 
 " coc end
 
+" vim visual multi
+" select all occurences in of that selection
+nmap <C-e> <Plug>(VM-Select-All)
+imap <C-e> <ESC><Plug>(VM-Select-All)
+vmap <C-e> <ESC><Plug>(VM-Select-All)
+
 " git gutter
 nmap ]c <Plug>(GitGutterNextHunk)
 nmap [c <Plug>(GitGutterPrevHunk)
@@ -424,7 +430,7 @@ let g:vitality_shell_cursor = 1
 " }
 
 " ctrlsf {
-    let g:ctrlsf_ackprg = 'ag'
+    let g:ctrlsf_ackprg = 'rg'
     "let g:ctrlsf_default_view_mode = 'compact'
     let g:ctrlsf_default_root = 'project'
     nmap     <C-F>f <Plug>CtrlSFPrompt

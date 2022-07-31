@@ -64,7 +64,7 @@ if [ ! -f package.json ]
 then
     echo '{"dependencies": {}}' > package.json
 fi
-npm install coc-json coc-rust-analyzer coc-pyright coc-python --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
+npm install coc-tsserver coc-json coc-rust-analyzer coc-pyright coc-python --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
 
 echo -e "\n=====RUST SUPPORT===="
 echo "1. download rust-analyzer"
