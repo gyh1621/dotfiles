@@ -152,13 +152,13 @@ nmap <Leader>Q :qa!<CR>
 " 依次遍历子窗口
 "nnoremap NW <C-W><C-W>
 " 跳转至右方的窗口
-nnoremap <Leader>wl <C-W>l
+nnoremap <Leader>al <C-W>l
 " 跳转至左方的窗口
-nnoremap <Leader>wh <C-W>h
+nnoremap <Leader>ah <C-W>h
 " 跳转至上方的子窗口
-nnoremap <Leader>wk <C-W>k
+nnoremap <Leader>ak <C-W>k
 " 跳转至下方的子窗口
-nnoremap <Leader>wj <C-W>j
+nnoremap <Leader>aj <C-W>j
 " 定义快捷键在结对符之间跳转
 nmap <Leader>M %
 " 调整水平分割窗口大小
@@ -170,6 +170,7 @@ nmap W, <ESC>:vertical resize -3<CR>
 
 " colorscheme
 set background=dark
+colorscheme yellow-moon
 
 if has('termguicolors')
     set termguicolors
