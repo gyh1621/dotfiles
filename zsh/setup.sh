@@ -25,6 +25,10 @@ function install_zsh_ubuntu {
     export PATH=$PATH:/usr/local/go/bin
 }
 
+function install_zsh_debian {
+    sudo apt install zsh zplug -y
+}
+
 function install_zsh_gentoo {
     sudo emerge -v app-shells/zsh
     sudo emerge -v dev-vcs/git
@@ -81,6 +85,12 @@ if [ ! -e "$HOME/.zshrc" ]; then
         install_zsh_plugins
     elif [[ "$OS" == "Amazon Linux"* ]]; then
         install_zsh_plugins
+    elif [[ "$OS" == "Debian"* ]]; then
+        install_zsh_debian
+        install_zsh_plugins
+    else
+        echo "$OS is not supported"
+        exit
     fi
     # link zshrc
     [ -f ~/.zshrc ] && rm ~/.zshrc
