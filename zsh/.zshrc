@@ -48,19 +48,24 @@ alias gcd="git commit --amend --no-edit"
 
 ############## PLUGINS ################
 
+# enable current word completion
+zstyle ':completion:*' matcher-list 'b:=*'
+
+# FZF
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+enable-fzf-tab
+
 # zsh-vi-mode
 source ~/.zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # zsh-defer
 source ~/.zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
-
-# FZF
-export FZF_COMPLETION_TRIGGER='?'
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
-
-[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 
 # zsh-z
 zsh-defer source ~/.zsh/plugins/zsh-z/zsh-z.plugin.zsh

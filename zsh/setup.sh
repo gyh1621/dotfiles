@@ -48,6 +48,8 @@ function install_zsh_plugins {
     [ -d ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --key-bindings --completion --no-update-rc
 
+    git clone https://github.com/Aloxaf/fzf-tab ~/.zsh/plugins/fzf-tab
+
     git clone --depth 1 https://github.com/sindresorhus/pure.git ~/.zsh/pure
 
     git clone --depth 1 https://github.com/agkozak/zsh-z.git ~/.zsh/plugins/zsh-z
