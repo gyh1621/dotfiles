@@ -17,7 +17,6 @@ Plug 'tomasr/molokai'
 Plug 'Lokaltog/vim-powerline'
 Plug 'chrisbra/csv.vim'
 Plug 'nickeb96/vitality.vim'
-Plug 'fatih/vim-go'
 
 Plug 'mhinz/vim-startify'
 

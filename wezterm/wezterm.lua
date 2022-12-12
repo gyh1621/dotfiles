@@ -60,6 +60,7 @@ return {
     {key=" ", mods="SUPER|SHIFT", action="QuickSelect"},
     -- This will create a new split and run your default program inside it
     {key="|", mods="SUPER|SHIFT", action=wezterm.action.SplitHorizontal{domain="CurrentPaneDomain"}},
+    {key="_", mods="SUPER|SHIFT", action=wezterm.action.SplitVertical{domain="CurrentPaneDomain"}},
     -- activate pane selection mode with the default alphabet (labels are "a", "s", "d", "f" and so on)
     {key="8", mods="SUPER", action=act.PaneSelect},
     {key="9", mods="SUPER", action=wezterm.action.ShowTabNavigator},
