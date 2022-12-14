@@ -4,22 +4,19 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'ryanoasis/vim-devicons'
 
-" colorschemes
+" colorschemes {
 Plug 'sainnhe/everforest'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'christophermca/meta5'
 Plug 'rakr/vim-one'
 Plug 'sts10/vim-pink-moon'
 Plug 'sainnhe/edge'
-
 Plug 'altercation/vim-colors-solarized'
 Plug 'tomasr/molokai'
-Plug 'Lokaltog/vim-powerline'
-Plug 'chrisbra/csv.vim'
-Plug 'nickeb96/vitality.vim'
+" }
 
 Plug 'mhinz/vim-startify'
-
+Plug 'chrisbra/csv.vim'
 Plug 'preservim/nerdtree' |
             \ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
@@ -28,7 +25,6 @@ Plug 'Yggdroot/LeaderF'
 Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
-Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'dyng/ctrlsf.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}

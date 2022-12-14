@@ -11,7 +11,8 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
-let g:plug_threads=4
+let g:plug_threads=16
+let g:plug_shallow=1
 
 " bookmark
 let g:bookmark_auto_save = 1
@@ -85,6 +86,11 @@ vmap <C-e> <ESC><Plug>(VM-Select-All)
 nmap ]c <Plug>(GitGutterNextHunk)
 nmap [c <Plug>(GitGutterPrevHunk)
 command! Gqf GitGutterQuickFix | copen
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=%{GitStatus()}
 
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 " 让配置变更立即生效
