@@ -35,6 +35,9 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 Plug 'MattesGroeger/vim-bookmarks'
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 " language packs
 Plug 'sheerun/vim-polyglot', {'not for': 'rust'}
 

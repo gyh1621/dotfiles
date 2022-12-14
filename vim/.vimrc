@@ -17,6 +17,10 @@ let g:plug_threads=4
 let g:bookmark_auto_save = 1
 let g:bookmark_save_per_working_dir = 1
 
+" fzf.vim
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+
 " coc
 nmap <leader>fe <Plug>(coc-fix-current)
 if filereadable(expand("~/.vimrc.coc"))
@@ -176,7 +180,7 @@ nmap W, <ESC>:vertical resize -3<CR>
 
 " colorscheme
 set background=dark
-colorscheme yellow-moon
+silent! colorscheme yellow-moon
 
 if has('termguicolors')
     set termguicolors
