@@ -13,7 +13,12 @@ endif
 
 let g:plug_threads=4
 
+" bookmark
+let g:bookmark_auto_save = 1
+let g:bookmark_save_per_working_dir = 1
+
 " coc
+nmap <leader>fe <Plug>(coc-fix-current)
 if filereadable(expand("~/.vimrc.coc"))
   source ~/.vimrc.coc
 endif
@@ -33,7 +38,7 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Expand Rust macro
-nmap mm <ESC>:CocCommand rust-analyzer.expandMacro<CR>
+nmap me <ESC>:CocCommand rust-analyzer.expandMacro<CR>
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call ShowDocumentation()<CR>
@@ -59,7 +64,8 @@ function! s:GoToDefinition(splitType)
   endif
 endfunction
 
-nmap <silent> gd :call <SID>GoToDefinition('botright vsplit')<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gvd :call <SID>GoToDefinition('botright vsplit')<CR>
 nmap <silent> ghd :call <SID>GoToDefinition('split')<CR>
 nmap <silent> gtd :call <SID>GoToDefinition('tabe')<CR>
 
