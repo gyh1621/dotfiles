@@ -15,19 +15,19 @@ ZSH_THEME=""
 
 PURE_CMD_MAX_EXEC_TIME=5
 #PROMPT='%(?.%B%F{white}𓅭  .%B%F{red}𓅮  )%f'
-PURE_PROMPT_SYMBOL="%F{yellow}%T%f ❯"
-PURE_PROMPT_VICMD_SYMBOL="%F{yellow}%T%f ❮"
+PURE_PROMPT_SYMBOL="%F{white}%T%f ❯"
+PURE_PROMPT_VICMD_SYMBOL="%F{white}%T%f ❮"
 #PURE_PROMPT_SYMBOL="👍 "
 #PROMPT='%(?.%F{magenta}👍 .%F{red}✋ )%f
 #PROMPT='%F{white}%* '$PROMPT  # add time
 PROMPT='%(1j.[%j] .)% '$PROMPT # add job number
 
 # change the path color
-zstyle :prompt:pure:path color cyan
+zstyle :prompt:pure:path color yellow
 
 # change the color for both `prompt:success` and `prompt:error`
 zstyle ':prompt:pure:prompt:*' color cyan
-zstyle ':prompt:pure:git:branch' color yellow
+zstyle ':prompt:pure:git:branch' color cyan
 
 # turn on git stash status
 zstyle :prompt:pure:git:stash show yes
