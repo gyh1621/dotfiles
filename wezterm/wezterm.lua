@@ -64,6 +64,15 @@ return {
     -- activate pane selection mode with the default alphabet (labels are "a", "s", "d", "f" and so on)
     {key="8", mods="SUPER", action=act.PaneSelect},
     {key="9", mods="SUPER", action=wezterm.action.ShowTabNavigator},
+    -- CTRL+ALT + number to move to that position
+    {key=tostring(1), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(0)},
+    {key=tostring(2), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(1)},
+    {key=tostring(3), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(2)},
+    {key=tostring(4), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(3)},
+    {key=tostring(5), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(4)},
+    {key=tostring(6), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(5)},
+    {key=tostring(7), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(6)},
+    {key=tostring(8), mods = 'CTRL|ALT', action = wezterm.action.MoveTab(7)},
   },
 
   -- color scheme
