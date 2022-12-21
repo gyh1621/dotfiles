@@ -24,6 +24,10 @@ let g:bookmark_save_per_working_dir = 1
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
 
+" copilot
+nmap <Leader>cp :vert bo Copilot panel<CR>
+imap <C-c><C-c> <ESC>:vert bo Copilot panel<CR>
+
 " coc
 nmap <leader>fe <Plug>(coc-fix-current)
 if filereadable(expand("~/.vimrc.coc"))
