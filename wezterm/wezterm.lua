@@ -117,7 +117,40 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   }
 end)
 
+local window_padding = {
+  left = '1.5cell',
+  right = '1cell',
+  top = '0.4cell',
+  bottom = '0.3cell',
+}
+
+local full_screen_window_padding = {
+  left = '0.2cell',
+  right = '0.2cell',
+  top = '0.1cell',
+  bottom = '0cell',
+}
+
+local function update_window_padding(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  local process_name = pane:get_foreground_process_name()
+
+  if process_name == nil then
+    process_name = pane:tab():get_title()
+  end
+
+  if string.find(process_name, "vim") then
+    overrides.window_padding = full_screen_window_padding
+  else
+    overrides.window_padding = window_padding
+  end
+
+  window:set_config_overrides(overrides)
+end
+
 wezterm.on('update-status', function(window, pane)
+  update_window_padding(window, pane)
+
   local palette = window:effective_config().resolved_palette
   local firstTabActive = window:mux_window():tabs_with_info()[1].is_active
 
@@ -140,13 +173,6 @@ wezterm.on('update-status', function(window, pane)
     { Text = RIGHT_DIVIDER },
   }))
 end)
-
-local window_padding = {
-  left = 15,
-  right = 15,
-  top = 10,
-  bottom = 10,
-}
 
 local custom = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
 -- custom.background = "#000000"
@@ -250,13 +276,12 @@ return {
   color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
   clean_exit_codes = { 130 },
   audible_bell = "Disabled",
-  initial_rows = 44,
-  initial_cols = 135,
+  initial_rows = 34,
+  initial_cols = 100,
   cursor_thickness = "2",
   -- font
   font = wezterm.font_with_fallback({
     {family="Berkeley Mono", weight="Regular"},
   }),
   font_size = 16,
-
 }
