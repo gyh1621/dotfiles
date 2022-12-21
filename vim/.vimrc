@@ -6,7 +6,7 @@ set mouse=a
 " 定义快捷键的前缀，即<Leader>
 let mapleader="\<Space>"
 
-nnoremap <Leader>vr :source $MYVIMRC<CR>
+nnoremap <Leader>vr :source $MYVIMRC<CR>:AirlineRefresh<CR>
 
 " vim-plug
 if filereadable(expand("~/.vimrc.bundles"))
@@ -210,9 +210,24 @@ nmap W- <ESC>:resize -3<CR>
 nmap W. <ESC>:vertical resize +3<CR>
 nmap W, <ESC>:vertical resize -3<CR>
 
+"" highlight current whole line
+" highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+" set cursorline
+"" highlight only current line number
+set cursorline
+set cursorlineopt=number
+autocmd ColorScheme * highlight CursorLineNr cterm=bold term=bold gui=bold
+
 " colorscheme
-set background=dark
-silent! colorscheme yellow-moon
+if strftime("%H") < 17 && strftime("%H") > 6
+  set background=light
+  silent! colorscheme xcodelight
+  let g:airline_theme='light'
+else
+  set background=dark
+  silent! colorscheme spaceduck
+  let g:airline_theme='dark'
+endif
 
 if has('termguicolors')
     set termguicolors
@@ -232,9 +247,6 @@ let g:one_allow_italics = 1
 let g:edge_style = 'neon'
 let g:edge_enable_italic = 1
 let g:edge_better_performance = 1
-
-" colorscheme edge
-" let g:airline_theme = 'edge'
 
 " vimtex
 let g:tex_flavor = 'latex'

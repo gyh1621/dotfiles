@@ -17,6 +17,11 @@ Plug 'sts10/vim-pink-moon'
 Plug 'sainnhe/edge'
 Plug 'altercation/vim-colors-solarized'
 Plug 'tomasr/molokai'
+Plug 'dracula/vim'
+Plug 'arzg/vim-colors-xcode'
+Plug 'pineapplegiant/spaceduck', { 'branch': 'dev' }
+" neovim only
+Plug 'rebelot/kanagawa.nvim'
 " }
 
 Plug 'mhinz/vim-startify'
@@ -29,6 +34,7 @@ Plug 'Yggdroot/LeaderF'
 Plug 'tpope/vim-commentary'
 Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'dyng/ctrlsf.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
