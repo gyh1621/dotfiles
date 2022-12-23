@@ -232,6 +232,10 @@ set cursorline
 set cursorlineopt=number
 autocmd ColorScheme * highlight CursorLineNr cterm=bold term=bold gui=bold
 
+if has('termguicolors')
+    set termguicolors
+endif
+
 " colorscheme
 if strftime("%H") < 17 && strftime("%H") > 6
   set background=light
@@ -241,10 +245,6 @@ else
   set background=dark
   silent! colorscheme spaceduck
   let g:airline_theme='dark'
-endif
-
-if has('termguicolors')
-    set termguicolors
 endif
 
 " Set contrast.
