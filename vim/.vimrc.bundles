@@ -8,6 +8,8 @@ Plug 'psliwka/vim-smoothie'
 
 Plug 'github/copilot.vim'
 
+Plug 'voldikss/vim-floaterm'
+
 " colorschemes {
 Plug 'sainnhe/everforest'
 Plug 'tyrannicaltoucan/vim-deep-space'

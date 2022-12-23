@@ -16,6 +16,20 @@ endif
 let g:plug_threads=16
 let g:plug_shallow=1
 
+" floaterm
+nnoremap   <silent>   <leader>mm    :FloatermNew<CR>
+tnoremap   <silent>   <leader>mm    <C-\><C-n>:FloatermNew<CR>
+nnoremap   <silent>   <leader>m,    :FloatermPrev<CR>
+tnoremap   <silent>   <leader>m,    <C-\><C-n>:FloatermPrev<CR>
+nnoremap   <silent>   <leader>m.    :FloatermNext<CR>
+tnoremap   <silent>   <leader>m.    <C-\><C-n>:FloatermNext<CR>
+nnoremap   <silent>   <leader>mt   :FloatermToggle<CR>
+tnoremap   <silent>   <leader>mt   <C-\><C-n>:FloatermToggle<CR>
+nnoremap   <silent>   <leader>mk   :FloatermKill<CR>
+tnoremap   <silent>   <leader>mk   <C-\><C-n>:FloatermKill<CR>
+nnoremap   <silent>   <leader>mM   :FloatermNew --height=0.95 --width=0.95 --wintype=float<CR>
+tnoremap   <silent>   <leader>mM   :FloatermNew --height=0.95 --width=0.95 --wintype=float<CR>
+
 " bookmark
 let g:bookmark_auto_save = 1
 let g:bookmark_save_per_working_dir = 1
