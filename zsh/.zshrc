@@ -36,6 +36,7 @@ zstyle :prompt:pure:git:stash show yes
 export CLICOLOR=1
 export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 alias ll="ls -alG"
+alias bat="bat --theme=gruvbox-dark --color=always"
 
 # git alias
 alias g="git"
@@ -51,15 +52,42 @@ alias gcd="git commit --amend --no-edit"
 # enable current word completion
 zstyle ':completion:*' matcher-list 'b:=*'
 
-# FZF
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
+autoload -U compinit && compinit;
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
+
+# kill
+zstyle ':fzf-tab:complete:(\\|*/|)(kill|ps):argument-rest' fzf-preview \
+  '[ "$group" = "process ID" ] && ps -p$word -wocmd --no-headers \
+  | bat --color=always -plsh'
+zstyle ':fzf-tab:complete:(\\|*/|)(kill|ps):argument-rest' fzf-flags \
+  --preview-window=down:3:wrap
+
+# envs
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
+	fzf-preview 'echo ${(P)word}'
+
+# files
+zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --theme=gruvbox-dark --color=always ${(Q)realpath}'
 
 source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 enable-fzf-tab
+
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# rebind fzf comp keys
+bindkey -M vicmd '^O' fzf-history-widget
+bindkey -M viins '^O' fzf-history-widget
 
 # zsh-vi-mode
 source ~/.zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -207,9 +235,12 @@ gli() {
 # edit command in the editor
 autoload -U edit-command-line
 zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
+bindkey -M vicmd ' ' edit-command-line
 
+bindkey -M vicmd "^[[A" history-beginning-search-backward
+bindkey -M viins "^[[A" history-beginning-search-backward
+bindkey -M vicmd "^[[B" history-beginning-search-forward
+bindkey -M viins "^[[B" history-beginning-search-forward
 
 if [ -x "$(command -v rbenv)" ]; then
     eval "$(rbenv init -)"
