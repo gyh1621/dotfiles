@@ -237,15 +237,18 @@ if has('termguicolors')
 endif
 
 " colorscheme
-if strftime("%H") < 17 && strftime("%H") > 6
-  set background=light
-  silent! colorscheme xcodelight
-  let g:airline_theme='light'
-else
-  set background=dark
-  silent! colorscheme spaceduck
-  let g:airline_theme='dark'
-endif
+" if strftime("%H") < 17 && strftime("%H") > 6
+"   set background=light
+"   silent! colorscheme xcodelight
+"   let g:airline_theme='light'
+" else
+"   set background=dark
+"   silent! colorscheme spaceduck
+"   let g:airline_theme='dark'
+" endif
+set background=dark
+silent! colorscheme spaceduck
+let g:airline_theme='dark'
 
 " Set contrast.
 " This configuration option should be placed before `colorscheme everforest`.

@@ -140,12 +140,20 @@ local function update_window_padding(window, pane)
   end
 
   if string.find(process_name, "vim") then
-    overrides.window_padding = full_screen_window_padding
+    if overrides.window_padding == nil or
+       (overrides.window_padding.left ~= full_screen_window_padding.left or
+        overrides.window_padding.right ~= full_screen_window_padding.right or
+        overrides.window_padding.top ~= full_screen_window_padding.top or
+        overrides.window_padding.bottom ~= full_screen_window_padding.bottom) then
+      overrides.window_padding = full_screen_window_padding
+      window:set_config_overrides(overrides)
+    end
   else
-    overrides.window_padding = window_padding
+    if overrides.window_padding ~= nil then
+      overrides.window_padding = nil
+      window:set_config_overrides(overrides)
+    end
   end
-
-  window:set_config_overrides(overrides)
 end
 
 wezterm.on('update-status', function(window, pane)
