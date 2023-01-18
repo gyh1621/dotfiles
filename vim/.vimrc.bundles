@@ -10,6 +10,10 @@ Plug 'github/copilot.vim'
 
 Plug 'voldikss/vim-floaterm'
 
+Plug 'qpkorr/vim-bufkill'
+
+Plug 'kevinhwang91/nvim-bqf'
+
 " colorschemes {
 Plug 'sainnhe/everforest'
 Plug 'tyrannicaltoucan/vim-deep-space'
@@ -41,7 +45,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'dyng/ctrlsf.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
-Plug 'MattesGroeger/vim-bookmarks'
+Plug 'gyh1621/vim-bookmarks'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'

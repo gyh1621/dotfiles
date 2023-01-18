@@ -32,7 +32,16 @@ tnoremap   <silent>   <leader>mM   :FloatermNew --height=0.95 --width=0.95 --win
 
 " bookmark
 let g:bookmark_auto_save = 1
-let g:bookmark_save_per_working_dir = 1
+let g:bookmark_save_per_working_dir = 0
+nmap <Leader><Leader> <Plug>BookmarkToggle
+nmap <Leader>ki <Plug>BookmarkAnnotate
+nmap <Leader>ka <Plug>BookmarkShowAll
+nmap <Leader>kj <Plug>BookmarkNext
+nmap <Leader>kk <Plug>BookmarkPrev
+nmap <Leader>kc <Plug>BookmarkClear
+nmap <Leader>kx <Plug>BookmarkClearAll
+nmap <Leader>kK <Plug>BookmarkMoveUp
+nmap <Leader>kJ <Plug>BookmarkMoveDown
 
 " fzf.vim
 command! -bang -nargs=? -complete=dir Files
@@ -284,9 +293,9 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\+\|\t\+\zs \+/
 
 " switch bwtween buffers
-noremap <leader>bb :bn<cr>
-noremap <leader>bp :bp<cr>
-noremap <leader>bd :bd<cr>
+noremap <leader>bb :BF<cr>
+noremap <leader>bp :BB<cr>
+noremap <leader>bd :BD<cr>
 
 " switch between tabs
 noremap <leader>tt :tabn<cr>
@@ -435,6 +444,8 @@ let g:vitality_shell_cursor = 1
 " airline {
     let g:airline#extensions#coc#enabled = 1
 
+    let g:airline#extensions#tabline#fnamemod = ':t'
+
     let g:airline_section_z = "%3p%% %l:%c"
     " show buffered tabs
     let g:airline#extensions#tabline#buffer_idx_mode = 1
@@ -540,7 +551,7 @@ com! ShowMaps call s:ShowMaps()      " Enable :ShowMaps to call the function
 nnoremap \m :ShowMaps<CR>            " Map keys to call the function
 
 " rust
-let g:rustfmt_autosave = 0
+let g:rustfmt_autosave = 1
 
 " startify
 let g:startify_session_before_save = [
