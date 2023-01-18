@@ -11,6 +11,8 @@ function install_zsh_macos {
     brew install coreutils  # for greadlink
     brew install zsh zsh-completions git
     brew install thefuck
+    brew install difftastic
+    git config --global diff.external difft
 }
 
 function install_zsh_arch {
@@ -108,6 +110,9 @@ if [ ! -e "$HOME/.zshrc" ]; then
         sed -i '6i\promptinit; prompt gentoo' $HOME/.zshrc
         sed -i "7izstyle ':completion::complete:*' use-cache 1\n" $HOME/.zshrc
     fi
+
+    # setup git
+    git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 fi
 
 exec zsh
