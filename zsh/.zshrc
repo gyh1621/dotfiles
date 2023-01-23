@@ -38,6 +38,8 @@ export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 alias ll="ls -alG"
 alias bat="bat --theme=gruvbox-dark --color=always"
 
+alias vim="nvim"
+
 # git alias
 alias g="git"
 alias gst="git status"

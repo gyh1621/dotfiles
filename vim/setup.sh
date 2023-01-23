@@ -6,24 +6,29 @@ set -e
 [ -f ~/.vimrc.bundles ] && rm ~/.vimrc.bundles && echo "Deleted existed ~/.vimrc.bundles"
 [ -d ~/.vim ] && rm -rf ~/.vim && echo "Deleted existed ~/.vim"
 [ -d ~/.config/coc ] && rm -rf ~/.config/coc && echo "Deleted existed ~/.config/coc"
+[ -f ~/.config/nvim/init.vim ] && rm ~/.config/nvim/init.vim && echo "Deleted existed ~/.config/nvim/init.vim"
 #[ -d ~/.vim/coc-settings.json ]
 
 # link config files
 mkdir -p $HOME/.vim
+mkdir -p $HOME/.config/nvim
 if [[ "$OS" == "Darwin"* ]]; then
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.vimrc $HOME/.vimrc
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.vimrc.bundles $HOME/.vimrc.bundles
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/coc-settings.json $HOME/.vim/coc-settings.json
+    ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/init.vim $HOME/.config/nvim/init.vim
 else
     ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.vimrc $HOME/.vimrc
     ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/.vimrc.bundles $HOME/.vimrc.bundles
     ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/coc-settings.json $HOME/.vim/coc-settings.json
+    ln -s $(dirname $(readlink -f ${BASH_SOURCE[0]}))/init.vim $HOME/.config/nvim/init.vim
 fi
 
 
 function prepare_for_macos {
     brew install node
     brew install vim
+    brew install nvim
     # for vim
     brew install --HEAD universal-ctags/universal-ctags/universal-ctags
     sudo ln -s /opt/homebrew/Cellar/vim/*/bin/vim /usr/local/bin/vim
@@ -31,6 +36,9 @@ function prepare_for_macos {
 
 function prepare_for_ubuntu {
     sudo apt install -y git build-essential cmake python3-dev vim nodejs npm
+    # install nvim
+    wget -P /tmp https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
+    sudo apt install /tmp/nvim-linux64.deb
 }
 
 function install_common {
