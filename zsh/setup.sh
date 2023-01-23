@@ -22,9 +22,9 @@ function install_zsh_arch {
 function install_zsh_ubuntu {
     sudo apt update && sudo apt install zsh git curl -y
     # install go for fzf
-    cd /tmp && curl -OL https://golang.org/dl/go1.18.4.linux-amd64.tar.gz && cd -
-    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/go1.18.4.linux-amd64.tar.gz
-    export PATH=$PATH:/usr/local/go/bin
+    #cd /tmp && curl -OL https://golang.org/dl/go1.18.4.linux-amd64.tar.gz && cd -
+    #sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/go1.18.4.linux-amd64.tar.gz
+    #export PATH=$PATH:/usr/local/go/bin
 }
 
 function install_zsh_debian {
@@ -39,13 +39,13 @@ function install_zsh_gentoo {
 
 function install_zsh_plugins {
 
-    #if [[ "$OS" != "Darwin"* ]]; then
-    #    sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
-    #    sudo groupadd chsh
-    #    sudo usermod -a -G chsh $USERNAME
-    #    chsh -s /bin/zsh
-    #    #usermod -s /bin/zsh $USERNAME
-    #fi
+    if [[ "$OS" != "Darwin"* ]]; then
+        # sudo sed -i "1iauth sufficient   pam_wheel.so trust group=chsh" /etc/pam.d/chsh
+        # sudo groupadd chsh
+        # sudo usermod -a -G chsh $USERNAME
+        chsh -s /bin/zsh
+        #usermod -s /bin/zsh $USERNAME
+    fi
 
     [ -d ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --key-bindings --completion --no-update-rc
