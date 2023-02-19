@@ -31,7 +31,7 @@ function prepare_for_macos {
     brew install nvim
     # for vim
     brew install --HEAD universal-ctags/universal-ctags/universal-ctags
-    sudo ln -s /opt/homebrew/Cellar/vim/*/bin/vim /usr/local/bin/vim
+    # sudo ln -s /opt/homebrew/Cellar/vim/*/bin/vim /usr/local/bin/vim
 }
 
 function prepare_for_ubuntu {
