@@ -50,6 +50,7 @@ function install_common {
 if [[ "$OS" == "Arch Linux" ]]; then
     echo "not supported"
 elif [[ "$OS" == "Darwin"* ]]; then
+    prepare_for_macos
     install_common
 elif [[ "$OS" == "Ubuntu"* ]]; then
     prepare_for_ubuntu
