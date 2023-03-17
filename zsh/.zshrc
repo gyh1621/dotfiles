@@ -113,35 +113,6 @@ zsh-defer source ~/.zsh/plugins/fancy-ctrl-z.plugin.zsh
 # git fuzzy
 export PATH=~/.zsh/plugins/git-fuzzy/bin:$PATH
 
-
-############ PYENV ##############
-# pyenv settings
-export PATH="$HOME/.pyenv:$PATH"
-#eval "$(pyenv init --path)"
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
-
-# LAZY Loading Pyenv
-# Try to find pyenv, if it's not on the path
-export PYENV_ROOT="${PYENV_ROOT:=${HOME}/.pyenv}"
-if ! type pyenv > /dev/null && [ -f "${PYENV_ROOT}/bin/pyenv" ]; then
-    export PATH="${PYENV_ROOT}/bin:${PATH}"
-fi
-
-# Lazy load pyenv
-if type pyenv > /dev/null; then
-    export PATH="${PYENV_ROOT}/bin:${PYENV_ROOT}/shims:${PATH}"
-    function pyenv() {
-        unset -f pyenv
-        eval "$(command pyenv init -)"
-        if [[ -n "${ZSH_PYENV_LAZY_VIRTUALENV}" ]]; then
-            eval "$(command pyenv virtualenv-init -)"
-        fi
-        pyenv $@
-    }
-fi
-
-
 ########### FUCK ############
 # lazy load fuck
 function fk() {
@@ -235,6 +206,27 @@ gli() {
 
 
 ############# MISC ################
+#homebrew
+eval $(/opt/homebrew/bin/brew shellenv)
+
+# Lazy load pyenv
+export PYENV_ROOT="${PYENV_ROOT:=${HOME}/.pyenv}"
+if ! type pyenv > /dev/null && [ -f "${PYENV_ROOT}/bin/pyenv" ]; then
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
+fi
+if type pyenv > /dev/null; then
+    export PATH="${PYENV_ROOT}/bin:${PYENV_ROOT}/shims:${PATH}"
+    function pyenv() {
+        unset -f pyenv
+        eval "$(command pyenv init -)"
+        if [[ -n "${ZSH_PYENV_LAZY_VIRTUALENV}" ]]; then
+            eval "$(command pyenv virtualenv-init -)"
+            eval "$(command pyenv virtualenv-init -)"
+        fi
+        pyenv $@
+    }
+fi
+
 # edit command in the editor
 autoload -U edit-command-line
 zle -N edit-command-line

@@ -13,6 +13,7 @@ set -e
 mkdir -p $HOME/.vim
 mkdir -p $HOME/.config/nvim
 if [[ "$OS" == "Darwin"* ]]; then
+    brew install coreutils
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.vimrc $HOME/.vimrc
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/.vimrc.bundles $HOME/.vimrc.bundles
     ln -s $(dirname $(greadlink -f ${BASH_SOURCE[0]}))/coc-settings.json $HOME/.vim/coc-settings.json

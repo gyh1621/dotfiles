@@ -428,7 +428,7 @@ let g:vitality_shell_cursor = 1
     let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
     \   'c': ['clang-format'],
-    \   'python': ['black'],
+    \   'python': ['black', 'remove_trailing_lines', 'trim_whitespace'],
     \   'json': ['jq']
     \}
     let g:ale_fix_on_save = 1
