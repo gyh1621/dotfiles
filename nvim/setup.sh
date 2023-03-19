@@ -21,8 +21,15 @@ function prepare_for_macos {
     [ -x "$(command -v "btm")" ] || { echo "Installing bottom"; brew install bottom; }
 }
 
+function prepare_for_centos {
+    yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    yum install -y neovim python3-neovim
+}
+
 if [[ "$OS" == "Darwin"* ]]; then
     prepare_for_macos
+else if [[ "$OS" == "Amazon Linux"* ]]; then
+    prepare_for_centos
 else
     echo "not supported"
 fi
