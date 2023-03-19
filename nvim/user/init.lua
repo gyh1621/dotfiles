@@ -1,5 +1,5 @@
 return {
-  colorscheme = "spaceduck",
+  colorscheme = "catppuccin-latte",
   plugins = {
     -- start page
     "MaximilianLloyd/ascii.nvim",
@@ -115,8 +115,20 @@ return {
       "pineapplegiant/spaceduck",
       name = "spaceduck",
       branch = "dev"
+    },
+    {
+      "catppuccin/nvim",
+      name = "catppuccin",
+      opts = {
+        integrations = {
+          aerial = true,
+          neotree = true,
+          treesitter = true,
+          which_key = true,
+          mason = true,
+        }
+      }
     }
-
   },
   lsp = {
     config = {
