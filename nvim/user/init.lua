@@ -1,5 +1,15 @@
+local colorscheme = ""
+local hour = tonumber(os.date("%H"))
+if hour >= 6 and hour < 18 then
+  -- Set the colorscheme for daytime
+  colorscheme = "catppuccin-latte"
+else
+  -- Set the colorscheme for nighttime
+  colorscheme = "catppuccin-frappe"
+end
+
 return {
-  colorscheme = "catppuccin-latte",
+  colorscheme = colorscheme,
   plugins = {
     -- start page
     "MaximilianLloyd/ascii.nvim",
