@@ -18,6 +18,9 @@ return {
     ["<leader>ma"] = { "<cmd>BookmarkShowAll<CR>", desc = "Show all bookmarks" },
     ["<leader>mn"] = { "<cmd>BookmarkNext<CR>", desc = "Go to next bookmark" },
     ["<leader>mp"] = { "<cmd>BookmarkPrev<CR>", desc = "Go to previous bookmark" },
+    -- rust-tools
+    ["<leader>r"]  = { "<cmd>RustHoverActions<CR>", desc = "Rust hover actions" },
+    ["<leader>R"]  = { "<cmd>RustCodeAction<CR>", desc = "Rust code actions" },
     -- telescope
     -- -- bookmarks
     ["<leader>fd"] = { "<cmd>Telescope vim_bookmarks all<CR>", desc = "Show all bookmarks" },

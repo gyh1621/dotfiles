@@ -174,19 +174,48 @@ return {
           mason = true,
         }
       }
+    },
+
+    -- lsp
+    {
+      "simrat39/rust-tools.nvim",
+      config = function(_, _)
+      end
+    },
+    {
+      "williamboman/mason-lspconfig.nvim",
+      opts = {
+        ensure_installed = { "rust_analyzer" },
+      },
+    },
+
+    -- Go
+    {
+      "ray-x/go.nvim",
+      dependencies = { -- optional packages
+        "ray-x/guihua.lua",
+        "neovim/nvim-lspconfig",
+        "nvim-treesitter/nvim-treesitter",
+      },
+      config = function()
+        require("go").setup()
+      end,
+      event = { "CmdlineEnter" },
+      ft = { "go", 'gomod' },
     }
   },
   lsp = {
-    config = {
-      rust_analyzer = {
-        settings = {
-          ["rust_analyzer"] = {
-            cargo = {
-              features = { "all" },
-            }
-          }
+    setup_handlers = {
+      -- add custom handler
+      rust_analyzer = function(_, opts)
+        opts.cmd = { "ra-multiplex" }
+        opts.diagnostics = {
+          enable = false
         }
-      }
+        require("rust-tools").setup {
+          server = opts
+        }
+      end
     }
   }
 }
