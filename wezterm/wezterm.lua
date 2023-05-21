@@ -49,6 +49,19 @@ local function numberStyle(number, script)
   return result
 end
 
+-- This function returns the suggested title for a tab.
+-- It prefers the title that was set via `tab:set_title()`
+-- or `wezterm cli set-tab-title`, but falls back to the
+-- title of the active pane in that tab.
+function tab_title(tab_info)
+  local title = tab_info.tab_title
+  -- if the tab title is explicitly set, take that
+  if title and #title > 0 then
+    return ': ' .. title
+  end
+    return ' '
+end
+
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
   local RIGHT_DIVIDER = utf8.char(0xe0bc)
   local colours = config.resolved_palette.tab_bar
@@ -110,7 +123,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   return {
     { Background = { Color = s_bg } },
     { Foreground = { Color = s_fg } },
-    { Text = " " .. tab.tab_index + 1 .. ": " .. tab.active_pane.title .. numberStyle(count, "superscript") .. " " },
+    { Text = " " .. tab.tab_index + 1 .. tab_title(tab) .. numberStyle(count, "superscript") .. " " },
     { Background = { Color = e_bg } },
     { Foreground = { Color = e_fg } },
     { Text = RIGHT_DIVIDER },
@@ -246,6 +259,26 @@ return {
     { key = "9", mods = "SUPER", action = act({ ActivateTab = 8 }) },
     { key = "9", mods = "SUPER", action = act({ ActivateTab = 9 }) },
     { key = "0", mods = "SUPER", action = act({ ActivateTab = -1 }) },
+    -- tab navigate
+    { key = "t", mods = "LEADER", action = wezterm.action.ShowTabNavigator },
+    { key = 'H', mods = 'SUPER', action = act.ActivateTabRelative(-1) },
+    { key = 'L', mods = 'SUPER', action = act.ActivateTabRelative(1) },
+    -- tab rename
+    {
+      key = 'r',
+      mods = 'LEADER',
+      action = act.PromptInputLine {
+        description = 'Enter new name for tab',
+        action = wezterm.action_callback(function(window, pane, line)
+          -- line will be `nil` if they hit escape without entering anything
+          -- An empty string if they just hit enter
+          -- Or the actual line of text they wrote
+          if line then
+            window:active_tab():set_title(line)
+          end
+        end),
+      },
+    },
     -- 'c' to create a new tab
     { key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
     -- 'x' to kill the current pane
@@ -284,8 +317,8 @@ return {
   color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
   clean_exit_codes = { 130 },
   audible_bell = "Disabled",
-  initial_rows = 34,
-  initial_cols = 100,
+  initial_rows = 45,
+  initial_cols = 150,
   cursor_thickness = "2",
   -- font
   font = wezterm.font_with_fallback({
