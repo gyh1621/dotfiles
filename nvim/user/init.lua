@@ -5,7 +5,7 @@ if hour >= 6 and hour < 18 then
   colorscheme = "catppuccin-latte"
 else
   -- Set the colorscheme for nighttime
-  colorscheme = "catppuccin-frappe"
+  colorscheme = "spaceduck"
 end
 
 return {
@@ -205,12 +205,21 @@ return {
     }
   },
   lsp = {
+    formatting = {
+      format_on_save = true, -- enable or disable automatic formatting on save
+    },
     setup_handlers = {
       -- add custom handler
       rust_analyzer = function(_, opts)
-        opts.cmd = { "ra-multiplex" }
+        opts.cmd = { "rust-analyzer" }
         opts.diagnostics = {
           enable = false
+        }
+        opts.checkOnSave = {
+            command = "clippy"
+        }
+        opts.diagnostics = {
+            enable=true
         }
         require("rust-tools").setup {
           server = opts
