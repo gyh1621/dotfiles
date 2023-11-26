@@ -1,12 +1,13 @@
 local colorscheme = ""
-local hour = tonumber(os.date("%H"))
-if hour >= 6 and hour < 18 then
-  -- Set the colorscheme for daytime
-  colorscheme = "catppuccin-latte"
-else
-  -- Set the colorscheme for nighttime
-  colorscheme = "spaceduck"
-end
+-- local hour = tonumber(os.date("%H"))
+-- if hour >= 6 and hour < 18 then
+--   -- Set the colorscheme for daytime
+--   colorscheme = "catppuccin-latte"
+-- else
+--   -- Set the colorscheme for nighttime
+--   colorscheme = "spaceduck"
+-- end
+colorscheme = "spaceduck"
 
 return {
   colorscheme = colorscheme,
@@ -216,10 +217,10 @@ return {
           enable = false
         }
         opts.checkOnSave = {
-            command = "clippy"
+          command = "clippy"
         }
         opts.diagnostics = {
-            enable=true
+          enable = true
         }
         require("rust-tools").setup {
           server = opts
