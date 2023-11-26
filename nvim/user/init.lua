@@ -177,6 +177,12 @@ return {
       }
     },
 
+    -- definition preview
+    {
+      "rmagatti/goto-preview",
+      opts = {},
+    },
+
     -- lsp
     {
       "simrat39/rust-tools.nvim",

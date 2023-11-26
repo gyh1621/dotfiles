@@ -25,5 +25,12 @@ return {
     -- -- bookmarks
     ["<leader>fd"] = { "<cmd>Telescope vim_bookmarks all<CR>", desc = "Show all bookmarks" },
     ["<leader>fD"] = { "<cmd>Telescope vim_bookmarks current_file<CR>", desc = "Show all bookmarks in current file" },
+    -- goto preview
+    ["<leader>jd"] = { "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", desc = "Preview Definition" },
+    ["<leader>jD"] = { "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>", desc = "Preview Declaration" },
+    ["<leader>jt"] = { "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", desc = "Preview Type Definition" },
+    ["<leader>ji"] = { "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", desc = "Preview Implementation" },
+    ["<leader>jr"] = { "<cmd>lua require('goto-preview').goto_preview_references()<CR>", desc = "Preview References" },
+    ["<leader>jc"] = { "<cmd>lua require('goto-preview').close_all_win()<CR>", desc = "Close all preview windows" },
   }
 }
