@@ -206,8 +206,10 @@ gli() {
 
 
 ############# MISC ################
-#homebrew
-eval $(/opt/homebrew/bin/brew shellenv)
+# Initialize Homebrew if it is installed
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
+fi
 
 # Lazy load pyenv
 export PYENV_ROOT="${PYENV_ROOT:=${HOME}/.pyenv}"
@@ -256,3 +258,14 @@ function rt {
 [ -f ~/.zshrc.extra ] && source ~/.zshrc.extra && echo "Extra ZSH Configuration: Activated"
 
 #zprof
+
+# if you wish to use IMDS set AWS_EC2_METADATA_DISABLED=false
+
+export AWS_EC2_METADATA_DISABLED=true
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH=$HOME/.toolbox/bin:$PATH

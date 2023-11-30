@@ -15,16 +15,38 @@ function prepare_for_macos {
     [ -x "$(command -v "pbcopy")" ] || { echo "pbcopy not found, exit"; exit 1; }
     # ripgrep
     [ -x "$(command -v "rg")" ] || { echo "Installing ripgrep"; brew install ripgrep; }
-    # lazygit
-    [ -x "$(command -v "lazygit")" ] || { echo "Installing lazygit"; brew install lazygit; }
     # bottom
     [ -x "$(command -v "btm")" ] || { echo "Installing bottom"; brew install bottom; }
 }
 
+function prepare_for_amazon_linux {
+    if [ -x "$(command -v "nvim")" ]; then
+        echo "nvim is already installed."
+    else
+        echo "Installing nvim..."
+        ./install_nvim_amazon_linux.sh
+    fi
+
+    # Install Node.js if not installed
+    if [ -x "$(command -v "node")" ]; then
+        echo "Node.js is already installed."
+    else
+        echo "Installing Node.js..."
+	./install_nodejs_amazon_linux.sh
+    fi
+
+    # ripgrep
+    [ -x "$(command -v "rg")" ] || { echo "Installing ripgrep"; sudo yum install -y yum-utils; sudo yum-config-manager --add-repo=https://copr.fedorainfracloud.org/coprs/carlwgeorge/ripgrep/repo/epel-7/carlwgeorge-ripgrep-epel-7.repo; sudo yum install -y ripgrep; }
+    echo "bottom might not be available in standard repos for Amazon Linux"
+}
+
+
 if [[ "$OS" == "Darwin"* ]]; then
     prepare_for_macos
+elif [[ "$OS" == "Amazon Linux"* ]]; then
+    prepare_for_amazon_linux
 else
-    echo "not supported"
+    echo "OS not supported"
 fi
 
 git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim

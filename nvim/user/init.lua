@@ -39,12 +39,14 @@ return {
     },
     {
       "nvim-treesitter/nvim-treesitter",
-      config = function()
+      config = function(_, opts)
+        opts.ignore_install = { 'help' }
+
         vim.cmd("set foldmethod=expr")
         vim.cmd("set foldexpr=nvim_treesitter#foldexpr()")
         vim.cmd("set nofoldenable")
         require 'nvim-treesitter.configs'.setup {
-          ensure_installed = { "c", "lua", "vim", "help", "query", "bash", "cpp", "css", "dockerfile", "gitignore", "go",
+          ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "bash", "cpp", "css", "dockerfile", "gitignore", "go",
             "html", "json", "jsonc", "python", "proto", "rust", "toml" },
           sync_install = true,
         }
