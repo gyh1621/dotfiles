@@ -105,7 +105,7 @@ zsh-defer source ~/.zsh/plugins/zsh-z/zsh-z.plugin.zsh
 zsh-defer source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 
 # zsh-syntax-highlighting
-zsh-defer source  ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source  ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # fancy-ctrl-z
 zsh-defer source ~/.zsh/plugins/fancy-ctrl-z.plugin.zsh
@@ -204,6 +204,11 @@ gli() {
   $gitlog | $fzf
 }
 
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 
 ############# MISC ################
 # Initialize Homebrew if it is installed
@@ -258,14 +263,3 @@ function rt {
 [ -f ~/.zshrc.extra ] && source ~/.zshrc.extra && echo "Extra ZSH Configuration: Activated"
 
 #zprof
-
-# if you wish to use IMDS set AWS_EC2_METADATA_DISABLED=false
-
-export AWS_EC2_METADATA_DISABLED=true
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export PATH=$HOME/.toolbox/bin:$PATH
