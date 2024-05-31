@@ -7,7 +7,7 @@ local colorscheme = ""
 --   -- Set the colorscheme for nighttime
 --   colorscheme = "spaceduck"
 -- end
-colorscheme = "spaceduck"
+colorscheme = "tokyonight-storm"
 
 return {
   colorscheme = colorscheme,
@@ -27,7 +27,6 @@ return {
         opts.section.header.val = get_random_element({
           ascii.art.animals.cats.boxy,
           ascii.art.animals.cats.luna,
-          ascii.art.misc.skulls.threeskulls_v1,
           ascii.get_random("gaming", "pacman"),
           ascii.get_random("planets", "planets")
         })
@@ -68,6 +67,10 @@ return {
         -- require telescope and load extensions as necessary
         local telescope = require "telescope"
         telescope.load_extension "vim_bookmarks"
+
+        layout_config = {
+		      preview_cutoff = 10,
+	      }
       end,
     },
 
@@ -176,6 +179,38 @@ return {
           which_key = true,
           mason = true,
         }
+      }
+    },
+    {
+      "folke/tokyonight.nvim",
+      name = "tokyonight",
+    },
+    {
+      "rebelot/kanagawa.nvim",
+      name = "kanagawa",
+      opts = {
+        compile = false,             -- enable compiling the colorscheme
+        undercurl = true,            -- enable undercurls
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true},
+        statementStyle = { bold = true },
+        typeStyle = {},
+        transparent = false,         -- do not set background color
+        dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+        terminalColors = true,       -- define vim.g.terminal_color_{0,17}
+        colors = {                   -- add/modify theme and palette colors
+            palette = {},
+            theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+        },
+        overrides = function(colors) -- add/modify highlights
+            return {}
+        end,
+        theme = "dragon",              -- Load "wave" theme when 'background' option is not set
+        background = {               -- map the value of 'background' option to a theme
+            dark = "dragon",           -- try "dragon" !
+            light = "lotus"
+        },
       }
     },
 

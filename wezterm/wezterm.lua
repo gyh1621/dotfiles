@@ -322,7 +322,7 @@ return {
   cursor_thickness = "2",
   -- font
   font = wezterm.font_with_fallback({
-    {family="Berkeley Mono", weight="Regular"},
+    {family="Pragmasevka Nerd Font", weight="Regular"},
   }),
-  font_size = 16,
+  font_size = 18,
 }

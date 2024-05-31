@@ -49,7 +49,7 @@ else
     echo "OS not supported"
 fi
 
-git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+git clone --depth 1 --branch v3.45.3 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 
 # link user dir to ~/.config/nvim/user
 ln -s ~/dotfiles/nvim/user ~/.config/nvim/lua/user
