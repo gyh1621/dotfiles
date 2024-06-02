@@ -2,6 +2,18 @@ set -e
 
 . ../common.sh
 
+# delete backup
+[ -d ~/.config/nvim.bak ] && rm -rf ~/.config/nvim.bak
+[ -d ~/.local/share/nvim.bak ] && rm -rf ~/.local/share/nvim.bak
+[ -d ~/.local/state/nvim.bak ] && rm -rf ~/.local/state/nvim.bak
+[ -d ~/.cache/nvim.bak ] && rm -rf ~/.cache/nvim.bak
+
+# backup if exist
+[ -d ~/.config/nvim ] && mv ~/.config/nvim ~/.config/nvim.bak
+[ -d ~/.local/share/nvim ] && mv ~/.local/share/nvim ~/.local/share/nvim.bak
+[ -d ~/.local/state/nvim ] && mv ~/.local/state/nvim ~/.local/state/nvim.bak
+[ -d ~/.cache/nvim ] && mv ~/.cache/nvim ~/.cache/nvim.bak
+
 [ -f ~/.vimrc ] && rm ~/.vimrc && echo "Deleted existed ~/.vimrc"
 [ -f ~/.vimrc.bundles ] && rm ~/.vimrc.bundles && echo "Deleted existed ~/.vimrc.bundles"
 [ -d ~/.vim ] && rm -rf ~/.vim && echo "Deleted existed ~/.vim"
@@ -49,20 +61,19 @@ else
     echo "OS not supported"
 fi
 
-git clone --depth 1 --branch v3.45.3 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-
-# link user dir to ~/.config/nvim/user
-ln -s ~/dotfiles/nvim/user ~/.config/nvim/lua/user
+# link astro dir to ~/.config/nvim
+ln -s ~/dotfiles/nvim/astro ~/.config/nvim
 
 # init AstroNvim && treesitter
-nvim --headless -c 'quitall'
+nvim --headless +q
+nvim --headless -c 'TSInstallSync' +q
 
-# install lsp servers
-nvim --headless \
-    -c 'LspInstall pyright' \
-    -c 'LspInstall bashls' \
-    -c 'LspInstall lus_ls' \
-    -c 'LspInstall tsserver' \
-    -c 'LspInstall rust_analyzer' \
-    -c 'LspInstall gopls' \
-    -c 'quitall'
+# # install lsp servers
+# nvim --headless \
+#     -c 'LspInstall pyright' \
+#     -c 'LspInstall bashls' \
+#     -c 'LspInstall lus_ls' \
+#     -c 'LspInstall tsserver' \
+#     -c 'LspInstall rust_analyzer' \
+#     -c 'LspInstall gopls' \
+#     -c 'quitall'
