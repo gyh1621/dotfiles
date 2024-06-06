@@ -1,5 +1,11 @@
 return {
-  "nyoom-engineering/oxocarbon.nvim",
+  {
+    "mstcl/ivory",
+    lazy = true,
+    priority = 1000,
+    config = function() vim.cmd.colorscheme "ivory" end,
+  },
+  { "nyoom-engineering/oxocarbon.nvim" },
   {
     "rose-pine/neovim",
     name = "rose-pine",

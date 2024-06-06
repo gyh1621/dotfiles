@@ -32,24 +32,14 @@ fi
 [ -d ~/.local/share/nvim ] && rm -rf ~/.local/share/nvim && echo "Deleted existed ~/.local/share/nvim"
 
 function prepare_for_macos {
-	[ -x "$(command -v "nvim")" ] || {
-		echo "Installing nvim"
-		brew install nvim
-	}
-	[ -x "$(command -v "pbcopy")" ] || {
-		echo "pbcopy not found, exit"
-		exit 1
-	}
-	# ripgrep
-	[ -x "$(command -v "rg")" ] || {
-		echo "Installing ripgrep"
-		brew install ripgrep
-	}
-	# bottom
-	[ -x "$(command -v "btm")" ] || {
-		echo "Installing bottom"
-		brew install bottom
-	}
+    [ -x "$(command -v "nvim")" ] || { echo "Installing nvim"; brew install nvim; }
+    [ -x "$(command -v "pbcopy")" ] || { echo "pbcopy not found, exit"; exit 1; }
+    # ripgrep
+    [ -x "$(command -v "rg")" ] || { echo "Installing ripgrep"; brew install ripgrep; }
+    # gnu sed, for spectre nvim plugin
+    [ -x "$(command -v "gsed")" ] || { echo "Installing gnu sed"; brew install gnu-sed; }
+    # bottom
+    [ -x "$(command -v "btm")" ] || { echo "Installing bottom"; brew install bottom; }
 }
 
 function prepare_for_amazon_linux {
