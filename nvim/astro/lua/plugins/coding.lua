@@ -1,6 +1,32 @@
 return {
   -- Copilot
-  { import = "astrocommunity.completion.copilot-cmp" },
+  { import = "astrocommunity.completion.copilot-lua" },
+  -- Git sharable link
+  {
+    "linrongbin16/gitlinker.nvim",
+    event = "BufRead",
+    dependencies = {
+      "AstroNvim/astrocore",
+      opts = function(_, opts)
+        local prefix = "<Leader>g"
+        opts.mappings.n[prefix .. "y"] = { "<Cmd>GitLink remote=origin<CR>", desc = "Git link copy" }
+        opts.mappings.n[prefix .. "z"] = { "<Cmd>GitLink! remote=origin<CR>", desc = "Git link open" }
+      end,
+    },
+    opts = {
+      router = {
+        browse = {
+          ["^git%.amazon%.com"] = "https://code.amazon.com/packages/"
+            .. "{_A.REPO}/blobs/"
+            .. "{_A.REV}/"
+            .. "--/"
+            .. "{_A.FILE}"
+            .. "#L{_A.LSTART}"
+            .. "{_A.LEND > _A.LSTART and ('-L' .. _A.LEND - _A.LSTART + 1) or ''}",
+        },
+      },
+    },
+  },
   -- Preview
   { "rmagatti/goto-preview", opts = {
     width = 120,
