@@ -79,11 +79,49 @@ return {
     -- mappings to be set up on attaching of a language server
     mappings = {
       n = {
-        -- a `cond` key can provided as the string of a server capability to be required to attach, or a function with `client` and `bufnr` parameters from the `on_attach` that returns a boolean
+        gd = {
+          function() require("telescope.builtin").lsp_definitions() end,
+          desc = "Go to definitions",
+        },
+        gI = {
+          function() require("telescope.builtin").lsp_implementations() end,
+          desc = "Go to implementations",
+        },
+        gY = {
+          function() require("telescope.builtin").lsp_type_definitions() end,
+          desc = "Go to type definitions",
+        },
         gD = {
           function() vim.lsp.buf.declaration() end,
           desc = "Declaration of current symbol",
           cond = "textDocument/declaration",
+        },
+        gR = {
+          function() require("telescope.builtin").lsp_references() end,
+          desc = "Find References",
+        },
+        ["<Leader>lR"] = {
+          function() require("telescope.builtin").lsp_references() end,
+          desc = "Find References",
+        },
+        ["<Leader>lS"] = {
+          function()
+            vim.ui.input({ prompt = "Symbol Query: (leave empty for word under cursor)" }, function(query)
+              if query then
+                -- word under cursor if given query is empty
+                if query == "" then query = vim.fn.expand "<cword>" end
+                require("telescope.builtin").lsp_workspace_symbols {
+                  query = query,
+                  prompt_title = ("Find word (%s)"):format(query),
+                }
+              end
+            end)
+          end,
+          desc = "Search for workspace symbols",
+        },
+        ["<Leader>ls"] = {
+          function() require("telescope.builtin").lsp_document_symbols() end,
+          desc = "Buffer symbols",
         },
         ["<Leader>uY"] = {
           function() require("astrolsp.toggles").buffer_semantic_tokens() end,
