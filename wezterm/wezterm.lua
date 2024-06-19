@@ -1,131 +1,107 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
--- The filled in variant of the < symbol
-local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
-
--- The filled in variant of the > symbol
-local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
-
-local function numberStyle(number, script)
-	local scripts = {
-		superscript = {
-			"\\u2070",
-			"\\u00b9",
-			"\\u00b2",
-			"\\u00b3",
-			"\\u2074",
-			"\\u2075",
-			"\\u2076",
-			"\\u2077",
-			"\\u2078",
-			"\\u2079",
-		},
-		subscript = {
-			"\\u2080",
-			"\\u2081",
-			"\\u2082",
-			"\\u2083",
-			"\\u2084",
-			"\\u2085",
-			"\\u2086",
-			"\\u2087",
-			"\\u2088",
-			"\\u2089",
-		},
-	}
-	local numbers = scripts[script]
-	local number_string = tostring(number)
-	local result = ""
-	for i = 1, #number_string do
-		local char = number_string:sub(i, i)
-		local num = tonumber(char)
-		if num then
-			result = result .. numbers[num + 1]
-		else
-			result = result .. char
-		end
-	end
-	return result
+-- Equivalent to POSIX basename(3)
+-- Given "/foo/bar" returns "bar"
+-- Given "c:\\foo\\bar" returns "bar"
+local function basename(s)
+	return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
--- This function returns the suggested title for a tab.
--- It prefers the title that was set via `tab:set_title()`
--- or `wezterm cli set-tab-title`, but falls back to the
--- title of the active pane in that tab.
-function tab_title(tab_info)
-	local title = tab_info.tab_title
-	-- if the tab title is explicitly set, take that
-	if title and #title > 0 then
-		return ": " .. title
-	end
-	return " "
-end
+local SOLID_LEFT_ARROW = utf8.char(0xe0ba)
+local SOLID_LEFT_MOST = utf8.char(0xe0ba)
+local SOLID_RIGHT_ARROW = utf8.char(0xe0bc)
+
+local VIM_ICON = utf8.char(0xe62b)
+local CAT_ICON = utf8.char(0xf0c7c)
+local RUST_ICON = utf8.char(0xe68b)
+local TERMINAL_ICON = utf8.char(0xe795)
+local SUNGLASS_ICON = utf8.char(0xeba2)
+local PYTHON_ICON = utf8.char(0xf820)
+local NODE_ICON = utf8.char(0xe74e)
+
+local SUB_IDX = {
+	"₁",
+	"₂",
+	"₃",
+	"₄",
+	"₅",
+	"₆",
+	"₇",
+	"₈",
+	"₉",
+	"₁₀",
+	"₁₁",
+	"₁₂",
+	"₁₃",
+	"₁₄",
+	"₁₅",
+	"₁₆",
+	"₁₇",
+	"₁₈",
+	"₁₉",
+	"₂₀",
+}
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-	local RIGHT_DIVIDER = utf8.char(0xe0bc)
-	local colours = config.resolved_palette.tab_bar
+	wezterm.log_info("trigger format title")
 
-	local active_tab_index = 0
-	for _, t in ipairs(tabs) do
-		if t.is_active == true then
-			active_tab_index = t.tab_index
-		end
+	local edge_background = "#121212"
+	local background = "#4E4E4E"
+	local foreground = "#1C1B19"
+	local dim_foreground = "#3A3A3A"
+
+	if tab.is_active then
+		background = "#FBB829"
+		foreground = "#1C1B19"
+	elseif hover then
+		background = "#FF8700"
+		foreground = "#1C1B19"
 	end
 
-	-- local active_bg = colours.active_tab.bg_color
-	-- local active_bg = config.resolved_palette.ansi[6]
-	local active_bg = "#F5C2E7"
-	-- local active_fg = colours.background
-	local active_fg = "#000000"
-	-- local inactive_bg = colours.inactive_tab.bg_color
-	local inactive_bg = "#0F0F0F"
-	-- local inactive_fg = colours.inactive_tab.fg_color
-	local inactive_fg = "#cdd6f4"
-	-- local new_tab_bg = colours.new_tab.bg_color
-	local new_tab_bg = "#313244"
+	local edge_foreground = background
+	local process_name = tab.active_pane.foreground_process_name
+	local pane_title = tab.active_pane.title
+	local exec_name = basename(process_name):gsub("%.exe$", "")
+	local title_with_icon
 
-	local s_bg, s_fg, e_bg, e_fg
-
-	if tab.tab_index == #tabs - 1 then
-		if tab.is_active then
-			s_bg = active_bg
-			s_fg = active_fg
-			e_bg = new_tab_bg
-			e_fg = active_bg
-		else
-			s_bg = inactive_bg
-			s_fg = inactive_fg
-			e_bg = new_tab_bg
-			e_fg = inactive_bg
-		end
-	elseif tab.tab_index == active_tab_index - 1 then
-		s_bg = inactive_bg
-		s_fg = inactive_fg
-		e_bg = active_bg
-		e_fg = inactive_bg
-	elseif tab.is_active then
-		s_bg = active_bg
-		s_fg = active_fg
-		e_bg = inactive_bg
-		e_fg = active_bg
+	if exec_name == "nvim" then
+		title_with_icon = VIM_ICON .. " " .. pane_title:gsub("^(%S+)%s+(%d+/%d+) %- nvim", "  %2 %1")
+	elseif exec_name == "cargo" then
+		title_with_icon = RUST_ICON .. " " .. pane_title
+	elseif exec_name == "bat" or exec_name == "less" or exec_name == "moar" then
+		title_with_icon = CAT_ICON .. " " .. exec_name:upper()
+	elseif exec_name == "btm" or exec_name == "ntop" or exec_name == "top" or exec_name == "btop" then
+		title_with_icon = SUNGLASS_ICON .. " " .. exec_name:upper()
+	elseif exec_name == "python" or exec_name == "hiss" then
+		title_with_icon = PYTHON_ICON .. " " .. exec_name
+	elseif exec_name == "node" then
+		title_with_icon = NODE_ICON .. " " .. exec_name:upper()
 	else
-		s_bg = inactive_bg
-		s_fg = inactive_fg
-		e_bg = inactive_bg
-		e_fg = inactive_bg
+		title_with_icon = TERMINAL_ICON .. " " .. pane_title
 	end
+	local left_arrow = SOLID_LEFT_ARROW
+	if tab.tab_index == 0 then
+		left_arrow = SOLID_LEFT_MOST
+	end
+	local id = SUB_IDX[tab.tab_index + 1]
+	local title = " " .. wezterm.truncate_right(title_with_icon, max_width - 5) .. " "
 
-	local muxpanes = wezterm.mux.get_tab(tab.tab_id):panes()
-	local count = #muxpanes == 1 and "" or #muxpanes
+	wezterm.log_info("title " .. title)
 
 	return {
-		{ Background = { Color = s_bg } },
-		{ Foreground = { Color = s_fg } },
-		{ Text = " " .. tab.tab_index + 1 .. tab_title(tab) .. numberStyle(count, "superscript") .. " " },
-		{ Background = { Color = e_bg } },
-		{ Foreground = { Color = e_fg } },
-		{ Text = RIGHT_DIVIDER },
+		{ Attribute = { Intensity = "Bold" } },
+		{ Background = { Color = edge_background } },
+		{ Foreground = { Color = edge_foreground } },
+		{ Text = left_arrow },
+		{ Background = { Color = background } },
+		{ Foreground = { Color = foreground } },
+		{ Text = id },
+		{ Text = title },
+		{ Background = { Color = edge_background } },
+		{ Foreground = { Color = edge_foreground } },
+		{ Text = SOLID_RIGHT_ARROW },
+		{ Attribute = { Intensity = "Normal" } },
 	}
 end)
 
@@ -178,14 +154,14 @@ wezterm.on("update-status", function(window, pane)
 	local palette = window:effective_config().resolved_palette
 	local firstTabActive = window:mux_window():tabs_with_info()[1].is_active
 
-	local RIGHT_DIVIDER = utf8.char(0xe0b0)
+	local RIGHT_DIVIDER = utf8.char(0xe0bc)
 	local text = "   "
 
 	if window:leader_is_active() then
 		text = "   "
 	end
 
-	local divider_bg = firstTabActive and "#F5C2E7" or "#0F0F0F"
+	local divider_bg = firstTabActive and "#0F0F0F" or "#0F0F0F"
 
 	window:set_left_status(wezterm.format({
 		{ Foreground = { Color = "#000000" } },
@@ -221,6 +197,10 @@ return {
 	colors = {
 		quick_select_label_bg = { Color = "grey" },
 		quick_select_label_fg = { Color = "white" },
+		tab_bar = {
+			-- Setting the bar color to black
+			background = "#000000",
+		},
 	},
 	keys = {
 		-- This will create a new split and run your default program inside it
@@ -341,6 +321,7 @@ return {
 		},
 	},
 	use_fancy_tab_bar = false,
+	show_new_tab_button_in_tab_bar = false,
 	tab_bar_at_bottom = true,
 	hide_tab_bar_if_only_one_tab = false,
 	tab_max_width = 50,
@@ -360,5 +341,5 @@ return {
 	font = wezterm.font_with_fallback({
 		{ family = "Pragmasevka Nerd Font", weight = "Regular" },
 	}),
-	font_size = 17,
+	font_size = 18,
 }
