@@ -88,6 +88,7 @@ if [ ! -e "$HOME/.zshrc" ]; then
         install_zsh_gentoo
         install_zsh_plugins
     elif [[ "$OS" == "Amazon Linux"* ]]; then
+        sudo yum install util-linux-user
         install_zsh_plugins
     elif [[ "$OS" == "Debian"* ]]; then
         install_zsh_debian
