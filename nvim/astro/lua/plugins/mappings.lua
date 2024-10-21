@@ -15,6 +15,10 @@ return {
       maps.n["<Leader>aH"] = { "<cmd>vertical resize -2<CR>", desc = "Resize split left" }
       maps.n["<Leader>aL"] = { "<cmd>vertical resize +2<CR>", desc = "Resize split right" }
 
+      -- toggle term
+      maps.n["<C-'>"] = { "<Cmd>ToggleTerm direction=float<CR>", desc = "ToggleTerm float" }
+      maps.i["<C-'>"] = { "<Cmd>ToggleTerm direction=float<CR>", desc = "ToggleTerm float" }
+
       -- -- bookmarks
       -- ["<leader>mm"] = { "<cmd>BookmarkToggle<CR>", desc = "Toggle bookmark at current line" },
       -- ["<leader>mi"] = { "<cmd>BookmarkAnnotate<CR>", desc = "Add annotation at current line" },
