@@ -16,8 +16,41 @@ return {
       maps.n["<Leader>aL"] = { "<cmd>vertical resize +2<CR>", desc = "Resize split right" }
 
       -- toggle term
-      maps.n["<C-'>"] = { "<Cmd>ToggleTerm direction=float<CR>", desc = "ToggleTerm float" }
       maps.i["<C-'>"] = { "<Cmd>ToggleTerm direction=float<CR>", desc = "ToggleTerm float" }
+      maps.n["<C-'>"] = {
+        function()
+          local count = vim.v.count
+          if count > 0 then
+            -- Get the terminal manager from ToggleTerm
+            local terminals = require("toggleterm.terminal").get_all()
+
+            -- Check if terminal with this number exists
+            local exists = false
+            for _, term in pairs(terminals) do
+              if term.id == count then
+                exists = true
+                break
+              end
+            end
+
+            if exists then
+              -- Terminal exists, just toggle it
+              vim.cmd(count .. "ToggleTerm direction=float")
+            else
+              -- New terminal, prompt for name
+              vim.ui.input({ prompt = "Enter terminal name: " }, function(name)
+                if name then vim.cmd(string.format("%dToggleTerm direction=float name=%s", count, name)) end
+              end)
+            end
+          else
+            vim.cmd "ToggleTerm direction=float"
+          end
+        end,
+        desc = "ToggleTerm float",
+      }
+      maps.n["<C-M-'>"] = { "<Cmd>TermSelect<CR>", desc = "ToggleTerm float" }
+      maps.n["<Leader>ts"] = { "<Cmd>TermSelect<CR>", desc = "Select ToggleTerm" }
+      maps.n["<Leader>tr"] = { "<Cmd>ToggleTermSetName<CR>", desc = "Set ToggleTerm Name" }
 
       -- -- bookmarks
       -- ["<leader>mm"] = { "<cmd>BookmarkToggle<CR>", desc = "Toggle bookmark at current line" },
