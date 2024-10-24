@@ -129,13 +129,13 @@ local function update_window_padding(window, pane)
 
 	if string.find(process_name, "vim") then
 		if
-			overrides.window_padding == nil
-			or (
-				overrides.window_padding.left ~= full_screen_window_padding.left
-				or overrides.window_padding.right ~= full_screen_window_padding.right
-				or overrides.window_padding.top ~= full_screen_window_padding.top
-				or overrides.window_padding.bottom ~= full_screen_window_padding.bottom
-			)
+				overrides.window_padding == nil
+				or (
+					overrides.window_padding.left ~= full_screen_window_padding.left
+					or overrides.window_padding.right ~= full_screen_window_padding.right
+					or overrides.window_padding.top ~= full_screen_window_padding.top
+					or overrides.window_padding.bottom ~= full_screen_window_padding.bottom
+				)
 		then
 			overrides.window_padding = full_screen_window_padding
 			window:set_config_overrides(overrides)
@@ -233,31 +233,31 @@ return {
 			mods = "LEADER",
 			action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }),
 		},
-		{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },
-		{ key = "j", mods = "LEADER", action = act({ ActivatePaneDirection = "Down" }) },
-		{ key = "k", mods = "LEADER", action = act({ ActivatePaneDirection = "Up" }) },
-		{ key = "l", mods = "LEADER", action = act({ ActivatePaneDirection = "Right" }) },
+		{ key = "h", mods = "LEADER",       action = act({ ActivatePaneDirection = "Left" }) },
+		{ key = "j", mods = "LEADER",       action = act({ ActivatePaneDirection = "Down" }) },
+		{ key = "k", mods = "LEADER",       action = act({ ActivatePaneDirection = "Up" }) },
+		{ key = "l", mods = "LEADER",       action = act({ ActivatePaneDirection = "Right" }) },
 		-- -- Shift + 'hjkl' to resize panes
 		{ key = "h", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Left", 5 } }) },
 		{ key = "j", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
 		{ key = "k", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
 		{ key = "l", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
 		-- numbers to navigate to tabs
-		{ key = "1", mods = "SUPER", action = act({ ActivateTab = 0 }) },
-		{ key = "2", mods = "SUPER", action = act({ ActivateTab = 1 }) },
-		{ key = "3", mods = "SUPER", action = act({ ActivateTab = 2 }) },
-		{ key = "4", mods = "SUPER", action = act({ ActivateTab = 3 }) },
-		{ key = "5", mods = "SUPER", action = act({ ActivateTab = 4 }) },
-		{ key = "6", mods = "SUPER", action = act({ ActivateTab = 5 }) },
-		{ key = "7", mods = "SUPER", action = act({ ActivateTab = 6 }) },
-		{ key = "8", mods = "SUPER", action = act({ ActivateTab = 7 }) },
-		{ key = "9", mods = "SUPER", action = act({ ActivateTab = 8 }) },
-		{ key = "9", mods = "SUPER", action = act({ ActivateTab = 9 }) },
-		{ key = "0", mods = "SUPER", action = act({ ActivateTab = -1 }) },
+		{ key = "1", mods = "SUPER",        action = act({ ActivateTab = 0 }) },
+		{ key = "2", mods = "SUPER",        action = act({ ActivateTab = 1 }) },
+		{ key = "3", mods = "SUPER",        action = act({ ActivateTab = 2 }) },
+		{ key = "4", mods = "SUPER",        action = act({ ActivateTab = 3 }) },
+		{ key = "5", mods = "SUPER",        action = act({ ActivateTab = 4 }) },
+		{ key = "6", mods = "SUPER",        action = act({ ActivateTab = 5 }) },
+		{ key = "7", mods = "SUPER",        action = act({ ActivateTab = 6 }) },
+		{ key = "8", mods = "SUPER",        action = act({ ActivateTab = 7 }) },
+		{ key = "9", mods = "SUPER",        action = act({ ActivateTab = 8 }) },
+		{ key = "9", mods = "SUPER",        action = act({ ActivateTab = 9 }) },
+		{ key = "0", mods = "SUPER",        action = act({ ActivateTab = -1 }) },
 		-- tab navigate
-		{ key = "t", mods = "LEADER", action = wezterm.action.ShowTabNavigator },
-		{ key = "H", mods = "SUPER", action = act.ActivateTabRelative(-1) },
-		{ key = "L", mods = "SUPER", action = act.ActivateTabRelative(1) },
+		{ key = "t", mods = "LEADER",       action = wezterm.action.ShowTabNavigator },
+		{ key = "H", mods = "SUPER",        action = act.ActivateTabRelative(-1) },
+		{ key = "L", mods = "SUPER",        action = act.ActivateTabRelative(1) },
 		-- tab rename
 		{
 			key = "r",
@@ -334,8 +334,8 @@ return {
 	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
 	clean_exit_codes = { 130 },
 	audible_bell = "Disabled",
-	initial_rows = 45,
-	initial_cols = 150,
+	initial_rows = 65,
+	initial_cols = 220,
 	cursor_thickness = "2",
 	-- font
 	font = wezterm.font_with_fallback({
