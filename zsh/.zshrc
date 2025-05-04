@@ -253,6 +253,187 @@ if [ -x "$(command -v rbenv)" ]; then
     export PATH="$HOME/.rbenv/bin:$PATH"
 fi
 
+# SGPT wrapper
+#
+# Examples
+#   sgpt "list files older than 30 days"
+#   sgpt --fast "summarise this log"
+#   git diff | sgpt --model gpt-4o "explain these changes"
+#
+# Flags
+#   --fast          Prefer a low-latency cheap model (gpt-3.5-turbo)
+#   --cheap         Alias for --fast
+#   --long          Prefer a large-context model (gpt-4o-mini)
+#   --model <name>  Explicit model override
+#
+# ENV VARS
+#   SGPT_MODEL      Default model if no flag given
+#   OPENAI_API_KEY  Required
+#   API_BASE_URL    Optional; defaults to https://llm.0x7cc.com/v1
+#
+# -------------------------------------------------------------------
+
+sgpt() {
+  # --- Local Configuration (EDIT THESE VALUES) -----------------------------
+  # IMPORTANT: Replace placeholders with your actual credentials/URL
+  local local_api_key="sk-ILVbdTEDQT0N4R8UJPIypQ"
+  local local_base_url="https://llm.0x7cc.com/v1"
+
+  if [[ "$local_api_key" == "YOUR_OPENAI_API_KEY_HERE" || -z "$local_api_key" ]]; then
+      echo "no openai api key"
+      return 1
+  fi
+
+  # --- Defaults & models ----------------------------------------------------
+  local default_model="gemini/gemini-2.5-flash-preview-04-17"
+  local fast_model="gemini/gemini-2.5-flash-preview-04-17"
+  local long_model="gemini/gemini-2.5-pro-preview-03-25"
+  local model=$default_model shell_mode=0 shell_prompt="" args=()
+
+  # --- Parse args ------------------------------------------------------------
+  # Only parse wrapper-specific options. Collect all others for the inner command.
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --fast|--cheap)
+        model="$fast_model"
+        model_override_set=1
+        shift
+        ;;
+      --long)
+        model="$long_model"
+        model_override_set=1
+        shift
+        ;;
+      --model)
+        if [[ $# -lt 2 || "$2" == --* ]]; then
+          echo "Error: --model requires an argument." >&2
+          return 1
+        fi
+        model="$2"
+        model_override_set=1
+        shift 2
+        ;;
+      --shell|-s)
+        # --shell is a wrapper option that takes the *shell prompt* as its argument
+        if [[ $# -lt 2 || "$2" == --* ]]; then
+          echo "Error: --shell requires a prompt argument." >&2
+          return 1
+        fi
+        shell_mode=1
+        shell_prompt="$2" # This is the prompt for shell command generation
+        shift 2
+        ;;
+      --)
+        shift # Consume the --
+        args+=("$@") # Add all remaining arguments to args
+        break # Stop parsing wrapper options
+        ;;
+      *) # Any other argument is for the inner sgpt command
+        args+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+
+  # --- Common Docker flags (Credentials & Volume) --------------------------
+  local docker_common_flags=(--rm --volume gpt-cache:/tmp/shell_gpt
+                             --env "OPENAI_API_KEY=${local_api_key}"
+                             --env "API_BASE_URL=${local_base_url}")
+  local image="ghcr.io/ther1d/shell_gpt"
+  local docker_model_arg=() # Array to hold model argument if needed
+
+  # add --model to the docker command
+  docker_model_arg=(--model "$model")
+
+  if (( shell_mode )); then
+    # --- Shell-mode: capture & execute on host -----------------------------
+    if [[ -z "$shell_prompt" ]]; then
+      echo "Error: --shell requires a prompt." >&2
+      return 1
+    fi
+
+    echo "🔧 Generating command..." >&2
+    local cmd
+    # Use only common flags for non-interactive generation (no -i / -t)
+    # Pass the shell_prompt and any collected args to the inner command
+    # Include model override only if set
+    cmd=$(docker run "${docker_common_flags[@]}" \
+         "$image" \
+         "${docker_model_arg[@]}" --shell --no-interaction "$shell_prompt" "${args[@]}")
+    local code=$?
+    if (( code != 0 )); then
+      echo "Error: failed to generate command (exit code $code)" >&2
+      return $code
+    fi
+    if [[ -z "$cmd" ]]; then
+      echo "Error: Generated command is empty." >&2
+      return 1
+    fi
+
+    echo
+    echo -e "Shell-GPT → \033[1;33m$cmd\033[0m"
+    echo
+
+    # --- Zsh/Bash-compatible prompt reading -------------------------------
+    local choice=""
+    printf '%s' $'\033[1m[E]\033[0m\033[1;32mxecute (default)\033[0m, \033[1m[D]\033[0mescribe, \033[1m[A]\033[0m\033[1;31mbort\033[0m: '
+
+    # Read user input using Zsh-specific options (-e for line editing, -r for raw)
+    # || true prevents the script from exiting if the user presses Ctrl+C
+    read -r choice || true
+
+    # Convert to lowercase using Zsh-specific expansion
+    local lower_choice="${choice:l}"
+
+    case "$lower_choice" in
+      e|execute|"")
+        printf "\n"
+        echo "⚡ Executing..."
+        printf "\n"
+        eval "$cmd" # Execute the generated command directly on the host shell
+        ;;
+      d|describe)
+        printf "\n"
+        echo "📖 Describing command..."
+        printf "\n"
+        # For interactive describe, add -it
+        # Pass the shell_prompt and any collected args to the inner command
+        # Include model override only if set
+        docker run -it "${docker_common_flags[@]}" \
+          "$image" \
+          "${docker_model_arg[@]}" "Describe $shell_prompt" "${args[@]}" # Pass extra args here too
+        ;;
+      a|abort|*)
+        printf "\n"
+        echo "🚫 Aborted."
+        ;;
+    esac
+    echo
+
+  else
+    # --- Normal (non-shell) mode: Correct handling of piping ----------------
+    local docker_interactive_flags=()
+    # Check if standard input (file descriptor 0) is connected to a terminal
+    if [[ ! -t 0 ]]; then
+        # STDIN is NOT a TTY (it's a pipe or redirection).
+        # Use -i to keep STDIN open for reading the piped data.
+        # Do NOT use -t as there is no TTY.
+        docker_interactive_flags=(-i)
+    else
+        # STDIN IS a TTY (running interactively).
+        # Use both -i and -t for a proper interactive terminal session.
+        docker_interactive_flags=(-it)
+    fi
+
+    # Run sgpt inside docker, passing all collected args
+    # Include model override only if set
+    docker run "${docker_common_flags[@]}" "${docker_interactive_flags[@]}" \
+      "$image" \
+      "${docker_model_arg[@]}" "${args[@]}"
+  fi
+}
+
 # wezterm
 if [ -x "$(command -v wezterm)" ]; then
     alias nw="wezterm cli spawn --new-window"
