@@ -72,7 +72,7 @@ function install_zsh_plugins {
 
 
 if [ ! -e "$HOME/.zshrc" ]; then
-    if [[ "$OS" == "Arch Linux" ]]; then
+    if [[ "$OS" == "Arch Linux"* ]]; then
         install_zsh_arch
         install_zsh_plugins
     elif [[ "$OS" == "Darwin"* ]]; then
