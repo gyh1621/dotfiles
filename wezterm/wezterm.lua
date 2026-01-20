@@ -193,7 +193,7 @@ end
 
 return {
 	disable_default_key_bindings = false,
-	leader = { key = "a", mods = "CTRL", timeout_milliseconds = 5002 },
+	leader = { key = "x", mods = "CTRL", timeout_milliseconds = 5000 },
 	colors = {
 		quick_select_label_bg = { Color = "grey" },
 		quick_select_label_fg = { Color = "white" },
@@ -203,6 +203,12 @@ return {
 		},
 	},
 	keys = {
+		-- This maps Cmd+Return to open a brand new window
+		{
+			key = "Return",
+			mods = "CMD",
+			action = wezterm.action.SpawnWindow,
+		},
 		-- This will create a new split and run your default program inside it
 		{
 			key = "|",

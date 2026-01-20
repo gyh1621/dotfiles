@@ -219,6 +219,7 @@ nvm() {
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
     eval $(/opt/homebrew/bin/brew shellenv)
 fi
+export PATH="/opt/homebrew/bin:${PATH}"
 
 # Lazy load pyenv
 export PYENV_ROOT="${PYENV_ROOT:=${HOME}/.pyenv}"
@@ -264,7 +265,9 @@ fi
 #   --fast          Prefer a low-latency cheap model (gpt-3.5-turbo)
 #   --cheap         Alias for --fast
 #   --long          Prefer a large-context model (gpt-4o-mini)
+#   --smart         Use smart endpoint + model
 #   --model <name>  Explicit model override
+#   --shell|-s      Shell command generation mode; takes a prompt argument
 #
 # ENV VARS
 #   SGPT_MODEL      Default model if no flag given
@@ -280,28 +283,36 @@ sgpt() {
   local local_base_url="https://llm.0x7cc.com/v1"
 
   if [[ "$local_api_key" == "YOUR_OPENAI_API_KEY_HERE" || -z "$local_api_key" ]]; then
-      echo "no openai api key"
-      return 1
+    echo "no openai api key"
+    return 1
   fi
 
   # --- Defaults & models ----------------------------------------------------
-  local default_model="gemini/gemini-2.5-flash-preview-04-17"
-  local fast_model="gemini/gemini-2.5-flash-preview-04-17"
-  local long_model="gemini/gemini-2.5-pro-preview-03-25"
-  local model=$default_model shell_mode=0 shell_prompt="" args=()
+  local default_model="${SGPT_MODEL:-gpt-4o}"
+  local fast_model="gpt-4o"
+  local long_model="gpt-5.1"
+  local smart_model="enhanced-chat-o3"
 
-  # --- Parse args ------------------------------------------------------------
+  local model="$default_model"
+  local shell_mode=0
+  local shell_prompt=""
+  local args=()
+
+  # --- Parse args -----------------------------------------------------------
   # Only parse wrapper-specific options. Collect all others for the inner command.
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --fast|--cheap)
         model="$fast_model"
-        model_override_set=1
+        shift
+        ;;
+      --smart)
+        model="$smart_model"
+        local_base_url="https://autogen.0x7cc.com/v1"
         shift
         ;;
       --long)
         model="$long_model"
-        model_override_set=1
         shift
         ;;
       --model)
@@ -310,7 +321,6 @@ sgpt() {
           return 1
         fi
         model="$2"
-        model_override_set=1
         shift 2
         ;;
       --shell|-s)
@@ -320,31 +330,32 @@ sgpt() {
           return 1
         fi
         shell_mode=1
-        shell_prompt="$2" # This is the prompt for shell command generation
+        shell_prompt="$2"
         shift 2
         ;;
       --)
         shift # Consume the --
         args+=("$@") # Add all remaining arguments to args
-        break # Stop parsing wrapper options
+        break
         ;;
-      *) # Any other argument is for the inner sgpt command
+      *)
         args+=("$1")
         shift
         ;;
     esac
   done
 
-
-  # --- Common Docker flags (Credentials & Volume) --------------------------
-  local docker_common_flags=(--rm --volume gpt-cache:/tmp/shell_gpt
-                             --env "OPENAI_API_KEY=${local_api_key}"
-                             --env "API_BASE_URL=${local_base_url}")
+  # --- Common Docker flags (Credentials & Volume) ---------------------------
+  local docker_common_flags=(
+    --rm
+    --volume gpt-cache:/tmp/shell_gpt
+    --env "OPENAI_API_KEY=${local_api_key}"
+    --env "API_BASE_URL=${local_base_url}"
+  )
   local image="ghcr.io/ther1d/shell_gpt"
-  local docker_model_arg=() # Array to hold model argument if needed
 
-  # add --model to the docker command
-  docker_model_arg=(--model "$model")
+  # always pass model
+  local docker_model_arg=(--model "$model")
 
   if (( shell_mode )); then
     # --- Shell-mode: capture & execute on host -----------------------------
@@ -355,12 +366,11 @@ sgpt() {
 
     echo "🔧 Generating command..." >&2
     local cmd
-    # Use only common flags for non-interactive generation (no -i / -t)
-    # Pass the shell_prompt and any collected args to the inner command
-    # Include model override only if set
-    cmd=$(docker run "${docker_common_flags[@]}" \
-         "$image" \
-         "${docker_model_arg[@]}" --shell --no-interaction "$shell_prompt" "${args[@]}")
+    cmd=$(
+      docker run "${docker_common_flags[@]}" \
+        "$image" \
+        "${docker_model_arg[@]}" --shell --no-interaction "$shell_prompt" "${args[@]}"
+    )
     local code=$?
     if (( code != 0 )); then
       echo "Error: failed to generate command (exit code $code)" >&2
@@ -375,15 +385,16 @@ sgpt() {
     echo -e "Shell-GPT → \033[1;33m$cmd\033[0m"
     echo
 
-    # --- Zsh/Bash-compatible prompt reading -------------------------------
+    # --- Prompt on the real terminal (FIX: avoid immediate EOF) ------------
     local choice=""
     printf '%s' $'\033[1m[E]\033[0m\033[1;32mxecute (default)\033[0m, \033[1m[D]\033[0mescribe, \033[1m[A]\033[0m\033[1;31mbort\033[0m: '
 
-    # Read user input using Zsh-specific options (-e for line editing, -r for raw)
-    # || true prevents the script from exiting if the user presses Ctrl+C
-    read -r choice || true
+    # Always read from controlling terminal; treat EOF as default (execute)
+    if ! IFS= read -r choice </dev/tty; then
+      choice=""
+    fi
 
-    # Convert to lowercase using Zsh-specific expansion
+    # Convert to lowercase (zsh)
     local lower_choice="${choice:l}"
 
     case "$lower_choice" in
@@ -391,18 +402,15 @@ sgpt() {
         printf "\n"
         echo "⚡ Executing..."
         printf "\n"
-        eval "$cmd" # Execute the generated command directly on the host shell
+        eval "$cmd"
         ;;
       d|describe)
         printf "\n"
         echo "📖 Describing command..."
         printf "\n"
-        # For interactive describe, add -it
-        # Pass the shell_prompt and any collected args to the inner command
-        # Include model override only if set
         docker run -it "${docker_common_flags[@]}" \
           "$image" \
-          "${docker_model_arg[@]}" "Describe $shell_prompt" "${args[@]}" # Pass extra args here too
+          "${docker_model_arg[@]}" "Describe $shell_prompt" "${args[@]}"
         ;;
       a|abort|*)
         printf "\n"
@@ -410,34 +418,242 @@ sgpt() {
         ;;
     esac
     echo
-
   else
     # --- Normal (non-shell) mode: Correct handling of piping ----------------
     local docker_interactive_flags=()
-    # Check if standard input (file descriptor 0) is connected to a terminal
     if [[ ! -t 0 ]]; then
-        # STDIN is NOT a TTY (it's a pipe or redirection).
-        # Use -i to keep STDIN open for reading the piped data.
-        # Do NOT use -t as there is no TTY.
-        docker_interactive_flags=(-i)
+      docker_interactive_flags=(-i)
     else
-        # STDIN IS a TTY (running interactively).
-        # Use both -i and -t for a proper interactive terminal session.
-        docker_interactive_flags=(-it)
+      docker_interactive_flags=(-it)
     fi
 
-    # Run sgpt inside docker, passing all collected args
-    # Include model override only if set
     docker run "${docker_common_flags[@]}" "${docker_interactive_flags[@]}" \
       "$image" \
       "${docker_model_arg[@]}" "${args[@]}"
   fi
 }
 
+gc() {
+  local DIFF PROMPT
+  local -a untracked
+
+  untracked=("${(@f)$(git ls-files --others --exclude-standard)}")
+
+  DIFF="$(
+    git diff
+    git diff --cached
+    for f in "${untracked[@]}"; do
+      git diff --no-index /dev/null "$f" || true
+    done
+  )"
+
+  [[ -z "$DIFF" ]] && { echo "No changes to commit."; return 1; }
+
+  PROMPT=$'Generate a git commit command (git add <all changed files> && git commit -m "...") using conventional commits.\n'\
+$'Only output the command.\n\nDIFF:\n'"$DIFF"
+
+  sgpt --long -s "$PROMPT"
+}
+
+
+# git contributors stats (commits + +/- lines + files touched)
+# Usage:
+#   gitcontrib                         # all history, whole repo
+#   gitcontrib -s "30 days ago"        # last 30 days
+#   gitcontrib -s 2025-12-01 -u 2025-12-31
+#   gitcontrib -p src                  # only pathspec src
+#   gitcontrib --merges                # include merge commits
+gitcontrib() {
+  emulate -L zsh
+  setopt pipefail
+
+  local since="" until="" pathspec="." include_merges=0 use_mailmap=1
+
+  while (( $# )); do
+    case "$1" in
+      -s|--since) shift; since="$1" ;;
+      -u|--until) shift; until="$1" ;;
+      -p|--path)  shift; pathspec="$1" ;;
+      --merges)   include_merges=1 ;;
+      --no-mailmap) use_mailmap=0 ;;
+      -h|--help)
+        cat <<'EOF'
+gitcontrib - local "GitHub contributors-like" stats
+
+Options:
+  -s, --since <date>     e.g. "30 days ago" / "2025-01-01"
+  -u, --until <date>     e.g. "now" / "2025-12-31"
+  -p, --path  <path>     limit by pathspec (default ".")
+      --merges           include merge commits (default: exclude)
+      --no-mailmap       do not apply .mailmap mappings (default: apply)
+  -h, --help
+
+Examples:
+  gitcontrib
+  gitcontrib -s "30 days ago"
+  gitcontrib -p src
+  gitcontrib --no-mailmap
+EOF
+        return 0
+        ;;
+      *)
+        # allow raw pathspec as last arg
+        if [[ "$pathspec" == "." ]]; then
+          pathspec="$1"
+        else
+          print -u2 "gitcontrib: unknown arg: $1"
+          return 2
+        fi
+        ;;
+    esac
+    shift
+  done
+
+  local -a log_args
+  log_args=(--pretty=format:'__AUTH__%aN <%aE>' --numstat)
+  (( use_mailmap )) && log_args=(--use-mailmap "${log_args[@]}")
+  (( include_merges )) || log_args=(--no-merges "${log_args[@]}")
+  [[ -n "$since" ]] && log_args+=(--since="$since")
+  [[ -n "$until" ]] && log_args+=(--until="$until")
+
+  git log "${log_args[@]}" -- "$pathspec" \
+  | awk '
+      # Author line marker (space-safe)
+      index($0, "__AUTH__")==1 {
+        author = substr($0, 9)   # strip marker
+        commits[author]++
+        next
+      }
+
+      # numstat: add del path
+      NF==3 {
+        # binary files show "-" in numstat
+        if ($1 ~ /^[0-9]+$/) add[author] += $1
+        if ($2 ~ /^[0-9]+$/) del[author] += $2
+        files[author]++
+        next
+      }
+
+      END {
+        for (a in commits) {
+          c = commits[a]
+          p = (a in add) ? add[a] : 0
+          m = (a in del) ? del[a] : 0
+          f = (a in files) ? files[a] : 0
+          printf "%09d\t%09d\t%09d\t%+010d\t%09d\t%s\n", c, p, m, p-m, f, a
+        }
+      }
+    ' \
+  | sort -nr \
+  | awk -F'\t' '
+      BEGIN {
+        printf "%-6s  %-10s  %-10s  %-10s  %-10s  %s\n", "commits","additions","deletions","net","files","author"
+        printf "%-6s  %-10s  %-10s  %-10s  %-10s  %s\n", "------","----------","----------","----------","----------","------"
+      }
+      {
+        gsub(/^0+/, "", $1); if ($1=="") $1=0
+        gsub(/^0+/, "", $2); if ($2=="") $2=0
+        gsub(/^0+/, "", $3); if ($3=="") $3=0
+        sub(/^\+0+/, "+", $4); sub(/^\-0+/, "-", $4)
+        gsub(/^0+/, "", $5); if ($5=="") $5=0
+        printf "%-6s  %-10s  %-10s  %-10s  %-10s  %s\n", $1,$2,$3,$4,$5,$6
+      }
+    '
+}
+
+# Create a new worktree + branch, then cd into it.
+# Usage: ga <branch>
+ga() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: ga <branch>"
+    return 1
+  fi
+
+  # Ensure git exists
+  if ! command -v git >/dev/null 2>&1; then
+    echo "ga: git not found in PATH"
+    return 1
+  fi
+
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "ga: not inside a git repository"
+    return 1
+  fi
+
+  local branch="$1"
+  local base wpath
+
+  # zsh-safe way to get basename without calling external binary
+  base="${PWD:t}"
+  wpath="../${base}--${branch}"
+
+  git worktree add -b "$branch" "$wpath" || return 1
+
+  # Optional: trust directory for mise
+  if command -v mise >/dev/null 2>&1; then
+    mise trust "$wpath" >/dev/null 2>&1 || true
+  fi
+
+  cd "$wpath" || return 1
+}
+
+# Remove current worktree directory and delete its branch.
+gd() {
+  local cwd worktree root branch main reply
+
+  if ! command -v git >/dev/null 2>&1; then
+    echo "gd: git not found in PATH"
+    return 1
+  fi
+
+  cwd="$PWD"
+  worktree="${cwd:t}"
+
+  # Split on first `--`
+  root="${worktree%%--*}"
+  branch="${worktree#*--}"
+
+  # Safety guard
+  if [[ "$root" == "$worktree" || -z "$branch" ]]; then
+    echo "gd: not in a worktree dir named <root>--<branch> (got: $worktree)"
+    return 1
+  fi
+
+  echo "About to remove worktree and delete branch:"
+  echo "  worktree: $cwd"
+  echo "  branch:   $branch"
+  printf "Continue? [y/N]: "
+  read -r reply
+
+  if [[ ! "$reply" =~ ^[Yy]$ ]]; then
+    echo "Aborted."
+    return 0
+  fi
+
+  main="$(cd "$cwd/../$root" 2>/dev/null && pwd)"
+  if [[ -z "$main" || ! -d "$main/.git" ]]; then
+    echo "gd: main repo not found at ../$root from $cwd"
+    return 1
+  fi
+
+  cd "$main" || return 1
+  git worktree remove "$worktree" --force || return 1
+  git branch -D "$branch" || return 1
+
+  echo "✔ Removed worktree and deleted branch '$branch'"
+}
+
+# codex container
+codexc() {
+    #docker compose run --rm codex codex "$@"
+    docker compose run --rm codex codex --dangerously-bypass-approvals-and-sandbox
+}
+
 # wezterm
 if [ -x "$(command -v wezterm)" ]; then
     alias nw="wezterm cli spawn --new-window"
 fi
+
 # First and only argument is the desired term title
 function rt {
   echo "\x1b]1337;SetUserVar=panetitle=$(echo -n $1 | base64)\x07"
@@ -448,3 +664,8 @@ function rt {
 [ -f ~/.zshrc.extra ] && source ~/.zshrc.extra && echo "Extra ZSH Configuration: Activated"
 
 #zprof
+
+# opencode
+export PATH=/Users/gyh/.opencode/bin:$PATH
+export CRS_OAI_KEY="cr_356a38a4627de5ddc6f5efec8294317bad374855343ccfe5f4e11d76b8a9831b"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
