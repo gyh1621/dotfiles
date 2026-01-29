@@ -5,6 +5,8 @@ return {
     opts = function(_, opts)
       local maps = opts.mappings
 
+      maps.n["<Leader>o"] = { "<cmd>Outline<CR>", desc = "Document TOC" }
+
       -- switch panels
       maps.n["<Leader>ah"] = { "<C-w>h", desc = "Move to left split" }
       maps.n["<Leader>aj"] = { "<C-w>j", desc = "Move to below split" }

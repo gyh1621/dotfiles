@@ -1,5 +1,15 @@
 return {
   {
+    "hedyhli/outline.nvim",
+    cmd = { "Outline", "OutlineOpen" },
+    -- set in mappings.lua
+    keys = {
+      { "<leader>o", "<cmd>Outline<CR>", desc = "Open Outline (TOC)", mode = "n" },
+    },
+    config = true,
+  },
+
+  {
     "nvim-pack/nvim-spectre",
     cmd = "Spectre",
     dependencies = {

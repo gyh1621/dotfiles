@@ -2,6 +2,13 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     optional = true,
+    keys = {
+      {
+        "<leader>O",
+        "<cmd>Telescope lsp_document_symbols<CR>",
+        desc = "Document TOC (headings)",
+      },
+    },
     opts = function(_, opts)
       opts.defaults.layout_strategy = "vertical"
       opts.defaults.layout_config = {
