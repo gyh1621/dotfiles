@@ -21,6 +21,9 @@ return {
             g = {
               coq_settings = {
                 auto_start = "shut-up",
+                completion = {
+                  skip_after = { " ", "\t" },
+                },
                 keymap = {
                   -- jump_to_mark = "<Tab>",
                   pre_select = true,
